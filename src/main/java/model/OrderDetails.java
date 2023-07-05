@@ -1,65 +1,41 @@
 package model;
 
-import java.util.Arrays;
 
 public class OrderDetails {
-    private String orderNumber;
-    private int[] bookIds;
-    private int[] quantities;
-    private double totalCost;
-
-    public OrderDetails() {
-        // Default constructor
+    private String productName;
+    
+    
+    private Double total;
+	private int quantity;
+ 
+    public OrderDetails(String productName, String quantity,
+            String total) {
+        this.productName = productName;
+        
+        this.quantity = Integer.parseInt(quantity);
+        this.total = Double.parseDouble(total);
+        
+    }
+ 
+    public String getProductName() {
+        return productName;
+    }
+ 
+   
+ 
+   
+     
+    public String getTotal() {
+        double roundedTotal = Math.round(total * 100.0) / 100.0;
+        return String.format("%.2f", roundedTotal);
     }
 
-    public OrderDetails(String orderNumber, int[] bookIds, int[] quantities, double totalCost) {
-        this.orderNumber = orderNumber;
-        this.bookIds = bookIds;
-        this.quantities = quantities;
-        this.totalCost = totalCost;
-    }
+	public String getQuantity() {
+		
+		return String.valueOf(quantity);
+	}
 
-    // Getters and setters for the attributes
-
-    public String getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
-    public int[] getBookIds() {
-        return bookIds;
-    }
-
-    public void setBookIds(int[] bookIds) {
-        this.bookIds = bookIds;
-    }
-
-    public int[] getQuantities() {
-        return quantities;
-    }
-
-    public void setQuantities(int[] quantities) {
-        this.quantities = quantities;
-    }
-
-    public double getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderDetails{" +
-                "orderNumber='" + orderNumber + '\'' +
-                ", bookIds=" + Arrays.toString(bookIds) +
-                ", quantities=" + Arrays.toString(quantities) +
-                ", totalCost=" + totalCost +
-                '}';
-    }
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 }

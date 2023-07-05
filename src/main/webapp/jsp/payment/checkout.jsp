@@ -16,6 +16,9 @@ double totalAmount = 0;
 
 ArrayList<Integer> bookIds = new ArrayList<>();
 ArrayList<Integer> amountToBuy = new ArrayList<>();
+ArrayList<String> bookTitles = new ArrayList<>();
+ArrayList<Double> bookPrice = new ArrayList<>();
+
 
 try {
 	Class.forName("com.mysql.jdbc.Driver");
@@ -217,6 +220,8 @@ $(document).ready(function() {
 								String imageurl = bookResultSet.getString("image_url");
 
 								totalAmount += amount * price;
+								bookTitles.add(title);
+								bookPrice.add(price);
 							%>
 
 							<tr class="align-middle border-bottom">
@@ -275,7 +280,7 @@ $(document).ready(function() {
 
 						<%
 						double totalWithTax = totalAmount * 1.08; // Multiply by 1.08 to add 8% tax
-						DecimalFormat decimalFormat = new DecimalFormat("#.00"); // Format the value to 2 decimal places
+						DecimalFormat decimalFormat = new DecimalFormat("#0.00"); // Format the value to 2 decimal places
 						String formattedTotalWithTax = decimalFormat.format(totalWithTax);
 						%>
 
@@ -284,9 +289,17 @@ $(document).ready(function() {
 							<p>
 								$<%=formattedTotalWithTax%></p>
 						</div>
+						
+						<%
+						
+						session.setAttribute("bookTitles", bookTitles);
+						session.setAttribute("quantity", amountToBuy);
+						session.setAttribute("total", bookPrice);
+						%>
 
+						<form action = "<%=request.getContextPath()%>/AuthorizePaymentServlet" method = "POST">
 						<input type="submit" value="Checkout" />
-
+</form>
 
 					</div>
 
