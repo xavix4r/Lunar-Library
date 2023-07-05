@@ -324,7 +324,7 @@ try {
 
           <div class="d-flex ms-auto justify-content-end flex-column w-25">
         <h1 class = "grandTotal">Grand Total: $<%= totalAmount %></h1>
-       <a href = "../payment/checkout.jsp"> <button class="btn btn-primary mt-2" type="submit">Check Out</button></a>
+        <button class="btn btn-primary mt-2" type="submit">Check Out</button>
     </div>
 
 	</div>

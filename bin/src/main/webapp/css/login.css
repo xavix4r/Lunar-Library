@@ -1,0 +1,161 @@
+@charset "ISO-8859-1";
+
+
+@font-face{
+  font-family: "andromeda";
+  src: url('../fonts/Andromeda-eR2n.ttf');
+}
+
+
+@property --gradient-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+  
+  :root {
+    --clr-1: #052b2f;
+    --clr-2: #073438;
+    --clr-3: #08f;
+    --clr-4: #f03;
+    --clr-5: #ac40e2;
+  }
+
+  .login-form {
+    width: 100vmin;
+    
+    
+    background-image: conic-gradient(
+        from var(--gradient-angle),
+        #213,
+        #112,
+        #213
+      );
+    border-radius: 0.5rem;
+  
+    position: relative;
+  }
+
+  .signup-form {
+    width: 80vmin;
+    
+    
+    background-image: conic-gradient(
+        from var(--gradient-angle),
+        #213,
+        #112,
+        #213
+      );
+    border-radius: 0.5rem;
+  
+    position: relative;
+  }
+  
+  .login-form::before,
+  .login-form::after {
+    content: "";
+    position: absolute;
+    inset: -0.3rem;
+    z-index: -1;
+    background: conic-gradient(
+      from var(--gradient-angle),
+      var(--clr-3),
+    var(--clr-4),
+    var(--clr-5),
+    var(--clr-4),
+    var(--clr-3)
+    );
+    border-radius: inherit;
+    animation: rotation 5s linear infinite;
+  }
+  
+  .login-form::after {
+    filter: blur(1.5rem);
+  }
+  
+  @keyframes rotation {
+    0% {
+      --gradient-angle: 0deg;
+    }
+    100% {
+      --gradient-angle: 360deg;
+    }
+  }
+
+
+body{
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.4)), url("3025.jpg"); */
+
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.0)), url("../imgs/bg4.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+   
+   
+}
+
+
+h1{
+    font-family: "andromeda";
+    font-size:6rem;
+    font-weight: 500;
+    background: linear-gradient(to right, #f32170,
+                    #ff6b08, #cf23cf, #eedd44);
+                    background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+}
+
+.form-label{
+    font-family: 'Poppins', sans-serif;
+}
+
+.formBtns{
+  font-family: 'Poppins', sans-serif;
+}
+
+a{
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+}
+
+.btn{
+  background-image: linear-gradient(-225deg, #3D4E81 0%, #5753C9 48%, #6E7FF3 100%);}
+
+/* .box {
+    --border-size: 3px;
+    --border-angle: 0turn;
+    width: 60vmin;
+    height: 50vmin;
+    background-image: conic-gradient(
+        from var(--border-angle),
+        #213,
+        #112 50%,
+        #213
+      ),
+      conic-gradient(from var(--border-angle), transparent 20%, #08f, #f03);
+    background-size: calc(100% - (var(--border-size) * 2))
+        calc(100% - (var(--border-size) * 2)),
+      cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  
+    animation: bg-spin 3s linear infinite;
+    @keyframes bg-spin {
+      to {
+        --border-angle: 1turn;
+      }
+    }
+  
+    &:hover {
+      animation-play-state: paused;
+    }
+  } */
+  
+  @property --border-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0turn;
+  }

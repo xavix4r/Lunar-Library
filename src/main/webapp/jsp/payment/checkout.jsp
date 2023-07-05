@@ -1,7 +1,7 @@
 
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.sql.*"%>
-<%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.text.DecimalFormat"%>
 
 <%
 String username = (String) session.getAttribute("sessUsername");
@@ -12,8 +12,36 @@ if (role == null || username == null) {
 	response.sendRedirect("login.jsp");
 }
 
+double totalAmount = 0;
 
+ArrayList<Integer> bookIds = new ArrayList<>();
+ArrayList<Integer> amountToBuy = new ArrayList<>();
 
+try {
+	Class.forName("com.mysql.jdbc.Driver");
+	String connURL = "jdbc:mysql://localhost/lunar_db?user=root&password=123456&serverTimezone=UTC";
+	Connection conn = DriverManager.getConnection(connURL);
+	// Establish a database connection
+
+	String cartQuery = "SELECT book_id, quantity FROM cart WHERE user_id = ?";
+	PreparedStatement cartStmt = conn.prepareStatement(cartQuery);
+	cartStmt.setInt(1, userId);
+	ResultSet cartResultSet = cartStmt.executeQuery();
+
+	// Retrieve book_ids from the cart table
+	while (cartResultSet.next()) {
+		int bookId = cartResultSet.getInt("book_id");
+		int amount = cartResultSet.getInt("quantity");
+		bookIds.add(bookId);
+		amountToBuy.add(amount);
+
+	}
+	cartResultSet.close();
+	cartStmt.close();
+	conn.close();
+} catch (Exception e) {
+	e.printStackTrace();
+}
 %>
 
 
@@ -42,6 +70,21 @@ if (role == null || username == null) {
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script>
+$(document).ready(function() {
+  // Generate a random 6-digit number
+	
+	  const randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+	  // Construct the transaction code
+	  const transactionCode = `VC${randomNumber}`;
+
+	  // Set the transaction code in the <p> element
+	  document.getElementById('transaction-code').textContent = transactionCode;
+}
+</script>
+
+
 
 </head>
 
@@ -65,10 +108,10 @@ if (role == null || username == null) {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="../user/home.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link"
-							aria-current="page" href="home.jsp">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="genres.jsp">Genres</a>
-						</li>
+							href="../user/genres.jsp">Genres</a></li>
 
 						<%
 						if (role != null) {
@@ -89,25 +132,22 @@ if (role == null || username == null) {
 					if (role != null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
-					
-					<a href="wishlist.jsp" class="text-white fw-light"
-                ><button class="btn me-2" type="submit">
-                <img src="../../imgs/wishlist.png" style="width: 28px; height: auto;">
-                  <i class="fa-solid fa-book-heart fa-lg text-dark"></i></button 
-              ></a>
-					
-					<a href="cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
-              ></a>
 
-					<a href="profilePage.jsp" class="text-white fw-light">
+					<a href="../user/wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="../user/cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a> <a href="../user/profilePage.jsp" class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
 					</a>
 
-					<form action="logout.jsp">
+					<form action="../user/logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
 					</form>
 
@@ -115,7 +155,7 @@ if (role == null || username == null) {
 					} else if (role.equals("guest")) {
 					%>
 
-					<a href="login.jsp" class="text-white fw-light">
+					<a href="../user/login.jsp" class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">Login</button>
 					</a> <a href="signUp.jsp" class="text-white fw-light">
 						<button class="btn btn-dark" type="submit">Sign Up</button>
@@ -135,181 +175,127 @@ if (role == null || username == null) {
 	</nav>
 
 	<div class="container my-5">
-		 <div class="row">
+		<div class="row">
 
-            <div class="col-md-8">
-                <p class="pb-2 fw-bold">Order</p>
-                <div class="table-responsive px-md-4 px-2 pt-3 bg-white shadow-lg rounded-3">
-                    <table class="table table-borderless">
-                    <thead>
-                      <tr class="border-bottom">
-                        <th scope="col">Item</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="align-middle border-bottom">
-                        <th scope="row">
-                          <div class="d-flex align-items-center mt-3">
-                            <img src="p101.jpg" class="img-fluid tableImage rounded-2" />
-                            <div class="ms-4">
-                              <h4>The Fellowship of the Ring</h4>
-                              <h5 class="text-muted">Fantasy</h5>
-                            </div>
-                          </div>
-                        </th>
-                        <td >$19.90</td>
-                        <td><input type="number" name="quantity" min="1" max="100" value="1" class="form-control quantityNumber" disabled></td>
-                        <td class="fw-bold">$39.80 
-                      </tr>
-            
-                      <tr class="align-middle border-bottom">
-                        <th scope="row">
-                          <div class="d-flex align-items-center">
-                            <img src="p102.jpg" class="img-fluid tableImage rounded-2" />
-                            <div class="ms-4">
-                              <h4>A Magic steeped in poison</h4>
-                              <h5 class="text-muted">Fantasy</h5>
-                            </div>
-                          </div>
-                        </th>
-                        <td>$19.90</td>
-                        <td><input type="number" name="quantity" min="1" max="100" value="1" class="form-control quantityNumber" disabled></td>
-                        <td>$39.80 
-                      </tr>
-                      
-                      
-                    </tbody>
-                    
-                  </table>
-                  </div>
-            </div>
+			<div class="col-md-8">
+				<p class="pb-2 fw-bold">Order</p>
+				<div
+					class="table-responsive px-md-4 px-2 pt-3 bg-white shadow-lg rounded-3">
+					<table class="table table-borderless">
+						<thead>
+							<tr class="border-bottom">
+								<th scope="col">Item</th>
+								<th scope="col">Price</th>
+								<th scope="col">Quantity</th>
+								<th scope="col">Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							if (bookIds.isEmpty()) {
+								out.println("<tr><td colspan='4'>No items in cart</td></tr>");
+							} else {
 
-            <div class="col-lg-4 payment-summary">
-                <p class="fw-bold pt-lg-0 pt-4 pb-2">Payment Summary</p>
-                <div class="card px-md-3 px-2 pt-4 shadow-lg rounded-3 border-0">
-                    
-                    <div class="d-flex justify-content-between pb-3"> <small class="text-muted">Transaction code</small>
-                        <p class="">VC115665</p>
-                    </div>
-                    <!-- <div class="d-flex justify-content-between b-bottom"> <input type="text" class="ps-2" placeholder="COUPON CODE">
+								Class.forName("com.mysql.jdbc.Driver");
+								String connURL = "jdbc:mysql://localhost/lunar_db?user=root&password=123456&serverTimezone=UTC";
+								Connection conn = DriverManager.getConnection(connURL);
+
+								String bookQuery = "SELECT title, genre, price, image_url FROM books WHERE book_id = ?";
+								PreparedStatement bookStmt = conn.prepareStatement(bookQuery);
+
+								for (int i = 0; i < bookIds.size(); i++) {
+									int bookId = bookIds.get(i);
+									int amount = amountToBuy.get(i);
+									bookStmt.setInt(1, bookId);
+									ResultSet bookResultSet = bookStmt.executeQuery();
+
+									if (bookResultSet.next()) {
+								// Retrieve book details
+								String title = bookResultSet.getString("title");
+								String genre = bookResultSet.getString("genre");
+								Double price = bookResultSet.getDouble("price");
+								String imageurl = bookResultSet.getString("image_url");
+
+								totalAmount += amount * price;
+							%>
+
+							<tr class="align-middle border-bottom">
+								<th scope="row">
+									<div class="d-flex align-items-center">
+										<img src="<%=imageurl%>"
+											class="img-fluid tableImage rounded-2" />
+										<div class="ms-4">
+											<h3><%=title%></h3>
+											<h5 class="text-muted"><%=genre%></h5>
+										</div>
+									</div>
+								</th>
+								<td>$<%=price%></td>
+								<td><input type="number" name="quantity" min="1" max="100"
+									value="<%=amount%>" class="form-control quantityNumber"
+									data-bookid="<%=bookId%>"></td>
+								<td>$<span class="total-amount fw-bold"><%=amount * price%></span>
+								</td>
+							</tr>
+
+							<%
+							}
+
+							bookResultSet.close();
+							}
+							bookStmt.close();
+							}
+							%>
+
+
+						</tbody>
+
+					</table>
+				</div>
+			</div>
+
+			<div class="col-lg-4 payment-summary">
+				<p class="fw-bold pt-lg-0 pt-4 pb-2">Payment Summary</p>
+				<div class="card px-md-3 px-2 pt-4 shadow-lg rounded-3 border-0">
+
+					<div class="d-flex justify-content-between pb-3">
+						<small class="text-muted">Transaction code</small>
+						<p id="transaction-code" class="">VC123456</p>
+					</div>
+
+					<!-- <div class="d-flex justify-content-between b-bottom"> <input type="text" class="ps-2" placeholder="COUPON CODE">
                         <div class="btn btn-primary">Apply</div>
                     </div> -->
-                    <div class="d-flex flex-column b-bottom">
-                        <div class="d-flex justify-content-between py-3"> <small class="text-muted fw-bold">Grand Total w/o GST</small>
-                            <p>$122</p>
-                        </div>
-                        
-                        <div class="d-flex justify-content-between"> <small class="text-muted fw-bold">Grand Total incl. GST</small>
-                            <p>$132</p>
-                        </div>
+					<div class="d-flex flex-column b-bottom">
+						<div class="d-flex justify-content-between py-3">
+							<small class="text-muted fw-bold">Grand Total w/o GST</small>
+							<p>
+								$<%=totalAmount%></p>
+						</div>
 
-                        <script data-sdk-integration-source="integrationbuilder_ac"></script>
-                        <div id="paypal-button-container"></div>
-                        <script src="https://www.paypal.com/sdk/js?client-id=AebHAvw_n6vlEBPPqSWaFLacIXzHw4Bq47gz4ffaKBTVw1ply1S18vVSPnDOpb-eEcPpl7Dgn6PnlJYo&components=buttons&enable-funding=venmo,paylater"></script>
-                        <script>
-                          const FUNDING_SOURCES = [
-                            paypal.FUNDING.PAYPAL,
-                            paypal.FUNDING.PAYLATER,
-                            paypal.FUNDING.VENMO,
-                            paypal.FUNDING.CARD,
-                          ];
-                    
-                          FUNDING_SOURCES.forEach((fundingSource) => {
-                            paypal
-                              .Buttons({
-                                fundingSource,
-                                style: {
-                                  layout: 'vertical',
-                                  shape: 'rect',
-                                  color: fundingSource === paypal.FUNDING.PAYLATER ? 'gold' : '',
-                                },
-                                createOrder: async (data, actions) => {
-                                  try {
-                                    const response = await fetch('http://localhost:9597/orders', {
-                                      method: 'POST',
-                                    });
-                    
-                                    const details = await response.json();
-                                    return details.id;
-                                  } catch (error) {
-                                    console.error(error);
-                                    // Handle the error or display an appropriate error message to the user
-                                  }
-                                },
-                                onApprove: async (data, actions) => {
-                                  try {
-                                    const response = await fetch(
-                                      `http://localhost:9597/orders/${data.orderID}/capture`,
-                                      {
-                                        method: 'POST',
-                                      }
-                                    );
-                    
-                                    const details = await response.json();
-                                    // Three cases to handle:
-                                    //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-                                    //   (2) Other non-recoverable errors -> Show a failure message
-                                    //   (3) Successful transaction -> Show confirmation or thank you message
-                    
-                                    // This example reads a v2/checkout/orders capture response, propagated from the server
-                                    // You could use a different API or structure for your 'orderData'
-                                    const errorDetail =
-                                      Array.isArray(details.details) && details.details[0];
-                    
-                                    if (
-                                      errorDetail &&
-                                      errorDetail.issue === 'INSTRUMENT_DECLINED'
-                                    ) {
-                                      return actions.restart();
-                                      // https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
-                                    }
-                    
-                                    if (errorDetail) {
-                                      let msg = 'Sorry, your transaction could not be processed.';
-                                      msg += errorDetail.description
-                                        ? ' ' + errorDetail.description
-                                        : '';
-                                      msg += details.debug_id ? ' (' + details.debug_id + ')' : '';
-                                      alert(msg);
-                                    }
-                    
-                                    // Successful capture! For demo purposes:
-                                    console.log(
-                                      'Capture result',
-                                      details,
-                                      JSON.stringify(details, null, 2)
-                                    );
-                                    const transaction =
-                                      details.purchase_units[0].payments.captures[0];
-                                    alert(
-                                      'Transaction ' +
-                                        transaction.status +
-                                        ': ' +
-                                        transaction.id +
-                                        'See console for all available details'
-                                    );
-                                  } catch (error) {
-                                    console.error(error);
-                                    // Handle the error or display an appropriate error message to the user
-                                  }
-                                },
-                              })
-                              .render('#paypal-button-container');
-                          });
-                        </script>
-    
+						<%
+						double totalWithTax = totalAmount * 1.08; // Multiply by 1.08 to add 8% tax
+						DecimalFormat decimalFormat = new DecimalFormat("#.00"); // Format the value to 2 decimal places
+						String formattedTotalWithTax = decimalFormat.format(totalWithTax);
+						%>
 
-                    </div>
-                   
-                </div>
-            </div>
-            
-        </div>
-        
-</div>
+						<div class="d-flex justify-content-between">
+							<small class="text-muted fw-bold">Grand Total incl. GST</small>
+							<p>
+								$<%=formattedTotalWithTax%></p>
+						</div>
+
+						<input type="submit" value="Checkout" />
+
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
 
 	</div>
 

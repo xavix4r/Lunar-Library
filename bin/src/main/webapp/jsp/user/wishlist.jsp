@@ -1,3 +1,6 @@
+<% response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); %>
+<% response.setHeader("Pragma", "no-cache"); %>
+<% response.setDateHeader("Expires", 0); %>
 
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.sql.*"%>
@@ -12,13 +15,7 @@ if (role == null || username == null) {
 	response.sendRedirect("login.jsp");
 }
 
-
-double totalAmount = 0;
-
-
-
 ArrayList<Integer> bookIds = new ArrayList<>();
-ArrayList<Integer> amountToBuy = new ArrayList<>();
 
 try {
 	Class.forName("com.mysql.jdbc.Driver");
@@ -26,21 +23,20 @@ try {
 	Connection conn = DriverManager.getConnection(connURL);
 	// Establish a database connection
 
-	String cartQuery = "SELECT book_id, quantity FROM cart WHERE user_id = ?";
-	PreparedStatement cartStmt = conn.prepareStatement(cartQuery);
-	cartStmt.setInt(1, userId);
-	ResultSet cartResultSet = cartStmt.executeQuery();
+	String wishlistQuery = "SELECT book_id FROM wishlist WHERE user_id = ?";
+	PreparedStatement wishlistStmt = conn.prepareStatement(wishlistQuery);
+	wishlistStmt.setInt(1, userId);
+	ResultSet wishlistSet = wishlistStmt.executeQuery();
 
 	// Retrieve book_ids from the cart table
-	while (cartResultSet.next()) {
-		int bookId = cartResultSet.getInt("book_id");
-		int amount = cartResultSet.getInt("quantity");
+	while (wishlistSet.next()) {
+		int bookId = wishlistSet.getInt("book_id");
+		
 		bookIds.add(bookId);
-		amountToBuy.add(amount);
 		
 	}
-	cartResultSet.close();
-	cartStmt.close();
+	wishlistSet.close();
+	wishlistStmt.close();
 	conn.close();
 } catch (Exception e) {
 	e.printStackTrace();
@@ -69,7 +65,7 @@ try {
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Shopping Cart</title>
+<title>Wishlist</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -79,7 +75,7 @@ try {
 			var bookId = $(this).data("bookid");
 
 			$.ajax({
-				url : "removeCart.jsp",
+				url : "removeWishlist.jsp",
 				type : "POST",
 				 data: { bookId: bookId },
 				success : function(response) {
@@ -93,55 +89,35 @@ try {
 			});
 		});
 		
-		$(".quantityNumber").on("change", function() {
-	        // Get the current quantity value
-	        var quantity = $(this).val();
-	       
-	        
-	        // Get the book ID
-	        var bookId = $(this).data("bookid");
-	       
-	        // Get the price of the book
-	        var price = parseFloat($(this).closest("tr").find("td:nth-child(2)").text().replace("$", ""));
-	        
-	        // Calculate the new total amount
-	        var total = (quantity * price).toFixed(2);
-	        
-	        // Update the total amount text
-	        $(this).closest("tr").find(".total-amount").text(total);
-	        
-	        // Send AJAX request to update the cart in the database
-	        $.ajax({
-	            url: "updateCart.jsp",
-	            type: "POST",
-	            data: { bookId: bookId, amountToBuy: quantity },
-	            success: function(response) {
-	            	updateGrandTotal();
-	            },
-	            error: function(xhr, status, error) {
-	            	alert("Failed to remove item from cart.");
-	            }
-	        });
-	    });
-		
-		function updateGrandTotal() {
-		    var grandTotal = 0;
-		    
-		    // Iterate over all the rows in the table
-		    $(".quantityNumber").each(function() {
-		        var quantity = $(this).val();
-		        var price = parseFloat($(this).closest("tr").find("td:nth-child(2)").text().replace("$", ""));
-		        
-		        // Calculate the total amount for each row
-		        var total = quantity * price;
-		        
-		        // Add the total to the grand total
-		        grandTotal += total;
-		    });
-		    
-		    // Update the grand total text
-		    $(".grandTotal").text("Grand Total: $" + grandTotal.toFixed(2));
-		}
+		$(".addToCartBtn").click(function() {
+		    var buttonText = $(this).text();
+		    var bookId = $(this).data('bookid');
+		    var buttonElement = $(this);
+
+		    if (buttonText.trim() === "Add To Cart") {
+		      $.ajax({
+		        url: "addCart.jsp",
+		        type: "POST",
+		        data: { bookId: bookId },
+		        success: function(response) {
+		          buttonElement.text("Remove From Cart");
+		          buttonElement.removeClass("btn-primary").addClass("btn-outline-primary");
+		          
+		        }
+		      });
+		    } else if (buttonText.trim() === "Remove From Cart") {
+		      $.ajax({
+		        url: "removeCart.jsp",
+		        type: "POST",
+		        data: { bookId: bookId },
+		        success: function(response) {
+		          buttonElement.text("Add To Cart");
+		          buttonElement.removeClass("btn-outline-primary").addClass("btn-primary");
+		         
+		        }
+		      });
+		    }
+		  });
 		
 	});
 </script>
@@ -204,7 +180,6 @@ try {
                 ><button class="btn me-4" type="submit">
                   <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
               ></a>
-
 					<a href="profilePage.jsp" class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
@@ -240,16 +215,16 @@ try {
 
 	<div class="container my-5">
 		<h1 class="text-center pt-4">
-			My Shopping Cart
+			My Wishlist
 		</h1>
 
 		<table class="table mt-3">
 			<thead>
 				<tr>
 					<th scope="col">Item</th>
-					<th scope="col">Price</th>
-					<th scope="col">Quantity</th>
-					<th scope="col">Total</th>
+            <th scope="col">Price</th>
+            
+            <th scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -257,7 +232,7 @@ try {
 
 				<%
 				if (bookIds.isEmpty()) {
-					out.println("<tr><td colspan='4'>No items in cart</td></tr>");
+					out.println("<tr><td colspan='4'>No items in wishlist</td></tr>");
 				} else {
 
 					Class.forName("com.mysql.jdbc.Driver");
@@ -271,7 +246,7 @@ try {
 
 					for (int i = 0; i < bookIds.size(); i++) {
 						int bookId = bookIds.get(i);
-						int amount = amountToBuy.get(i);
+						
 						bookStmt.setInt(1, bookId);
 						ResultSet bookResultSet = bookStmt.executeQuery();
 
@@ -282,7 +257,23 @@ try {
 					Double price = bookResultSet.getDouble("price");
 					String imageurl = bookResultSet.getString("image_url");
 					
-					totalAmount += amount * price;
+					 String cartQuery = "SELECT id FROM cart WHERE book_id = ? AND user_id = ?";
+					 PreparedStatement cartStmt = conn.prepareStatement(cartQuery);
+					 
+					 cartStmt.setInt(1, bookId);
+					 cartStmt.setInt(2, userId);
+					 
+					 ResultSet cartResultSet = cartStmt.executeQuery();
+					 
+					 boolean isInCart = false;
+					 
+					 if (cartResultSet.next()) {
+		      
+						 isInCart = true;
+		                }
+		                
+		                cartResultSet.close();
+		                cartStmt.close();
 				%>
 
 				<tr class="align-middle">
@@ -296,18 +287,31 @@ try {
 						</div>
 					</th>
 					<td>$<%=price%></td>
-					<td><input type="number" name="quantity" min="1" max="100"
-						value="<%=amount%>" class="form-control quantityNumber" data-bookid="<%=bookId%>"></td>
-					<td>$<span class="total-amount fw-bold"><%=amount * price%></span>
+					
+					<td class="text-center">
+						<button
+							class="btn <%=(isInCart ? "btn-outline-primary" : "btn-primary")%> ms-3  addToCartBtn"
+							data-bookid="<%=bookId%>"
+							type="submit">
+							<%=(isInCart ? "Remove From Cart" : "Add To Cart")%>
+						</button>
 						<button class="text-decoration-none text-dark removeItem ms-2 border-0" data-bookid="<%=bookId%>">
 							<i class="fa-regular fa-x fa-xs"></i>
-						</button></td>
+						</button>
+						</td>
 				</tr>
 
 				<%
+				} else {
+					
+					%>
+					
+					<h1>Book doesn't exist</h1>
+					
+				<%
 				}
-
 				bookResultSet.close();
+				
 				}
 				bookStmt.close();
 				}
@@ -319,13 +323,10 @@ try {
 
 
 		<div class=" d-flex justify-content-center">
-            <a href="home.jsp">Keep Shopping</a>
+            <a href="home.jsp">Add More</a>
           </div>
 
-          <div class="d-flex ms-auto justify-content-end flex-column w-25">
-        <h1 class = "grandTotal">Grand Total: $<%= totalAmount %></h1>
-       <a href = "../payment/checkout.jsp"> <button class="btn btn-primary mt-2" type="submit">Check Out</button></a>
-    </div>
+          
 
 	</div>
 
