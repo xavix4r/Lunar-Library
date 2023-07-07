@@ -49,7 +49,7 @@ public class PaymentServices {
     private RedirectUrls getRedirectURLs() {
         RedirectUrls redirectUrls = new RedirectUrls();
         redirectUrls.setCancelUrl("http://localhost:8080/PaypalTest/cancel.html");
-        redirectUrls.setReturnUrl("http://localhost:8080/PaypalTest/review_payment");
+        redirectUrls.setReturnUrl("http://localhost:8080/JADCA2/ReviewPayment");
          
         return redirectUrls;
     }
@@ -60,7 +60,7 @@ public class PaymentServices {
         
      
         Amount amount = new Amount();
-        amount.setCurrency("USD");
+        amount.setCurrency("SGD");
         amount.setTotal("40.00");
        
      
@@ -74,7 +74,7 @@ public class PaymentServices {
         for (OrderDetails orderDetails : allOrderDetails) {
             Item item = new Item(); // Create a new Item object for each iteration
             
-            item.setCurrency("USD");
+            item.setCurrency("SGD");
             item.setName(orderDetails.getProductName());
             item.setPrice("20.00");
             item.setQuantity(orderDetails.getQuantity());
@@ -104,4 +104,22 @@ public class PaymentServices {
          
         return approvalLink;
     }
+    
+    public Payment getPaymentDetails(String paymentId) throws PayPalRESTException {
+        APIContext apiContext = new APIContext(CLIENT_ID, CLIENT_SECRET, MODE);
+        return Payment.get(apiContext, paymentId);
+    }
+    
+    public Payment executePayment(String paymentId, String payerId)
+            throws PayPalRESTException {
+        PaymentExecution paymentExecution = new PaymentExecution();
+        paymentExecution.setPayerId(payerId);
+     
+        Payment payment = new Payment().setId(paymentId);
+     
+        APIContext apiContext = new APIContext(CLIENT_ID, CLIENT_SECRET, MODE);
+     
+        return payment.execute(apiContext, paymentExecution);
+    }
+
 }
