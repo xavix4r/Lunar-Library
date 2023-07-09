@@ -266,7 +266,7 @@ try {
 					
 					
 
-					String bookQuery = "SELECT title, genre, price, image_url FROM books WHERE book_id = ?";
+					String bookQuery = "SELECT title, genre, price, quantity, image_url FROM books WHERE book_id = ?";
 					PreparedStatement bookStmt = conn.prepareStatement(bookQuery);
 
 					for (int i = 0; i < bookIds.size(); i++) {
@@ -280,6 +280,7 @@ try {
 					String title = bookResultSet.getString("title");
 					String genre = bookResultSet.getString("genre");
 					Double price = bookResultSet.getDouble("price");
+					int quantity = bookResultSet.getInt("quantity");
 					String imageurl = bookResultSet.getString("image_url");
 					
 					totalAmount += amount * price;
@@ -288,7 +289,7 @@ try {
 				<tr class="align-middle">
 					<th scope="row">
 						<div class="d-flex align-items-center">
-							<img src="<%=imageurl%>" class="img-fluid tableImage" />
+							<img src="<%=request.getContextPath()%><%=imageurl%>" class="img-fluid tableImage" />
 							<div class="ms-4">
 								<h3><%=title%></h3>
 								<h5 class="text-muted"><%=genre%></h5>
@@ -296,7 +297,7 @@ try {
 						</div>
 					</th>
 					<td>$<%=price%></td>
-					<td><input type="number" name="quantity" min="1" max="100"
+					<td><input type="number" name="quantity" min="1" max= <%= quantity %>
 						value="<%=amount%>" class="form-control quantityNumber" data-bookid="<%=bookId%>"></td>
 					<td>$<span class="total-amount fw-bold"><%=amount * price%></span>
 						<button class="text-decoration-none text-dark removeItem ms-2 border-0" data-bookid="<%=bookId%>">
@@ -323,8 +324,8 @@ try {
           </div>
 
           <div class="d-flex ms-auto justify-content-end flex-column w-25">
-        <h1 class = "grandTotal">Grand Total: $<%= totalAmount %></h1>
-       <a href = "../payment/checkout.jsp"> <button class="btn btn-primary mt-2" type="submit">Check Out</button></a>
+        <h1 class = "grandTotal">Total: $<%= String.format("%.2f", totalAmount) %></h1>
+       <a href = "../payment/checkout.jsp"> <button class="btn btn-primary mt-2" type="submit">Proceed To Checkout</button></a>
     </div>
 
 	</div>

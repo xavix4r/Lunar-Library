@@ -37,7 +37,7 @@ public class ExecutePaymentServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		 String paymentId = request.getParameter("paymentId");
-	        String payerId = request.getParameter("PayerID");
+	        String payerId = request.getParameter("payerId");
 	        
 	        try {
 	            PaymentServices paymentServices = new PaymentServices();

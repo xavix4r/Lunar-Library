@@ -55,33 +55,44 @@ public class PaymentServices {
     }
      
     private List<Transaction> getTransactionInformation(ArrayList<OrderDetails> allOrderDetails) {
-      
-       
-        
+    	 Details details = new Details();
+			/* details.setShipping("10.00"); */
+    	    
+    	   
+        double totalAmount = 0.00;
+       double totalTax = 0.00;
      
         Amount amount = new Amount();
         amount.setCurrency("SGD");
-        amount.setTotal("40.00");
+        amount.setDetails(details);
+		
        
      
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
 		/* transaction.setDescription(allOrderDetails.getProductName()); */
-         
+        
         ItemList itemList = new ItemList();
         List<Item> items = new ArrayList<>();
          
-        for (OrderDetails orderDetails : allOrderDetails) {
+        for (OrderDetails orderDetails : allOrderDetails) { 
+        	totalAmount += orderDetails.getTotal();
+        	totalTax += orderDetails.getTax();
             Item item = new Item(); // Create a new Item object for each iteration
             
             item.setCurrency("SGD");
             item.setName(orderDetails.getProductName());
-            item.setPrice("20.00");
+            item.setPrice(orderDetails.getTotalStr());
             item.setQuantity(orderDetails.getQuantity());
+			/* item.setTax(String.format("%.2f" ,orderDetails.getTax())); */
             
             items.add(item);
         }
-
+        details.setTax(String.format("%.2f", totalTax));
+        details.setSubtotal(String.format("%.2f", totalAmount));
+        amount.setTotal(String.format("%.2f", totalAmount + totalTax));
+        
+        
         itemList.setItems(items);
         transaction.setItemList(itemList);
      

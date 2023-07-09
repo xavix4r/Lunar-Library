@@ -19,7 +19,6 @@ ArrayList<Integer> amountToBuy = new ArrayList<>();
 ArrayList<String> bookTitles = new ArrayList<>();
 ArrayList<Double> bookPrice = new ArrayList<>();
 
-
 try {
 	Class.forName("com.mysql.jdbc.Driver");
 	String connURL = "jdbc:mysql://localhost/lunar_db?user=root&password=123456&serverTimezone=UTC";
@@ -160,7 +159,7 @@ $(document).ready(function() {
 
 					<a href="../user/login.jsp" class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">Login</button>
-					</a> <a href="signUp.jsp" class="text-white fw-light">
+					</a> <a href="../user/signUp.jsp" class="text-white fw-light">
 						<button class="btn btn-dark" type="submit">Sign Up</button>
 					</a>
 
@@ -227,7 +226,7 @@ $(document).ready(function() {
 							<tr class="align-middle border-bottom">
 								<th scope="row">
 									<div class="d-flex align-items-center">
-										<img src="<%=imageurl%>"
+										<img src="<%=request.getContextPath()%><%=imageurl%>"
 											class="img-fluid tableImage rounded-2" />
 										<div class="ms-4">
 											<h3><%=title%></h3>
@@ -238,7 +237,7 @@ $(document).ready(function() {
 								<td>$<%=price%></td>
 								<td><input type="number" name="quantity" min="1" max="100"
 									value="<%=amount%>" class="form-control quantityNumber"
-									data-bookid="<%=bookId%>"></td>
+									data-bookid="<%=bookId%>" disabled></td>
 								<td>$<span class="total-amount fw-bold"><%=amount * price%></span>
 								</td>
 							</tr>
@@ -263,54 +262,74 @@ $(document).ready(function() {
 				<p class="fw-bold pt-lg-0 pt-4 pb-2">Payment Summary</p>
 				<div class="card px-md-3 px-2 pt-4 shadow-lg rounded-3 border-0">
 
-					<div class="d-flex justify-content-between pb-3">
-						<small class="text-muted">Transaction code</small>
-						<p id="transaction-code" class="">VC123456</p>
-					</div>
 
-					<!-- <div class="d-flex justify-content-between b-bottom"> <input type="text" class="ps-2" placeholder="COUPON CODE">
-                        <div class="btn btn-primary">Apply</div>
-                    </div> -->
+
+
 					<div class="d-flex flex-column b-bottom">
-						<div class="d-flex justify-content-between py-3">
-							<small class="text-muted fw-bold">Grand Total w/o GST</small>
-							<p>
-								$<%=totalAmount%></p>
+						<div
+							class="d-flex justify-content-between py-2 align-items-center">
+							<h6 class="text-muted">Subtotal</h6>
+							<h6 class="text-muted">
+								$<%=String.format("%.2f", totalAmount)%></h6>
+
 						</div>
-
-						<%
-						double totalWithTax = totalAmount * 1.08; // Multiply by 1.08 to add 8% tax
-						DecimalFormat decimalFormat = new DecimalFormat("#0.00"); // Format the value to 2 decimal places
-						String formattedTotalWithTax = decimalFormat.format(totalWithTax);
-						%>
-
-						<div class="d-flex justify-content-between">
-							<small class="text-muted fw-bold">Grand Total incl. GST</small>
-							<p>
-								$<%=formattedTotalWithTax%></p>
-						</div>
-						
-						<%
-						
-						session.setAttribute("bookTitles", bookTitles);
-						session.setAttribute("quantity", amountToBuy);
-						session.setAttribute("total", bookPrice);
-						%>
-
-						<form action = "<%=request.getContextPath()%>/AuthorizePaymentServlet" method = "POST">
-						<input type="submit" value="Checkout" />
-</form>
-
 					</div>
 
+					<%
+					double GST = totalAmount * (8.0 / 100.0);
+					%>
+
+
+					<div class="d-flex flex-column b-bottom">
+						<div
+							class="d-flex justify-content-between py-2 align-items-center">
+							<h6 class="text-muted">Taxes (GST)</h6>
+							<h6 class="text-muted">
+								$<%=String.format("%.2f", GST)%></h6>
+						</div>
+					</div>
+
+
+					
+
+					<div class="d-flex flex-column b-bottom">
+                      <div class="d-flex justify-content-between py-2 align-items-center"><h4>Total</h4>
+                          <h5>$<%= String.format("%.2f", totalAmount + GST) %></h5>
+
+                      </div>
+
+                </div>
+
+
+
+					<%
+					session.setAttribute("bookTitles", bookTitles);
+					session.setAttribute("quantity", amountToBuy);
+					session.setAttribute("total", bookPrice);
+					%>
+
+					<form
+						action="<%=request.getContextPath()%>/AuthorizePaymentServlet"
+						method="POST">
+						<h5 class="text-center mt-3">Pay With:</h5>
+
+						<div class="d-grid gap-2">
+
+							<button class="btn btn-primary mt-2 mb-3" type="submit">
+								Proceed with PayPal</button>
+						</div>
+					</form>
 				</div>
 			</div>
 
 		</div>
-
 	</div>
 
-	</div>
+
+
+
+
+
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

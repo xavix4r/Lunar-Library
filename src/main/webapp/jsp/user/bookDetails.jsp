@@ -291,7 +291,7 @@ $(document).ready(function() {
 
 			<div
 				class="col-lg-6 d-flex justify-content-center border-3 border-end">
-				<img src="<%=image%>" class="bookDetailsImage me-lg-5">
+				<img src="<%=request.getContextPath()%><%=image%>" class="bookDetailsImage me-lg-5">
 			</div>
 
 			<div class="col-lg-6">

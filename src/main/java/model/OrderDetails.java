@@ -23,11 +23,13 @@ public class OrderDetails {
  
    
  
-   
+   public double getTotal() {
+	   return total;
+   }
      
-    public String getTotal() {
-        double roundedTotal = Math.round(total * 100.0) / 100.0;
-        return String.format("%.2f", roundedTotal);
+    public String getTotalStr() {
+       
+        return String.format("%.2f", total);
     }
 
 	public String getQuantity() {
@@ -37,5 +39,9 @@ public class OrderDetails {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	
+	public double getTax() {
+		return total * 0.08;
 	}
 }

@@ -68,9 +68,9 @@ try {
 		$(".updateProfileBtn").click(function() {
 			// Get the form data
 			var formData = {
-				fname: $("input[name=fname]").val(),
-				lname: $("input[name=lname]").val(),
-				email: $("input[name=email]").val()
+				fname : $("input[name=fname]").val(),
+				lname : $("input[name=lname]").val(),
+				email : $("input[name=email]").val()
 			};
 
 			// Check if any field is empty
@@ -78,31 +78,29 @@ try {
 				alert("Please fill in all fields");
 				return; // Stop further execution
 			}
-			
+
 			// Check if email field contains "@"
 			if (formData.email.indexOf("@") === -1) {
 				alert("Invalid email address");
 				return; // Stop further execution
 			}
 
-
 			// Execute AJAX request to update the member profile
 			$.ajax({
-				url: "updateMemberDetails.jsp",
-				type: "POST",
-				data: formData,
-				success: function(response) {
+				url : "updateMemberDetails.jsp",
+				type : "POST",
+				data : formData,
+				success : function(response) {
 					// Show success toast notification
 					alert("Profile Updated Successfully");
-					
+
 				},
-				error: function(xhr, status, error) {
+				error : function(xhr, status, error) {
 					alert("Failed to update profile");
 					// Handle the error, display error message, or perform any additional actions
 				}
 			});
 		});
-
 
 		$(".updatePasswordBtn").click(function(e) {
 
@@ -118,20 +116,20 @@ try {
 				url : "updatePassword.jsp",
 				type : "POST",
 				data : formData,
-				success: function(response) {
-			        if (response.trim() === "success") {
-			        	console.log(response)
-			            alert("Password updated successfully");
-			           
-			        } else {
-			        	console.log(response)
-			            alert("Password doesn't match");
-			        }
-			    },
-			    error: function(xhr, status, error) {
-			        alert("Failed to update password");
-			        // Handle the error, display error message, or perform any additional actions
-			    }
+				success : function(response) {
+					if (response.trim() === "success") {
+						console.log(response)
+						alert("Password updated successfully");
+
+					} else {
+						console.log(response)
+						alert("Password doesn't match");
+					}
+				},
+				error : function(xhr, status, error) {
+					alert("Failed to update password");
+					// Handle the error, display error message, or perform any additional actions
+				}
 			});
 		});
 
@@ -160,8 +158,8 @@ try {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
-							aria-current="page" href="home.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="home.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link" href="genres.jsp">Genres</a>
 						</li>
 
@@ -184,19 +182,16 @@ try {
 					if (role != null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
-					
-					<a href="wishlist.jsp" class="text-white fw-light"
-                ><button class="btn me-2" type="submit">
-                <img src="../../imgs/wishlist.png" style="width: 28px; height: auto;">
-                  <i class="fa-solid fa-book-heart fa-lg text-dark"></i></button 
-              ></a>
-					
-					<a href="cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
-              ></a>
 
-					<a href="profilePage.jsp" class="text-white fw-light">
+					<a href="wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a> <a href="profilePage.jsp" class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
@@ -273,7 +268,7 @@ try {
 						role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
 						<h1>Personal Information</h1>
 
-						<div class="row mt-3">
+						<div class="row mt-3 g-4">
 							<div class="col-lg-6">
 								<div class="card rounded-3">
 									<div class="card-body">
@@ -292,6 +287,36 @@ try {
 									</div>
 								</div>
 							</div>
+
+							<div class="col-lg-12">
+								<div class="card">
+									<div class="card-body">
+										<h5>Contact Number</h5>
+										<p class="text-muted">90599870</p>
+										<button type="button" class="btn btn-outline-primary">
+											<i class="fa-solid fa-plus"></i> Add Number
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-lg-12">
+								<div class="card">
+									<div class="card-body">
+										<h5>Shipping Address</h5>
+										<h6 class="mt-3">Address Line 1</h6>
+										<p class="text-muted">123 Thompson lane</p>
+										<h6>Address Line 2</h6>
+										<p class="text-muted">#06-123</p>
+										<h6>Postal Code</h6>
+										<p class="text-muted">060016</p>
+										<button type="button" class="btn btn-outline-primary">
+											<i class="fa-solid fa-plus"></i> Add Address
+										</button>
+									</div>
+								</div>
+							</div>
+
 						</div>
 
 					</div>
@@ -358,8 +383,8 @@ try {
 						</div>
 
 						<div class="col-lg-12">
-							<input class="btn btn-primary border-0 updatePasswordBtn" type="submit"
-								value="Update Password">
+							<input class="btn btn-primary border-0 updatePasswordBtn"
+								type="submit" value="Update Password">
 						</div>
 
 					</div>

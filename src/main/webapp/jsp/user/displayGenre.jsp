@@ -172,7 +172,7 @@ if (role == null || username == null) {
 			<div class="col-lg-4">
 				<div class="card home-card p-3">
 					<a href="bookDetails.jsp?bookId=<%=id%>"> <img
-						src="<%=imageLocation%>" class="card-img-top" alt="...">
+						src="<%=request.getContextPath()%><%=imageLocation%>" class="card-img-top" alt="...">
 						<div class="card-body">
 							<h5 class="card-title"><%=title%></h5>
 							<h5 class="card-title">

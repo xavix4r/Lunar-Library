@@ -213,7 +213,7 @@ if (searchBy == null && search == null) {
 				<div class="col-lg-4">
 					<div class="card home-card p-3">
 						<a href="bookDetails.jsp?bookId=<%=id%>"> <img
-							src="<%=image%>" class="card-img-top" alt="...">
+							src="<%=request.getContextPath()%><%=image%>" class="card-img-top" alt="...">
 							<div class="card-body">
 								<h5 class="card-title"><%=title%></h5>
 								<h5 class="card-title">
