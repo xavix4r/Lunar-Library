@@ -34,7 +34,7 @@ if (role == null || username == null) {
         // JavaScript code to display an alert message
         var error = '${param.error}';
         if (error === "1") {
-            alert("An error occurred while adding the address. Please try again.");
+            alert("An error occurred while adding the contact number. Please try again.");
         }
     </script>
 
@@ -131,24 +131,15 @@ if (role == null || username == null) {
 	<div class="container my-5 w-75">
 
 		<div class=" px-md-4 px-2 pt-3 pb-3 bg-white shadow-lg rounded-3">
-			<h1 class="mb-3">Add Address</h1>
+			<h1 class="mb-3">Add Contact Number</h1>
 
-			<form action = "<%=request.getContextPath()%>/addAddress?userId=<%=userId%>" method = "POST">
+			<form action = "<%=request.getContextPath()%>/addContactNumber?userId=<%=userId%>" method = "POST">
 				<div class="mb-3">
-					<label for="addressLine1" class="form-label">Address Line 1</label>
-					<input type="text" class="form-control" id="addressLine1" name = "addressLine1"
-						placeholder="Enter address line 1" required>
+					<label for="contact" class="form-label">Contact Number</label>
+					<input type="number" class="form-control" id="contact" name = "contact"
+						placeholder="Enter Contact Number" min = "8" max = "8">
 				</div>
-				<div class="mb-3">
-					<label for="addressLine2" class="form-label">Address Line 2</label>
-					<input type="text" class="form-control" id="addressLine2" name = "addressLine2"
-						placeholder="Enter address line 2">
-				</div>
-				<div class="mb-3">
-					<label for="postalCode" class="form-label">Postal Code</label> <input
-						type="text" class="form-control" id="postalCode" name = "postalCode"
-						placeholder="Enter postal code" required>
-				</div>
+				
 				<button type="submit" class="btn btn-primary">Add Address</button>
 			</form>
 

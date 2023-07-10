@@ -47,7 +47,7 @@ public class ExecutePaymentServlet extends HttpServlet {
 	            Transaction transaction = payment.getTransactions().get(0);
 	             
 	            request.setAttribute("payer", payerInfo);
-	            request.setAttribute("transaction", transaction);          
+	            request.setAttribute("transaction", transaction);
 	 
 	            request.getRequestDispatcher("jsp/payment/receipt.jsp").forward(request, response);
 	             

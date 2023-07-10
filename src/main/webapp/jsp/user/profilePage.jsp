@@ -328,9 +328,11 @@ try {
 										<%
 										} else {
 										%>
+										<a href="../userProfile/addContact.jsp">
 										<button type="button" class="btn btn-outline-primary">
 											<i class="fa-solid fa-plus"></i> Add Number
 										</button>
+										</a>
 										<%
 										}
 										%>
