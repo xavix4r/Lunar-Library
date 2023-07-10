@@ -2,10 +2,20 @@ package model;
 
 public class Address {
 	
+	public Address(int userid, String addressLine1, String addressLine2, int postal) {
+		super();
+		this.userid = userid;
+		this.addressLine1 = addressLine1;
+		this.addressLine2 = addressLine2;
+		this.postal = postal;
+	}
 	private int userid;
 	private String addressLine1;
 	private String addressLine2;
 	private int postal;
+	
+	
+	
 	public int getUserid() {
 		return userid;
 	}

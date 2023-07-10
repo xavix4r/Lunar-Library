@@ -2,14 +2,21 @@
 <%@page import="java.sql.*"%>
 <%
 String username = (String) session.getAttribute("sessUsername");
+int userId = (int) session.getAttribute("sessUserID");
 String fname = "";
 String lname = "";
 String email = "";
+String contactNo = "";
+String address1 = "";
+String address2 = "";
+
+int postal = 0;
 
 String role = (String) session.getAttribute("sessRole");
 
 if (role == null || username == null) {
-	response.sendRedirect("login.jsp");
+
+	response.sendRedirect("login.jsp?isValidLogin=invalidLogin");
 }
 
 try {
@@ -17,19 +24,41 @@ try {
 	String connURL = "jdbc:mysql://localhost/lunar_db?user=root&password=123456&serverTimezone=UTC";
 	Connection conn = DriverManager.getConnection(connURL);
 
-	String sqlStr = "SELECT * FROM users WHERE username=?";
-	PreparedStatement stmt = conn.prepareStatement(sqlStr);
-	stmt.setString(1, username);
+	// Retrieve user's basic information
+	String userSql = "SELECT * FROM users WHERE user_id = ?";
+	PreparedStatement userStmt = conn.prepareStatement(userSql);
+	userStmt.setInt(1, userId);
 
-	ResultSet rs = stmt.executeQuery();
+	ResultSet userRs = userStmt.executeQuery();
 
-	if (rs.next()) {
-		fname = rs.getString("fname");
-		lname = rs.getString("lname");
-		email = rs.getString("email");
+	if (userRs.next()) {
+		fname = userRs.getString("fname");
+		lname = userRs.getString("lname");
+		email = userRs.getString("email");
+	}
 
-	} else {
-		response.sendRedirect("login.jsp?isValidLogin=invalidLogin");
+	// Retrieve user's contact information
+	String contactSql = "SELECT contactNo FROM users_contact WHERE user_id = ?";
+	PreparedStatement contactStmt = conn.prepareStatement(contactSql);
+	contactStmt.setInt(1, userId);
+
+	ResultSet contactRs = contactStmt.executeQuery();
+
+	if (contactRs.next()) {
+		contactNo = contactRs.getString("contactNo");
+	}
+
+	// Retrieve user's address information
+	String addressSql = "SELECT address_line1, address_line2, postal FROM users_address WHERE user_id = ?";
+	PreparedStatement addressStmt = conn.prepareStatement(addressSql);
+	addressStmt.setInt(1, userId);
+
+	ResultSet addressRs = addressStmt.executeQuery();
+
+	if (addressRs.next()) {
+		address1 = addressRs.getString("address_line1");
+		address2 = addressRs.getString("address_line2");
+		postal = addressRs.getInt("postal");
 	}
 
 	conn.close();
@@ -292,30 +321,54 @@ try {
 								<div class="card">
 									<div class="card-body">
 										<h5>Contact Number</h5>
-										<p class="text-muted">90599870</p>
+										<%
+										if (contactNo != null && !contactNo.isEmpty()) {
+										%>
+										<p class="text-muted"><%=contactNo%></p>
+										<%
+										} else {
+										%>
 										<button type="button" class="btn btn-outline-primary">
 											<i class="fa-solid fa-plus"></i> Add Number
 										</button>
+										<%
+										}
+										%>
 									</div>
 								</div>
 							</div>
+
+
 
 							<div class="col-lg-12">
 								<div class="card">
 									<div class="card-body">
 										<h5>Shipping Address</h5>
+										<%
+										if (address1 != null && !address1.isEmpty()) {
+										%>
 										<h6 class="mt-3">Address Line 1</h6>
-										<p class="text-muted">123 Thompson lane</p>
+										<p class="text-muted"><%=address1%></p>
 										<h6>Address Line 2</h6>
-										<p class="text-muted">#06-123</p>
+										<p class="text-muted"><%=address2%></p>
 										<h6>Postal Code</h6>
-										<p class="text-muted">060016</p>
-										<button type="button" class="btn btn-outline-primary">
-											<i class="fa-solid fa-plus"></i> Add Address
-										</button>
+										<p class="text-muted"><%=postal%></p>
+										<%
+										} else {
+										%>
+										<a href="../userProfile/addAddress.jsp">
+											<button type="button" class="btn btn-outline-primary">
+												<i class="fa-solid fa-plus"></i> Add Address
+											</button>
+										</a>
+										<%
+										}
+										%>
 									</div>
 								</div>
 							</div>
+
+
 
 						</div>
 

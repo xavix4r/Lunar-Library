@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import model.DBConnection;
 
-public class UserDAO {
+public class AddressDAO {
 	
 	public int insertAddress(int userid, String address_line1, String address_line2, int postal) throws SQLException, ClassNotFoundException {
 		Connection conn = null;

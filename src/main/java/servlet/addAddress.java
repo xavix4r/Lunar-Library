@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.UserDAO;
+import model.AddressDAO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,7 +54,7 @@ public class addAddress extends HttpServlet {
 		int postalCode = Integer.parseInt(request.getParameter("postalCode"));
 
 		// Create a UserDAO instance
-		UserDAO userDAO = new UserDAO();
+		AddressDAO userDAO = new AddressDAO();
 
 		try {
 			// Insert the new address into the database
@@ -62,19 +62,19 @@ public class addAddress extends HttpServlet {
 
 			if (numRowsAffected > 0) {
 				// Address insertion successful
-				response.sendRedirect("success.jsp");
+				response.sendRedirect("jsp/user/profilePage.jsp");
 			} else {
 				// Address insertion failed
-				response.sendRedirect("failure.jsp");
+				response.sendRedirect("jsp/userProfile/addAddress.jsp?error=1");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			// Handle the SQL exception
-			response.sendRedirect("failure.jsp");
+			response.sendRedirect("jsp/userProfile/addAddress.jsp?error=1");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			// Handle the class not found exception
-			response.sendRedirect("failure.jsp");
+			response.sendRedirect("jsp/userProfile/addAddress.jsp?error=1");
 		}
 	}
 
