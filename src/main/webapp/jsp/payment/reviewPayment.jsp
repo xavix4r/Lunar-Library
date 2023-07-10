@@ -8,6 +8,12 @@ String username = (String) session.getAttribute("sessUsername");
 String role = (String) session.getAttribute("sessRole");
 int userId = (int) session.getAttribute("sessUserID");
 
+String address1 = "";
+String address2 = "";
+
+int postal = 0;
+
+
 if (role == null || username == null) {
 	response.sendRedirect(request.getContextPath() + "/user/login.jsp");
 }
@@ -38,8 +44,23 @@ try {
 		amountToBuy.add(amount);
 
 	}
+	
+	String addressSql = "SELECT address_line1, address_line2, postal FROM users_address WHERE user_id = ?";
+	PreparedStatement addressStmt = conn.prepareStatement(addressSql);
+	addressStmt.setInt(1, userId);
+
+	ResultSet addressRs = addressStmt.executeQuery();
+
+	if (addressRs.next()) {
+		address1 = addressRs.getString("address_line1");
+		address2 = addressRs.getString("address_line2");
+		postal = addressRs.getInt("postal");
+	}
+	
 	cartResultSet.close();
 	cartStmt.close();
+	addressRs.close();
+	addressStmt.close();
 	conn.close();
 } catch (Exception e) {
 	e.printStackTrace();
@@ -188,6 +209,13 @@ try {
 						value="${payer.lastName}" disabled>
 
 					<h3 class="mt-4">Shipping Address</h3>
+					
+					<div class="form-check mt-3">
+                    <input class="form-check-input" type="radio" name="shipping" id="paypalShipping" checked>
+                    <label class="form-check-label fw-bold" for="paypalShipping">
+                      Use paypal shipping address
+                    </label>
+                  </div>
 
 					<label for="address1" class="form-label mt-3">Address Line
 						1:</label> <input type="text" class="form-control" id="address1"
@@ -198,6 +226,22 @@ try {
 						for="postal" class="form-label mt-3">Postal Code</label> <input
 						type="number" class="form-control" id="postal"
 						value="${shippingAddress.postalCode}" disabled>
+						
+						<div class="form-check mt-4">
+                    <input class="form-check-input" type="radio" name="shipping" id="profileShipping">
+                    <label class="form-check-label fw-bold" for="profileShipping">
+                     Use profile shipping address
+                    </label>
+                  </div>
+
+                   <label for="address1" class="form-label mt-3">Address Line 1:</label>
+                  <input type="text" class="form-control" id="address1" value="<%= address1 %>" disabled>
+
+                  <label for="address2" class="form-label mt-3">Address Line 2:</label>
+                  <input type="text" class="form-control" id="address2" value="<%= address2 %>" disabled>
+
+                  <label for="postal" class="form-label mt-3">Postal Code</label>
+                  <input type="number" class="form-control" id="postal" value="<%= postal %>" disabled>
 
 				</div>
 

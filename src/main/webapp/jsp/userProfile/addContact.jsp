@@ -140,7 +140,7 @@ if (role == null || username == null) {
 						placeholder="Enter Contact Number" min = "8" max = "8">
 				</div>
 				
-				<button type="submit" class="btn btn-primary">Add Address</button>
+				<button type="submit" class="btn btn-primary">Add Number</button>
 			</form>
 
 		</div>
