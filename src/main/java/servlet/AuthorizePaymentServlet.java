@@ -46,6 +46,7 @@ public class AuthorizePaymentServlet extends HttpServlet {
 		ArrayList<String> bookTitles = (ArrayList<String>) session.getAttribute("bookTitles");
 		ArrayList<Integer> amountToBuy = (ArrayList<Integer>) session.getAttribute("quantity");
 		ArrayList<Double> bookPrice = (ArrayList<Double>) session.getAttribute("total");
+		ArrayList<Integer> bookIds = (ArrayList<Integer>) session.getAttribute("bookIds");
 
 		ArrayList<OrderDetails> allOrderDetails = new ArrayList<>();
 
@@ -53,14 +54,14 @@ public class AuthorizePaymentServlet extends HttpServlet {
 		    String title = bookTitles.get(i);
 		    int quantity = amountToBuy.get(i);
 		    double price = bookPrice.get(i);
-
-		    OrderDetails orderDetails = new OrderDetails(title, String.valueOf(quantity), String.valueOf(price));
+		    int bookid = bookIds.get(i);
+		    OrderDetails orderDetails = new OrderDetails(bookid, title, String.valueOf(quantity), String.valueOf(price));
 		    allOrderDetails.add(orderDetails);
 		}
 
 
 
-	
+		session.setAttribute("allOrderDetails", allOrderDetails);
 		
         try {
             PaymentServices paymentServices = new PaymentServices();

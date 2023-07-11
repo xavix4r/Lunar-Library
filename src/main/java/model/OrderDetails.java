@@ -4,14 +4,14 @@ package model;
 public class OrderDetails {
     private String productName;
     
-    
+    private int bookId;
     private Double total;
 	private int quantity;
  
-    public OrderDetails(String productName, String quantity,
+    public OrderDetails(int bookId, String productName, String quantity,
             String total) {
         this.productName = productName;
-        
+        this.bookId = bookId;
         this.quantity = Integer.parseInt(quantity);
         this.total = Double.parseDouble(total);
         
@@ -21,7 +21,9 @@ public class OrderDetails {
         return productName;
     }
  
-   
+   public int getbookId() {
+	   return bookId;
+   }
  
    public double getTotal() {
 	   return total;
@@ -35,6 +37,11 @@ public class OrderDetails {
 	public String getQuantity() {
 		
 		return String.valueOf(quantity);
+	}
+	
+public int getQuantityInt() {
+		
+		return quantity;
 	}
 
 	public void setQuantity(int quantity) {

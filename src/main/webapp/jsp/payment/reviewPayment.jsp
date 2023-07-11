@@ -287,7 +287,7 @@ try {
 
 
 					<form
-						action="ExecutePaymentServlet?paymentId=${param.paymentId}&payerId=${param.PayerID}"
+						action="ExecutePaymentServlet?paymentId=${param.paymentId}&payerId=${param.PayerID}&total=${transaction.amount.total}"
 						method="post">
 						<div class="d-grid gap-2">
 

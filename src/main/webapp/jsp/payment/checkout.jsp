@@ -303,6 +303,7 @@ $(document).ready(function() {
 
 
 					<%
+					session.setAttribute("bookIds", bookIds);
 					session.setAttribute("bookTitles", bookTitles);
 					session.setAttribute("quantity", amountToBuy);
 					session.setAttribute("total", bookPrice);
