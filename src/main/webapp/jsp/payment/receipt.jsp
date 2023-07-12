@@ -46,8 +46,9 @@
 					class="d-flex flex-column justify-content-center align-items-center ms-3">
 
 					<h4>Paid: $40.00 SGD</h4>
+					<a href = "../user/viewOrders.jsp">
 					<button class="btn btn-primary mt-3 w-100" type="submit">View
-						Order</button>
+						Order</button></a>
 				</div>
 			</div>
 		</div>
