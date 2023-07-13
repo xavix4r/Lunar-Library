@@ -23,4 +23,23 @@ public class ContactNumberDAO {
 		}
 		return nrow;
 	}
+	
+	public int updateContactNumber(int userid, String contactNo) throws SQLException, ClassNotFoundException {
+		Connection conn = null;
+		
+		int nrow =  0;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String sqlStr = "UPDATE users_contact SET contactNo = ? WHERE user_id = ?";
+			PreparedStatement pstmt = conn.prepareStatement(sqlStr);
+			pstmt.setString(1, contactNo);
+			pstmt.setInt(2, userid);
+			
+			nrow = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nrow;
+	}
 }

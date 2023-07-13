@@ -68,6 +68,8 @@ try {
 %>
 
 
+
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -90,6 +92,28 @@ try {
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Profile Page</title>
+
+<%
+String successParam = request.getParameter("success");
+String errorParam = request.getParameter("error");
+
+if (successParam != null && successParam.equals("1")) {
+	// Show success alert
+%>
+<script>
+	alert("Address updated successfully!");
+</script>
+<%
+} else if (errorParam != null && errorParam.equals("1")) {
+// Show error alert
+%>
+<script>
+	alert("Error updating address. Please try again.");
+</script>
+<%
+}
+%>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -273,6 +297,7 @@ try {
 					<div class="d-flex align-items-start">
 						<div class="nav flex-column nav-pills me-3" id="v-pills-tab"
 							role="tablist" aria-orientation="vertical">
+
 							<button class="nav-link active" id="v-pills-profile-tab"
 								data-bs-toggle="pill" data-bs-target="#v-pills-profile"
 								type="button" role="tab" aria-controls="v-pills-profile"
@@ -286,6 +311,16 @@ try {
 								data-bs-toggle="pill" data-bs-target="#v-pills-password"
 								type="button" role="tab" aria-controls="v-pills-password"
 								aria-selected="false">Change Password</button>
+
+							<button class="nav-link" id="v-pills-address-tab"
+								data-bs-toggle="pill" data-bs-target="#v-pills-address"
+								type="button" role="tab" aria-controls="v-pills-address"
+								aria-selected="false">Edit Address</button>
+
+							<button class="nav-link" id="v-pills-number-tab"
+								data-bs-toggle="pill" data-bs-target="#v-pills-number"
+								type="button" role="tab" aria-controls="v-pills-number"
+								aria-selected="false">Edit Contact Number</button>
 						</div>
 					</div>
 				</div>
@@ -329,9 +364,9 @@ try {
 										} else {
 										%>
 										<a href="../userProfile/addContact.jsp">
-										<button type="button" class="btn btn-outline-primary">
-											<i class="fa-solid fa-plus"></i> Add Number
-										</button>
+											<button type="button" class="btn btn-outline-primary">
+												<i class="fa-solid fa-plus"></i> Add Number
+											</button>
 										</a>
 										<%
 										}
@@ -375,6 +410,8 @@ try {
 						</div>
 
 					</div>
+
+
 					<div class="tab-pane fade" id="v-pills-edit" role="tabpanel"
 						aria-labelledby="v-pills-profile-tab" tabindex="0">
 						<h1>Edit Profile</h1>
@@ -394,12 +431,45 @@ try {
 							<div class="col-lg-12">
 								<label for="email" class="form-label">Email</label> <input
 									type="email" name="email" class="form-control"
-									placeholder="Email" aria-label="Last name">
+									placeholder="Last name" aria-label="Last name">
 							</div>
 
 							<div class="col-lg-12">
-								<input class="btn btn-primary border-0 updateProfileBtn"
-									type="submit" value="Save Changes">
+								<input class="btn btn-primary border-0 " type="submit"
+									value="Save Changes">
+							</div>
+
+						</div>
+					</div>
+
+					<div class="tab-pane fade" id="v-pills-password" role="tabpanel"
+						aria-labelledby="v-pills-password-tab" tabindex="0">
+						<h1>Change Password</h1>
+
+
+						<div class="row mt-3 g-3">
+							<div class="col-lg-12">
+								<label for="oldpw" class="form-label">Old Password</label> <input
+									type="password" name="oldpw" class="form-control"
+									placeholder="Old Password" aria-label="Last name" required>
+							</div>
+
+							<div class="col-lg-12">
+								<label for="newpw" class="form-label">New Password</label> <input
+									type="password" name="newpw" class="form-control"
+									placeholder="New Password" aria-label="Last name" required>
+							</div>
+
+							<div class="col-lg-12">
+								<label for="newpwconfirm" class="form-label">Re-enter
+									new password</label> <input type="password" name="newpwconfirm"
+									class="form-control" placeholder="Re enter new password"
+									aria-label="Last name" required>
+							</div>
+
+							<div class="col-lg-12">
+								<input class="btn btn-primary border-0 updatePasswordBtn"
+									type="submit" value="Update Password">
 							</div>
 
 						</div>
@@ -407,44 +477,133 @@ try {
 					</div>
 
 
-
-
 				</div>
 
 
-				<div class="tab-pane fade" id="v-pills-password" role="tabpanel"
-					aria-labelledby="v-pills-settings-tab" tabindex="0">
-					<h1>Change Password</h1>
+
+				<div class="tab-pane fade" id="v-pills-address" role="tabpanel"
+					aria-labelledby="v-pills-address-tab" tabindex="0">
+
+					<h1>Edit Address</h1>
+
+					<form
+						action="<%=request.getContextPath()%>/updateAddress?userId=<%=userId%>"
+						method="POST">
+						<div class="row mt-3 g-3">
+
+							<div class="col-lg-6">
+								<label for="addressLine1" class="form-label">Address
+									Line 1</label> <input type="text" name="addressLine1"
+									class="form-control" placeholder="Enter address line 1"
+									aria-label="addressLine1" required>
+							</div>
+							<div class="col-lg-6">
+								<label for="addressLine2" class="form-label">Address
+									Line 2</label> <input type="text" name="addressLine2"
+									class="form-control" placeholder="Enter address line 2"
+									aria-label="addressLine2">
+							</div>
+
+							<div class="col-lg-6">
+								<label for="postalCode" class="form-label">Postal</label> <input
+									type="text" name="postalCode" class="form-control"
+									placeholder="Enter postal code" aria-label="postalCode"
+									required>
+							</div>
+
+							<div class="col-lg-12">
+								<button class="btn btn-primary border-0 " type="submit">Update
+									Address</button>
+							</div>
 
 
-					<div class="row mt-3 g-3">
-						<div class="col-lg-12">
-							<label for="oldpw" class="form-label">Old Password</label> <input
-								type="password" name="oldpw" class="form-control"
-								placeholder="Old Password" aria-label="Last name">
 						</div>
-
-						<div class="col-lg-12">
-							<label for="newpw" class="form-label">New Password</label> <input
-								type="password" name="newpw" class="form-control"
-								placeholder="New Password" aria-label="Last name">
-						</div>
-
-						<div class="col-lg-12">
-							<label for="newpwconfirm" class="form-label">Re-enter new
-								password</label> <input type="password" name="newpwconfirm"
-								class="form-control" placeholder="Re enter new password"
-								aria-label="Last name">
-						</div>
-
-						<div class="col-lg-12">
-							<input class="btn btn-primary border-0 updatePasswordBtn"
-								type="submit" value="Update Password">
-						</div>
-
-					</div>
+					</form>
 
 				</div>
+				
+				<div class="tab-pane fade" id="v-pills-address" role="tabpanel"
+					aria-labelledby="v-pills-address-tab" tabindex="0">
+
+					<h1>Edit Address</h1>
+
+					<form
+						action="<%=request.getContextPath()%>/updateAddress?userId=<%=userId%>"
+						method="POST">
+						<div class="row mt-3 g-3">
+
+							<div class="col-lg-6">
+								<label for="addressLine1" class="form-label">Address
+									Line 1</label> <input type="text" name="addressLine1"
+									class="form-control" placeholder="Enter address line 1"
+									aria-label="addressLine1" required>
+							</div>
+							<div class="col-lg-6">
+								<label for="addressLine2" class="form-label">Address
+									Line 2</label> <input type="text" name="addressLine2"
+									class="form-control" placeholder="Enter address line 2"
+									aria-label="addressLine2">
+							</div>
+
+							<div class="col-lg-6">
+								<label for="postalCode" class="form-label">Postal</label> <input
+									type="text" name="postalCode" class="form-control"
+									placeholder="Enter postal code" aria-label="postalCode"
+									required>
+							</div>
+
+							<div class="col-lg-12">
+								<button class="btn btn-primary border-0 " type="submit">Update
+									Address</button>
+							</div>
+
+
+						</div>
+					</form>
+
+				</div>
+				
+				<div class="tab-pane fade" id="v-pills-address" role="tabpanel"
+					aria-labelledby="v-pills-address-tab" tabindex="0">
+
+					<h1>Edit Contact Number</h1>
+
+					<form
+						action="<%=request.getContextPath()%>/updateAddress?userId=<%=userId%>"
+						method="POST">
+						<div class="row mt-3 g-3">
+
+							<div class="col-lg-6">
+								<label for="addressLine1" class="form-label">Address
+									Line 1</label> <input type="text" name="addressLine1"
+									class="form-control" placeholder="Enter address line 1"
+									aria-label="addressLine1" required>
+							</div>
+							<div class="col-lg-6">
+								<label for="addressLine2" class="form-label">Address
+									Line 2</label> <input type="text" name="addressLine2"
+									class="form-control" placeholder="Enter address line 2"
+									aria-label="addressLine2">
+							</div>
+
+							<div class="col-lg-6">
+								<label for="postalCode" class="form-label">Postal</label> <input
+									type="text" name="postalCode" class="form-control"
+									placeholder="Enter postal code" aria-label="postalCode"
+									required>
+							</div>
+
+							<div class="col-lg-12">
+								<button class="btn btn-primary border-0 " type="submit">Update
+									Address</button>
+							</div>
+
+
+						</div>
+					</form>
+
+				</div>
+
 			</div>
 		</div>
 	</div>
