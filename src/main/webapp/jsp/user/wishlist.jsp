@@ -180,11 +180,19 @@ try {
                 ><button class="btn me-4" type="submit">
                   <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
               ></a>
-					<a href="profilePage.jsp" class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
-							<i class="fa-solid fa-user me-2"></i><%=username%>
-						</button>
-					</a>
+					<div class="dropdown me-2">
+						<a href="#" class="text-white fw-light dropdown-toggle"
+							role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							<button class="btn btn-success me-4" type="button">
+								<i class="fa-solid fa-user me-2"></i><%=username%>
+							</button>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item" href="viewOrders.jsp">Orders</a></li>
+						</ul>
+					</div>
 
 					<form action="logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>

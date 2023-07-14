@@ -1,7 +1,7 @@
 
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.sql.*"%>
-<%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.text.DecimalFormat"%>
 
 <%
 String username = (String) session.getAttribute("sessUsername");
@@ -12,10 +12,7 @@ if (role == null || username == null) {
 	response.sendRedirect("login.jsp");
 }
 
-
 double totalAmount = 0;
-
-
 
 ArrayList<Integer> bookIds = new ArrayList<>();
 ArrayList<Integer> amountToBuy = new ArrayList<>();
@@ -37,7 +34,7 @@ try {
 		int amount = cartResultSet.getInt("quantity");
 		bookIds.add(bookId);
 		amountToBuy.add(amount);
-		
+
 	}
 	cartResultSet.close();
 	cartStmt.close();
@@ -73,77 +70,98 @@ try {
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+	$(document)
+			.ready(
+					function() {
+						$(".removeItem").click(function() {
+							var bookId = $(this).data("bookid");
 
-	$(document).ready(function() {
-		$(".removeItem").click(function() {
-			var bookId = $(this).data("bookid");
+							$.ajax({
+								url : "removeCart.jsp",
+								type : "POST",
+								data : {
+									bookId : bookId
+								},
+								success : function(response) {
+									// Update the cart page or perform any necessary actions
+									// For example, you can reload the cart page to reflect the updated cart
+									location.reload();
+								},
+								error : function() {
+									alert("Failed to remove item from cart.");
+								}
+							});
+						});
 
-			$.ajax({
-				url : "removeCart.jsp",
-				type : "POST",
-				 data: { bookId: bookId },
-				success : function(response) {
-					// Update the cart page or perform any necessary actions
-					// For example, you can reload the cart page to reflect the updated cart
-					location.reload();
-				},
-				error : function() {
-					alert("Failed to remove item from cart.");
-				}
-			});
-		});
-		
-		$(".quantityNumber").on("change", function() {
-	        // Get the current quantity value
-	        var quantity = $(this).val();
-	       
-	        
-	        // Get the book ID
-	        var bookId = $(this).data("bookid");
-	       
-	        // Get the price of the book
-	        var price = parseFloat($(this).closest("tr").find("td:nth-child(2)").text().replace("$", ""));
-	        
-	        // Calculate the new total amount
-	        var total = (quantity * price).toFixed(2);
-	        
-	        // Update the total amount text
-	        $(this).closest("tr").find(".total-amount").text(total);
-	        
-	        // Send AJAX request to update the cart in the database
-	        $.ajax({
-	            url: "updateCart.jsp",
-	            type: "POST",
-	            data: { bookId: bookId, amountToBuy: quantity },
-	            success: function(response) {
-	            	updateGrandTotal();
-	            },
-	            error: function(xhr, status, error) {
-	            	alert("Failed to remove item from cart.");
-	            }
-	        });
-	    });
-		
-		function updateGrandTotal() {
-		    var grandTotal = 0;
-		    
-		    // Iterate over all the rows in the table
-		    $(".quantityNumber").each(function() {
-		        var quantity = $(this).val();
-		        var price = parseFloat($(this).closest("tr").find("td:nth-child(2)").text().replace("$", ""));
-		        
-		        // Calculate the total amount for each row
-		        var total = quantity * price;
-		        
-		        // Add the total to the grand total
-		        grandTotal += total;
-		    });
-		    
-		    // Update the grand total text
-		    $(".grandTotal").text("Grand Total: $" + grandTotal.toFixed(2));
-		}
-		
-	});
+						$(".quantityNumber")
+								.on(
+										"change",
+										function() {
+											// Get the current quantity value
+											var quantity = $(this).val();
+
+											// Get the book ID
+											var bookId = $(this).data("bookid");
+
+											// Get the price of the book
+											var price = parseFloat($(this)
+													.closest("tr").find(
+															"td:nth-child(2)")
+													.text().replace("$", ""));
+
+											// Calculate the new total amount
+											var total = (quantity * price)
+													.toFixed(2);
+
+											// Update the total amount text
+											$(this).closest("tr").find(
+													".total-amount")
+													.text(total);
+
+											// Send AJAX request to update the cart in the database
+											$
+													.ajax({
+														url : "updateCart.jsp",
+														type : "POST",
+														data : {
+															bookId : bookId,
+															amountToBuy : quantity
+														},
+														success : function(
+																response) {
+															updateGrandTotal();
+														},
+														error : function(xhr,
+																status, error) {
+															alert("Failed to remove item from cart.");
+														}
+													});
+										});
+
+						function updateGrandTotal() {
+							var grandTotal = 0;
+
+							// Iterate over all the rows in the table
+							$(".quantityNumber").each(
+									function() {
+										var quantity = $(this).val();
+										var price = parseFloat($(this).closest(
+												"tr").find("td:nth-child(2)")
+												.text().replace("$", ""));
+
+										// Calculate the total amount for each row
+										var total = quantity * price;
+
+										// Add the total to the grand total
+										grandTotal += total;
+									});
+
+							// Update the grand total text
+							$(".grandTotal").text(
+									"Grand Total: $" + grandTotal.toFixed(2));
+						}
+
+					});
 </script>
 
 
@@ -169,8 +187,8 @@ try {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
-							aria-current="page" href="home.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="home.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link" href="genres.jsp">Genres</a>
 						</li>
 
@@ -193,23 +211,30 @@ try {
 					if (role != null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
-					
-					<a href="wishlist.jsp" class="text-white fw-light"
-                ><button class="btn me-2" type="submit">
-                <img src="../../imgs/wishlist.png" style="width: 28px; height: auto;">
-                  <i class="fa-solid fa-book-heart fa-lg text-dark"></i></button 
-              ></a>
-					
-					<a href="cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
-              ></a>
 
-					<a href="profilePage.jsp" class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
-							<i class="fa-solid fa-user me-2"></i><%=username%>
-						</button>
-					</a>
+					<a href="wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a>
+
+					<div class="dropdown me-2">
+						<a href="#" class="text-white fw-light dropdown-toggle"
+							role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							<button class="btn btn-success me-4" type="button">
+								<i class="fa-solid fa-user me-2"></i><%=username%>
+							</button>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item" href="viewOrders.jsp">Orders</a></li>
+						</ul>
+					</div>
 
 					<form action="logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
@@ -239,9 +264,7 @@ try {
 	</nav>
 
 	<div class="container my-5">
-		<h1 class="text-center pt-4">
-			My Shopping Cart
-		</h1>
+		<h1 class="text-center pt-4">My Shopping Cart</h1>
 
 		<table class="table mt-3">
 			<thead>
@@ -263,8 +286,6 @@ try {
 					Class.forName("com.mysql.jdbc.Driver");
 					String connURL = "jdbc:mysql://localhost/lunar_db?user=root&password=123456&serverTimezone=UTC";
 					Connection conn = DriverManager.getConnection(connURL);
-					
-					
 
 					String bookQuery = "SELECT title, genre, price, quantity, image_url FROM books WHERE book_id = ?";
 					PreparedStatement bookStmt = conn.prepareStatement(bookQuery);
@@ -282,14 +303,15 @@ try {
 					Double price = bookResultSet.getDouble("price");
 					int quantity = bookResultSet.getInt("quantity");
 					String imageurl = bookResultSet.getString("image_url");
-					
+
 					totalAmount += amount * price;
 				%>
 
 				<tr class="align-middle">
 					<th scope="row">
 						<div class="d-flex align-items-center">
-							<img src="<%=request.getContextPath()%><%=imageurl%>" class="img-fluid tableImage" />
+							<img src="<%=request.getContextPath()%><%=imageurl%>"
+								class="img-fluid tableImage" />
 							<div class="ms-4">
 								<h3><%=title%></h3>
 								<h5 class="text-muted"><%=genre%></h5>
@@ -297,10 +319,13 @@ try {
 						</div>
 					</th>
 					<td>$<%=price%></td>
-					<td><input type="number" name="quantity" min="1" max= <%= quantity %>
-						value="<%=amount%>" class="form-control quantityNumber" data-bookid="<%=bookId%>"></td>
+					<td><input type="number" name="quantity" min="1"
+						max=<%=quantity%> value="<%=amount%>"
+						class="form-control quantityNumber" data-bookid="<%=bookId%>"></td>
 					<td>$<span class="total-amount fw-bold"><%=amount * price%></span>
-						<button class="text-decoration-none text-dark removeItem ms-2 border-0" data-bookid="<%=bookId%>">
+						<button
+							class="text-decoration-none text-dark removeItem ms-2 border-0"
+							data-bookid="<%=bookId%>">
 							<i class="fa-regular fa-x fa-xs"></i>
 						</button></td>
 				</tr>
@@ -320,13 +345,17 @@ try {
 
 
 		<div class=" d-flex justify-content-center">
-            <a href="home.jsp">Keep Shopping</a>
-          </div>
+			<a href="home.jsp">Keep Shopping</a>
+		</div>
 
-          <div class="d-flex ms-auto justify-content-end flex-column w-25">
-        <h1 class = "grandTotal">Total: $<%= String.format("%.2f", totalAmount) %></h1>
-       <a href = "../payment/checkout.jsp"> <button class="btn btn-primary mt-2" type="submit">Proceed To Checkout</button></a>
-    </div>
+		<div class="d-flex ms-auto justify-content-end flex-column w-25">
+			<h1 class="grandTotal">
+				Total: $<%=String.format("%.2f", totalAmount)%></h1>
+			<a href="../payment/checkout.jsp">
+				<button class="btn btn-primary mt-2" type="submit">Proceed
+					To Checkout</button>
+			</a>
+		</div>
 
 	</div>
 

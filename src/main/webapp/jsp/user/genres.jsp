@@ -56,10 +56,10 @@ if (role == null || username == null) {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
-							aria-current="page" href="home.jsp">Home</a></li>
-						<li class="nav-item"><a class="nav-link active" href="genres.jsp">Genres</a>
-						</li>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="home.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link active"
+							href="genres.jsp">Genres</a></li>
 
 						<%
 						if (role != null) {
@@ -81,20 +81,28 @@ if (role == null || username == null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
 
-					<a href="wishlist.jsp" class="text-white fw-light"
-                ><button class="btn me-2" type="submit">
-                <img src="../../imgs/wishlist.png" style="width: 28px; height: auto;">
-                  <i class="fa-solid fa-book-heart fa-lg text-dark"></i></button 
-              ></a>
-					
-					<a href="cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
-              ></a> <a href="profilePage.jsp" class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
-							<i class="fa-solid fa-user me-2"></i><%=username%>
-						</button>
-					</a>
+					<a href="wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a>
+					<div class="dropdown me-2">
+						<a href="#" class="text-white fw-light dropdown-toggle"
+							role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							<button class="btn btn-success me-4" type="button">
+								<i class="fa-solid fa-user me-2"></i><%=username%>
+							</button>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item" href="viewOrders.jsp">Orders</a></li>
+						</ul>
+					</div>
 
 					<form action="logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
@@ -131,8 +139,8 @@ if (role == null || username == null) {
 				<div
 					class="card genre-card bg-dark text-white overflow-hidden border-3">
 					<a href="displayGenre.jsp?genre=Fantasy"> <img
-						src="../../imgs/fantasy3.jpg" class="card-img genre-image img-fluid"
-						alt="...">
+						src="../../imgs/fantasy3.jpg"
+						class="card-img genre-image img-fluid" alt="...">
 						<div
 							class="card-img-overlay d-flex justify-content-center align-items-center">
 							<h1 class="card-title text-white">Fantasy</h1>
@@ -145,8 +153,8 @@ if (role == null || username == null) {
 				<div
 					class="card genre-card bg-dark text-white overflow-hidden border-3">
 					<a href="displayGenre.jsp?genre=Mystery"> <img
-						src="../../imgs/mystery.jpg" class="card-img genre-image img-fluid"
-						alt="...">
+						src="../../imgs/mystery.jpg"
+						class="card-img genre-image img-fluid" alt="...">
 						<div
 							class="card-img-overlay d-flex justify-content-center align-items-center">
 							<h1 class="card-title text-white">Mystery</h1>

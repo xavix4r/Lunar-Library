@@ -98,17 +98,31 @@ String successParam = request.getParameter("success");
 String errorParam = request.getParameter("error");
 
 if (successParam != null && successParam.equals("1")) {
-	// Show success alert
+	// Show success alert for address update
 %>
 <script>
 	alert("Address updated successfully!");
 </script>
 <%
+} else if (successParam != null && successParam.equals("2")) {
+// Show success alert for contact number update
+%>
+<script>
+	alert("Contact number updated successfully!");
+</script>
+<%
 } else if (errorParam != null && errorParam.equals("1")) {
-// Show error alert
+// Show error alert for address update
 %>
 <script>
 	alert("Error updating address. Please try again.");
+</script>
+<%
+} else if (errorParam != null && errorParam.equals("2")) {
+// Show error alert for contact number update
+%>
+<script>
+	alert("Error updating contact number. Please try again.");
 </script>
 <%
 }
@@ -244,11 +258,20 @@ if (successParam != null && successParam.equals("1")) {
 						</button></a> <a href="cart.jsp" class="text-white fw-light"><button
 							class="btn me-4" type="submit">
 							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
-						</button></a> <a href="profilePage.jsp" class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
-							<i class="fa-solid fa-user me-2"></i><%=username%>
-						</button>
-					</a>
+						</button></a>
+					<div class="dropdown me-2">
+						<a href="#" class="text-white fw-light dropdown-toggle"
+							role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							<button class="btn btn-success me-4" type="button">
+								<i class="fa-solid fa-user me-2"></i><%=username%>
+							</button>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item" href="viewOrders.jsp">Orders</a></li>
+						</ul>
+					</div>
 
 					<form action="logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
@@ -477,142 +500,89 @@ if (successParam != null && successParam.equals("1")) {
 					</div>
 
 
-				</div>
 
 
 
-				<div class="tab-pane fade" id="v-pills-address" role="tabpanel"
-					aria-labelledby="v-pills-address-tab" tabindex="0">
 
-					<h1>Edit Address</h1>
+					<div class="tab-pane fade" id="v-pills-address" role="tabpanel"
+						aria-labelledby="v-pills-address-tab" tabindex="0">
 
-					<form
-						action="<%=request.getContextPath()%>/updateAddress?userId=<%=userId%>"
-						method="POST">
-						<div class="row mt-3 g-3">
+						<h1>Edit Address</h1>
 
-							<div class="col-lg-6">
-								<label for="addressLine1" class="form-label">Address
-									Line 1</label> <input type="text" name="addressLine1"
-									class="form-control" placeholder="Enter address line 1"
-									aria-label="addressLine1" required>
+						<form
+							action="<%=request.getContextPath()%>/updateAddress?userId=<%=userId%>"
+							method="POST">
+							<div class="row mt-3 g-3">
+
+								<div class="col-lg-6">
+									<label for="addressLine1" class="form-label">Address
+										Line 1</label> <input type="text" name="addressLine1"
+										class="form-control" placeholder="Enter address line 1"
+										aria-label="addressLine1" required>
+								</div>
+								<div class="col-lg-6">
+									<label for="addressLine2" class="form-label">Address
+										Line 2</label> <input type="text" name="addressLine2"
+										class="form-control" placeholder="Enter address line 2"
+										aria-label="addressLine2">
+								</div>
+
+								<div class="col-lg-6">
+									<label for="postalCode" class="form-label">Postal</label> <input
+										type="text" name="postalCode" class="form-control"
+										placeholder="Enter postal code" aria-label="postalCode"
+										required>
+								</div>
+
+								<div class="col-lg-12">
+									<button class="btn btn-primary border-0 " type="submit">Update
+										Address</button>
+								</div>
+
+
 							</div>
-							<div class="col-lg-6">
-								<label for="addressLine2" class="form-label">Address
-									Line 2</label> <input type="text" name="addressLine2"
-									class="form-control" placeholder="Enter address line 2"
-									aria-label="addressLine2">
+						</form>
+
+					</div>
+
+					<div class="tab-pane fade" id="v-pills-number" role="tabpanel"
+						aria-labelledby="v-pills-number-tab" tabindex="0">
+
+						<h1>Edit Contact Number</h1>
+
+						<form
+							action="<%=request.getContextPath()%>/updateContact?userId=<%=userId%>"
+							method="POST">
+							<div class="row mt-3 g-3">
+
+								<div class="col-lg-6">
+									<label for="contact" class="form-label">Contact Number
+									</label> <input type="text" name="contact" class="form-control"
+										placeholder="Enter Contact Number" aria-label="contact"
+										required>
+								</div>
+
+
+								<div class="col-lg-12">
+									<button class="btn btn-primary border-0 " type="submit">Update
+										Number</button>
+								</div>
+
+
 							</div>
+						</form>
 
-							<div class="col-lg-6">
-								<label for="postalCode" class="form-label">Postal</label> <input
-									type="text" name="postalCode" class="form-control"
-									placeholder="Enter postal code" aria-label="postalCode"
-									required>
-							</div>
-
-							<div class="col-lg-12">
-								<button class="btn btn-primary border-0 " type="submit">Update
-									Address</button>
-							</div>
-
-
-						</div>
-					</form>
-
-				</div>
-				
-				<div class="tab-pane fade" id="v-pills-address" role="tabpanel"
-					aria-labelledby="v-pills-address-tab" tabindex="0">
-
-					<h1>Edit Address</h1>
-
-					<form
-						action="<%=request.getContextPath()%>/updateAddress?userId=<%=userId%>"
-						method="POST">
-						<div class="row mt-3 g-3">
-
-							<div class="col-lg-6">
-								<label for="addressLine1" class="form-label">Address
-									Line 1</label> <input type="text" name="addressLine1"
-									class="form-control" placeholder="Enter address line 1"
-									aria-label="addressLine1" required>
-							</div>
-							<div class="col-lg-6">
-								<label for="addressLine2" class="form-label">Address
-									Line 2</label> <input type="text" name="addressLine2"
-									class="form-control" placeholder="Enter address line 2"
-									aria-label="addressLine2">
-							</div>
-
-							<div class="col-lg-6">
-								<label for="postalCode" class="form-label">Postal</label> <input
-									type="text" name="postalCode" class="form-control"
-									placeholder="Enter postal code" aria-label="postalCode"
-									required>
-							</div>
-
-							<div class="col-lg-12">
-								<button class="btn btn-primary border-0 " type="submit">Update
-									Address</button>
-							</div>
-
-
-						</div>
-					</form>
+					</div>
 
 				</div>
-				
-				<div class="tab-pane fade" id="v-pills-address" role="tabpanel"
-					aria-labelledby="v-pills-address-tab" tabindex="0">
-
-					<h1>Edit Contact Number</h1>
-
-					<form
-						action="<%=request.getContextPath()%>/updateAddress?userId=<%=userId%>"
-						method="POST">
-						<div class="row mt-3 g-3">
-
-							<div class="col-lg-6">
-								<label for="addressLine1" class="form-label">Address
-									Line 1</label> <input type="text" name="addressLine1"
-									class="form-control" placeholder="Enter address line 1"
-									aria-label="addressLine1" required>
-							</div>
-							<div class="col-lg-6">
-								<label for="addressLine2" class="form-label">Address
-									Line 2</label> <input type="text" name="addressLine2"
-									class="form-control" placeholder="Enter address line 2"
-									aria-label="addressLine2">
-							</div>
-
-							<div class="col-lg-6">
-								<label for="postalCode" class="form-label">Postal</label> <input
-									type="text" name="postalCode" class="form-control"
-									placeholder="Enter postal code" aria-label="postalCode"
-									required>
-							</div>
-
-							<div class="col-lg-12">
-								<button class="btn btn-primary border-0 " type="submit">Update
-									Address</button>
-							</div>
-
-
-						</div>
-					</form>
-
-				</div>
-
 			</div>
 		</div>
-	</div>
 
 
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-		crossorigin="anonymous"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+			crossorigin="anonymous"></script>
 </body>
 </html>

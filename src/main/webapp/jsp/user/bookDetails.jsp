@@ -1,16 +1,22 @@
-<% response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); %>
-<% response.setHeader("Pragma", "no-cache"); %>
-<% response.setDateHeader("Expires", 0); %>
+
+<%
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+%>
+<%
+response.setHeader("Pragma", "no-cache");
+%>
+<%
+response.setDateHeader("Expires", 0);
+%>
 
 
 <%@ page import="java.sql.*"%>
 
 <%
-
 int userId = (int) session.getAttribute("sessUserID");
 String username = (String) session.getAttribute("sessUsername");
 String role = (String) session.getAttribute("sessRole");
- 
+
 if (role == null || username == null) {
 	response.sendRedirect("login.jsp");
 }
@@ -31,7 +37,6 @@ try {
 	String connURL = "jdbc:mysql://localhost/lunar_db?user=root&password=123456&serverTimezone=UTC";
 	Connection conn = DriverManager.getConnection(connURL);
 
-	
 	String cartQuery = "SELECT id FROM cart WHERE user_id = ? AND book_id = ?";
 	PreparedStatement cartStatement = conn.prepareStatement(cartQuery);
 	cartStatement.setInt(1, userId);
@@ -39,10 +44,10 @@ try {
 	ResultSet cartResult = cartStatement.executeQuery();
 
 	if (cartResult.next()) {
-		
+
 		isInCart = true;
 	}
-	
+
 	String wishlistQuery = "SELECT id FROM wishlist WHERE user_id = ? AND book_id = ?";
 	PreparedStatement wishlistStatement = conn.prepareStatement(wishlistQuery);
 	wishlistStatement.setInt(1, userId);
@@ -50,17 +55,13 @@ try {
 	ResultSet wishlistResult = wishlistStatement.executeQuery();
 
 	if (wishlistResult.next()) {
-		
+
 		isInWishlist = true;
 	}
-	
-	
 
 	//Close the result set and prepared statement
 	wishlistResult.close();
 	wishlistStatement.close();
-	
-	
 
 	//Close the result set and prepared statement
 	cartResult.close();
@@ -97,76 +98,141 @@ try {
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-    $("#addToCartBtn").click(function() {
-        var buttonText = $(this).text();
+	$(document)
+			.ready(
+					function() {
+						$("#addToCartBtn")
+								.click(
+										function() {
+											var buttonText = $(this).text();
 
-        if (buttonText.trim() === "Add To Cart") {
-            
-        	$.ajax({
-                url: "addCart.jsp",
-                type: "POST",
-                data: {  bookId: <%=bookID%>, amountToBuy: $("input[name='quantityToBuy']").val() },
-                success: function(response) {
-                    
-                    $("#addToCartBtn").text("Remove From Cart");
-                    $("#addToCartBtn").removeClass("btn-primary").addClass("btn-outline-primary");
-                    $("input[name='quantityToBuy']").prop("disabled", true); 
-                }
-            });
-        } else if (buttonText.trim() === "Remove From Cart") {
-           
-            $.ajax({
-                url: "removeCart.jsp",
-                type: "POST",
-                data: {  bookId: <%=bookID%> },
-                success: function(response) {
-                    // Update the button text and style
-                    $("#addToCartBtn").text("Add To Cart");
-                    $("#addToCartBtn").removeClass("btn-outline-primary").addClass("btn-primary");
-                    $("input[name='quantityToBuy']").prop("disabled", false); 
-                }
-            });
-        }
-    });
-    
-    
-    $("#wishlistBtn").click(function() {
-    	  var text = $('.wishlistText').text().trim();
-    	  
-    	  
-    	  if (text === "Add To Wishlist") {
-    		  
-    		  $.ajax({
-                  url: "addWishlist.jsp",
-                  type: "POST",
-                  data: {  bookId: <%=bookID%> },
-                  success: function(response) {
-                      
-                	  $('.wishlistText').text("In Wishlist");
-              	    $(".heartIcon").addClass("fa-solid").removeClass("fa-regular");
-                  }
-              });
-    		  
-    	    
-    	  } else if (text === "In Wishlist") {
-    		  
-    		  $.ajax({
-                  url: "removeWishlist.jsp",
-                  type: "POST",
-                  data: {  bookId: <%=bookID%> },
-                  success: function(response) {
-                      
-                	  $('.wishlistText').text("Add To Wishlist");
-              	    $(".heartIcon").removeClass("fa-solid").addClass("fa-regular");
-                  }
-              });
-    		  
-    	   
-    	  }
-    	});
-    
-});
+											if (buttonText.trim() === "Add To Cart") {
+
+												$
+														.ajax({
+															url : "addCart.jsp",
+															type : "POST",
+															data : {
+																bookId :
+<%=bookID%>
+	,
+																amountToBuy : $(
+																		"input[name='quantityToBuy']")
+																		.val()
+															},
+															success : function(
+																	response) {
+
+																$(
+																		"#addToCartBtn")
+																		.text(
+																				"Remove From Cart");
+																$(
+																		"#addToCartBtn")
+																		.removeClass(
+																				"btn-primary")
+																		.addClass(
+																				"btn-outline-primary");
+																$(
+																		"input[name='quantityToBuy']")
+																		.prop(
+																				"disabled",
+																				true);
+															}
+														});
+											} else if (buttonText.trim() === "Remove From Cart") {
+
+												$
+														.ajax({
+															url : "removeCart.jsp",
+															type : "POST",
+															data : {
+																bookId :
+<%=bookID%>
+	},
+															success : function(
+																	response) {
+																// Update the button text and style
+																$(
+																		"#addToCartBtn")
+																		.text(
+																				"Add To Cart");
+																$(
+																		"#addToCartBtn")
+																		.removeClass(
+																				"btn-outline-primary")
+																		.addClass(
+																				"btn-primary");
+																$(
+																		"input[name='quantityToBuy']")
+																		.prop(
+																				"disabled",
+																				false);
+															}
+														});
+											}
+										});
+
+						$("#wishlistBtn")
+								.click(
+										function() {
+											var text = $('.wishlistText')
+													.text().trim();
+
+											if (text === "Add To Wishlist") {
+
+												$
+														.ajax({
+															url : "addWishlist.jsp",
+															type : "POST",
+															data : {
+																bookId :
+<%=bookID%>
+	},
+															success : function(
+																	response) {
+
+																$(
+																		'.wishlistText')
+																		.text(
+																				"In Wishlist");
+																$(".heartIcon")
+																		.addClass(
+																				"fa-solid")
+																		.removeClass(
+																				"fa-regular");
+															}
+														});
+
+											} else if (text === "In Wishlist") {
+
+												$
+														.ajax({
+															url : "removeWishlist.jsp",
+															type : "POST",
+															data : {
+																bookId :
+<%=bookID%>
+	},
+															success : function(
+																	response) {
+
+																$(
+																		'.wishlistText')
+																		.text(
+																				"Add To Wishlist");
+																$(".heartIcon")
+																		.removeClass(
+																				"fa-solid")
+																		.addClass(
+																				"fa-regular");
+															}
+														});
+
+											}
+										});
+
+					});
 </script>
 
 </head>
@@ -191,8 +257,8 @@ $(document).ready(function() {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
-							aria-current="page" href="home.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="home.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link" href="genres.jsp">Genres</a>
 						</li>
 
@@ -215,24 +281,30 @@ $(document).ready(function() {
 					if (role != null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
-					
-					<a href="wishlist.jsp" class="text-white fw-light"
-                ><button class="btn me-2" type="submit">
-                <img src="../../imgs/wishlist.png" style="width: 28px; height: auto;">
-                  <i class="fa-solid fa-book-heart fa-lg text-dark"></i></button 
-              ></a>
-					
-					<a href="cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
-              ></a>
 
-					<a href="profilePage.jsp" class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
-							<i class="fa-solid fa-user me-2"></i><%=username%>
-						</button>
-					</a>
+					<a href="wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a>
 
+					<div class="dropdown me-2">
+						<a href="#" class="text-white fw-light dropdown-toggle"
+							role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							<button class="btn btn-success me-4" type="button">
+								<i class="fa-solid fa-user me-2"></i><%=username%>
+							</button>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item" href="viewOrders.jsp">Orders</a></li>
+						</ul>
+					</div>
 					<form action="logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
 					</form>
@@ -291,7 +363,8 @@ $(document).ready(function() {
 
 			<div
 				class="col-lg-6 d-flex justify-content-center border-3 border-end">
-				<img src="<%=request.getContextPath()%><%=image%>" class="bookDetailsImage me-lg-5">
+				<img src="<%=request.getContextPath()%><%=image%>"
+					class="bookDetailsImage me-lg-5">
 			</div>
 
 			<div class="col-lg-6">
@@ -325,42 +398,48 @@ $(document).ready(function() {
 					<h6>
 						In Stock:
 						<%=quantity%></h6>
-						
-						<h1>
-							$<%=price%></h1>
 
-						<%
-						if (!"guest".equals(role)) {
-						%>
-						
-						<div class="d-flex flex-row mt-3">
-						
-						 <input type="number" name="quantityToBuy" min="1" max="<%= quantity  %>" value="1" class="form-control quantityNumber" >
+					<h1>
+						$<%=price%></h1>
+
+					<%
+					if (!"guest".equals(role)) {
+					%>
+
+					<div class="d-flex flex-row mt-3">
+
+						<input type="number" name="quantityToBuy" min="1"
+							max="<%=quantity%>" value="1"
+							class="form-control quantityNumber">
 						<button id="addToCartBtn"
 							class="btn <%=(isInCart ? "btn-outline-primary" : "btn-primary")%> ms-3"
 							type="submit">
 							<%=(isInCart ? "Remove From Cart" : "Add To Cart")%>
 						</button>
-						  </div>
-						  
-						  <div class="d-flex text-muted mt-4 align-items-center">
-                <h6 class="text-danger mt-2 wishlistText"><%=(isInWishlist ? "In Wishlist" : "Add To Wishlist")%> </h6>
-                <button id = "wishlistBtn" class="btn border-0"><i class="fa fa-regular fa-heart fa-2xl ms-2 text-danger heartIcon"></i></button>
-              </div>
-						<%
-						}
-						%>
+					</div>
 
-					
+					<div class="d-flex text-muted mt-4 align-items-center">
+						<h6 class="text-danger mt-2 wishlistText"><%=(isInWishlist ? "In Wishlist" : "Add To Wishlist")%>
+						</h6>
+						<button id="wishlistBtn" class="btn border-0">
+							<i
+								class="fa fa-regular fa-heart fa-2xl ms-2 text-danger heartIcon"></i>
+						</button>
+					</div>
+					<%
+					}
+					%>
+
+
 
 					<%
 					} else {
-						
-						%>
-						
-						<h1>Book doesn't exist</h1>
-						
-					<%}
+					%>
+
+					<h1>Book doesn't exist</h1>
+
+					<%
+					}
 
 					rs.close();
 					stmt.close();
@@ -383,8 +462,8 @@ $(document).ready(function() {
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
 		crossorigin="anonymous"></script>
-		
-		
-		
+
+
+
 </body>
 </html>

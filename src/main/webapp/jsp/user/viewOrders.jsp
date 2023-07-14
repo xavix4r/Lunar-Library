@@ -1,4 +1,6 @@
-
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.sql.*"%>
+<%@ page import ="model.*" %>
 
 <%
 String username = (String) session.getAttribute("sessUsername");
@@ -138,15 +140,24 @@ if (role == null || username == null) {
 					</tr>
 				</thead>
 				<tbody>
+					<%
+					ArrayList<PaidOrder> paidOrders = (ArrayList<PaidOrder>) request.getAttribute("paidOrders");
+					if (paidOrders != null) {
+						for (PaidOrder order : paidOrders) {
+					%>
 					<tr class="align-middle">
-						<th scope="row">1</th>
-						<td>22/10/2023</td>
-						<td>$39.80 SGD</td>
-						<td class="fw-bold text-center">
-							<button class="btn btn-outline-primary" type="submit">View
-								Details</button>
-						</td>
+						<th scope="row"><%=order.getOrderId()%></th>
+						<td><%=order.getOrderDate()%></td>
+						<td><%=order.getTotal()%> SGD</td>
+						<td class="fw-bold text-center"><a
+							href="OrderDetailsServlet?orderId=<%=order.getOrderId()%>"
+							class="btn btn-outline-primary">View Details</a></td>
 					</tr>
+					<%
+					}
+					}
+					%>
+
 
 
 				</tbody>

@@ -1,15 +1,12 @@
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.ArrayList"%>
 
 <%
-
-
-
 String username = (String) session.getAttribute("sessUsername");
 String role = (String) session.getAttribute("sessRole");
-
+int userId = (int) session.getAttribute("sessUserID");
 if (role == null || username == null) {
 	response.sendRedirect("login.jsp");
-} 
+}
 %>
 
 <%@ page import="java.sql.*"%>
@@ -88,25 +85,47 @@ if (role == null || username == null) {
 					if (role != null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
-					
-					<a href="wishlist.jsp" class="text-white fw-light"
-                ><button class="btn me-2" type="submit">
-                <img src="../../imgs/wishlist.png" style="width: 28px; height: auto;">
-                  <i class="fa-solid fa-book-heart fa-lg text-dark"></i></button 
-              ></a>
-					
-					<a href="cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
-              ></a>
-             
 
-					<a href="profilePage.jsp" class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
-							
+					<a href="wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a>
+
+
+					<%-- <div class="dropdown me-2">
+						<a href="#" class="text-white fw-light dropdown-toggle"
+							role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							<button class="btn btn-success me-4" type="button">
+								<i class="fa-solid fa-user me-2"></i><%=username%>
+							</button>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/viewOrders?userId=<%=userId%>">Orders</a></li>
+						</ul>
+					</div> --%>
+
+					<div class="dropdown me-2">
+						<button class="btn btn-success dropdown-toggle" type="button"
+							id="dropdownMenuButton" data-bs-toggle="dropdown"
+							aria-expanded="false">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
-					</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/viewOrders?userId=<%=userId%>">Orders</a></li>
+						</ul>
+					</div>
+
+
 
 					<form action="logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
@@ -139,15 +158,15 @@ if (role == null || username == null) {
 		class="hero-image d-flex justify-content-center align-items-center p-5">
 		<div class="row container w-100 mt-2 ">
 			<div class="col-md-6 mt-2 d-flex justify-content-end">
-				<img class="img-fluid me-5 astronaut" src="../../imgs/astronaut2.png"
-					alt="astronaut" />
+				<img class="img-fluid me-5 astronaut"
+					src="../../imgs/astronaut2.png" alt="astronaut" />
 			</div>
 
 			<div
 				class="col-md-6 mt-2 d-flex justify-content-start align-items-start flex-column form">
 				<h1 class="text-white hero-text">Embark on an interstellar
 					Journey through the pages</h1>
-							<div class="search mt-5 w-100">
+				<div class="search mt-5 w-100">
 					<form action="searchResults.jsp">
 						<i class="fa fa-search"></i> <input type="text"
 							class="form-control" name="search" placeholder="Search...">
@@ -188,7 +207,8 @@ if (role == null || username == null) {
 			<div class="col-lg-4">
 				<div class="card home-card p-3">
 					<a href="bookDetails.jsp?bookId=<%=id%>"> <img
-						src="<%=request.getContextPath()%><%=imageLocation%>" class="card-img-top" alt="...">
+						src="<%=request.getContextPath()%><%=imageLocation%>"
+						class="card-img-top" alt="...">
 						<div class="card-body">
 							<h5 class="card-title"><%=title%></h5>
 							<h5 class="card-title">

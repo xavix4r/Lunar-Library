@@ -84,20 +84,28 @@ if (searchBy == null && search == null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
 
-					<a href="wishlist.jsp" class="text-white fw-light"
-                ><button class="btn me-2" type="submit">
-                <img src="../../imgs/wishlist.png" style="width: 28px; height: auto;">
-                  <i class="fa-solid fa-book-heart fa-lg text-dark"></i></button 
-              ></a>
-					
-					<a href="cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
-              ></a> <a href="profilePage.jsp" class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
-							<i class="fa-solid fa-user me-2"></i><%=username%>
-						</button>
-					</a>
+					<a href="wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a>
+					<div class="dropdown me-2">
+						<a href="#" class="text-white fw-light dropdown-toggle"
+							role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							<button class="btn btn-success me-4" type="button">
+								<i class="fa-solid fa-user me-2"></i><%=username%>
+							</button>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item" href="viewOrders.jsp">Orders</a></li>
+						</ul>
+					</div>
 
 					<form action="logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
@@ -213,7 +221,8 @@ if (searchBy == null && search == null) {
 				<div class="col-lg-4">
 					<div class="card home-card p-3">
 						<a href="bookDetails.jsp?bookId=<%=id%>"> <img
-							src="<%=request.getContextPath()%><%=image%>" class="card-img-top" alt="...">
+							src="<%=request.getContextPath()%><%=image%>"
+							class="card-img-top" alt="...">
 							<div class="card-body">
 								<h5 class="card-title"><%=title%></h5>
 								<h5 class="card-title">

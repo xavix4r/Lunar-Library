@@ -54,11 +54,11 @@ public class addAddress extends HttpServlet {
 		int postalCode = Integer.parseInt(request.getParameter("postalCode"));
 
 		// Create a UserDAO instance
-		AddressDAO userDAO = new AddressDAO();
+		AddressDAO AddressDAO = new AddressDAO();
 
 		try {
 			// Insert the new address into the database
-			int numRowsAffected = userDAO.insertAddress(userId, addressLine1, addressLine2, postalCode);
+			int numRowsAffected = AddressDAO.insertAddress(userId, addressLine1, addressLine2, postalCode);
 
 			if (numRowsAffected > 0) {
 				// Address insertion successful
