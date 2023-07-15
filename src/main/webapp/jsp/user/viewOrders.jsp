@@ -154,9 +154,9 @@ if (role == null || username == null) {
 					<tr class="align-middle">
 						<th scope="row"><%=order.getOrderId()%></th>
 						<td><%=order.getOrderDate()%></td>
-						<td><%=order.getTotal()%> SGD</td>
+						<td>$<%=order.getTotal()%> SGD</td>
 						<td class="fw-bold text-center"><a
-							href="OrderDetailsServlet?orderId=<%=order.getOrderId()%>"
+							href="viewOrderDetails?orderId=<%=order.getOrderId()%>"
 							class="btn btn-outline-primary">View Details</a></td>
 					</tr>
 					<%

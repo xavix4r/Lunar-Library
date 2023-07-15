@@ -121,7 +121,7 @@ if (role == null || username == null) {
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
 							<li><a class="dropdown-item"
-								href="<%=request.getContextPath()%>/viewOrders?userId=<%=userId%>">Orders</a></li>
+								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
 						</ul>
 					</div>
 
