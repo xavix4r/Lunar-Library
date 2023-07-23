@@ -113,7 +113,7 @@ if (role == null || username == null) {
 					</div> --%>
 
 					<div class="dropdown me-2">
-						<button class="btn btn-success dropdown-toggle" type="button"
+						<button class="btn btn-success dropdown-toggle text-white fw-bold" type="button"
 							id="dropdownMenuButton" data-bs-toggle="dropdown"
 							aria-expanded="false">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
@@ -207,7 +207,7 @@ if (role == null || username == null) {
 			<div class="col-lg-4">
 				<div class="card home-card p-3">
 					<a href="bookDetails.jsp?bookId=<%=id%>"> <img
-						src="<%=request.getContextPath()%><%=imageLocation%>"
+						src="<%= request.getContextPath() %><%=imageLocation%>"
 						class="card-img-top" alt="...">
 						<div class="card-body">
 							<h5 class="card-title"><%=title%></h5>

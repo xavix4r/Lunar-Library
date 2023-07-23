@@ -185,7 +185,7 @@ if (role == null || username == null) {
 					<tr class="align-middle border-bottom">
 						<th scope="row">
 							<div class="d-flex align-items-center mt-3">
-								<img src="<%=request.getContextPath()%><%= book.getImgurl() %>" class="img-fluid tableImage rounded-2" />
+								<img src="<%= request.getContextPath() %><%= book.getImgurl() %>" class="img-fluid tableImage rounded-2" />
 								<div class="ms-4">
 									<h4><%= book.getTitle() %></h4>
 									<h5 class="text-muted"><%= book.getGenre() %></h5>

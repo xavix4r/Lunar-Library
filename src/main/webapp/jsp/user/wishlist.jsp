@@ -287,7 +287,7 @@ try {
 				<tr class="align-middle">
 					<th scope="row">
 						<div class="d-flex align-items-center">
-							<img src="<%=request.getContextPath()%><%=imageurl%>" class="img-fluid tableImage" />
+							<img src="<%= request.getContextPath() %><%=imageurl%>" class="img-fluid tableImage" />
 							<div class="ms-4">
 								<h3><%=title%></h3>
 								<h5 class="text-muted"><%=genre%></h5>

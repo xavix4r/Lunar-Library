@@ -104,17 +104,17 @@ public class ProccessUpdateServlet extends HttpServlet {
 	            
 	            if (rowsUpdated > 0) {
 	                response.getWriter().println("<script>alert('Book updated successfully');</script>");
-	                response.getWriter().println("<script>window.location.href='../JAVA-CA1/jsp/admin/manageBook.jsp';</script>");
+	                response.getWriter().println("<script>window.location.href='../JADCA2/jsp/admin/manageBook.jsp';</script>");
 	            } else {
 	                response.getWriter().println("<script>alert('Failed to update book');</script>");
-	                response.getWriter().println("<script>window.location.href='../JAVA-CA1/jsp/admin/manageBook.jsp';</script>");
+	                response.getWriter().println("<script>window.location.href='../JADCA2/jsp/admin/manageBook.jsp';</script>");
 	            }
 
 	            stmt.close();
 	            conn.close();
 	            
 	        } catch (Exception e) {
-	            response.sendRedirect("../JAVA-CA1/jsp/admin/manageBook.jsp?updateResult=error");
+	            response.sendRedirect("../JADCA2/jsp/admin/manageBook.jsp?updateResult=error");
 	            e.printStackTrace();
 	        }
 	}

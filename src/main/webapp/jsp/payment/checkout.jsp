@@ -226,7 +226,7 @@ $(document).ready(function() {
 							<tr class="align-middle border-bottom">
 								<th scope="row">
 									<div class="d-flex align-items-center">
-										<img src="<%=request.getContextPath()%><%=imageurl%>"
+										<img src="<%= request.getContextPath() %><%=imageurl%>"
 											class="img-fluid tableImage rounded-2" />
 										<div class="ms-4">
 											<h3><%=title%></h3>

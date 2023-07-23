@@ -363,7 +363,7 @@ try {
 
 			<div
 				class="col-lg-6 d-flex justify-content-center border-3 border-end">
-				<img src="<%=request.getContextPath()%><%=image%>"
+				<img src="<%= request.getContextPath() %><%=image%>"
 					class="bookDetailsImage me-lg-5">
 			</div>
 

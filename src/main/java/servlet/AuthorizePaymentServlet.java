@@ -43,6 +43,7 @@ public class AuthorizePaymentServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		HttpSession session = request.getSession();
+		
 		ArrayList<String> bookTitles = (ArrayList<String>) session.getAttribute("bookTitles");
 		ArrayList<Integer> amountToBuy = (ArrayList<Integer>) session.getAttribute("quantity");
 		ArrayList<Double> bookPrice = (ArrayList<Double>) session.getAttribute("total");
