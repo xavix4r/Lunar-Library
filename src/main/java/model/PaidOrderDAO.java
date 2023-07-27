@@ -79,6 +79,43 @@ public class PaidOrderDAO {
 		
 	}
 	
+	public ArrayList<User> getCustomerValueRanking () throws SQLException, ClassNotFoundException{
+		
+		 ArrayList<User> allUsers = new ArrayList<>();
+		    
+		    // Establish a database connection
+		    Connection conn = DBConnection.getConnection();
+		    
+		    String sql = "SELECT orders.user_id, users.username ,SUM(orders.total_price) as grandTotal FROM orders, users WHERE orders.user_id = users.user_id GROUP BY user_id ORDER BY grandTotal DESC;";
+		    PreparedStatement pstmt = conn.prepareStatement(sql);
+		    ResultSet rs = pstmt.executeQuery();
+		    
+		    while (rs.next()) {
+		        // Retrieve the data from each row
+		        int userid = rs.getInt("user_id");
+		        String username = rs.getString("username");
+		        double grandtotal = rs.getDouble("grandTotal");
+		        
+		        User user = new User(userid, username, grandtotal);
+		       
+		        
+		       
+		        allUsers.add(user);
+		    }
+		    
+		    // Close the result set, statement, and connection
+		    rs.close();
+		    pstmt.close();
+		    conn.close();
+		    
+		    // Return the list of paid orders
+		    return allUsers;
+		
+	}
+	
+	
+	
+	
 	
 	
 

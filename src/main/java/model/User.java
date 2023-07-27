@@ -10,6 +10,7 @@ public class User {
     private String role;
     private String contactNumber;
     private Address address;
+    private double totalAmountSpent;
 
     public User() {
         // Default constructor
@@ -27,6 +28,12 @@ public class User {
         this.role = role;
         this.contactNumber = contactNumber;
         this.address = address;
+    }
+    
+    public User(int userId, String username, double totalAmountSpent) {
+    	this.userId = userId;
+        this.username = username;
+        this.totalAmountSpent = totalAmountSpent;
     }
 
     // Getters and setters for the attributes
@@ -102,6 +109,14 @@ public class User {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+	public double getTotalAmountSpent() {
+		return totalAmountSpent;
+	}
+
+	public void setTotalAmountSpent(double totalAmountSpent) {
+		this.totalAmountSpent = totalAmountSpent;
+	}
 
    
 }

@@ -155,7 +155,8 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						class="text-white fw-light"><button class="btn me-4"
 							type="submit">
 							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
-						</button></a><a href="<%=request.getContextPath()%>/jsp/user/profilePage.jsp" class="text-white fw-light">
+						</button></a><a href="<%=request.getContextPath()%>/jsp/user/profilePage.jsp"
+						class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
@@ -169,9 +170,11 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 					} else if (role.equals("guest")) {
 					%>
 
-					<a href="<%=request.getContextPath()%>/jsp/user/login.jsp" class="text-white fw-light">
+					<a href="<%=request.getContextPath()%>/jsp/user/login.jsp"
+						class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">Login</button>
-					</a> <a href="<%=request.getContextPath()%>/user/signUp.jsp" class="text-white fw-light">
+					</a> <a href="<%=request.getContextPath()%>/user/signUp.jsp"
+						class="text-white fw-light">
 						<button class="btn btn-dark" type="submit">Sign Up</button>
 					</a>
 
@@ -285,6 +288,44 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 							}
 							%>
 						</tbody>
+
+					</table>
+				</div>
+
+			</div>
+
+			<div class="col-md-12 mt-5">
+				<h6>Top 10 Customers Ranked By Purchase Value</h6>
+
+
+				<div
+					class="table-responsive px-md-4 px-2 pt-3 bg-white shadow-lg rounded-3">
+					<table class="table table-borderless">
+						<thead>
+							<tr class="border-bottom">
+								<th scope="col">Username</th>
+
+								<th scope="col">Amount Spent</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							ArrayList<User> customerRanking = (ArrayList<User>) session.getAttribute("customerRanking");
+
+							if (customerRanking != null && customerRanking.size() > 0) {
+								for (User user : customerRanking) {
+							%>
+							<tr class="align-middle border-bottom">
+								<td><%=user.getUsername()%></td>
+								<td>$ <%=user.getTotalAmountSpent()%> SGD</td>
+							</tr>
+							<%
+							}
+							}
+							%>
+						</tbody>
+
 
 					</table>
 				</div>

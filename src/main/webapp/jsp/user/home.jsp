@@ -69,11 +69,20 @@ if (role == null || username == null) {
 						<%
 						if (role != null) {
 							if (role.equals("admin") || role.equals("owner")) {
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/addBook.jsp'>Add Book</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/manageBook.jsp'>Manage Books</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/removeMember.jsp'>Delete User</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/salesInquiry.jsp'>Sales Inquiry</a></li>");
-							}
+						%>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add
+								Book</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
+								Books</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+								User</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales Inquiry</a></li>
+						<%
+						}
 						}
 						%>
 
@@ -114,8 +123,8 @@ if (role == null || username == null) {
 					</div> --%>
 
 					<div class="dropdown me-2">
-						<button class="btn btn-success dropdown-toggle text-white fw-bold" type="button"
-							id="dropdownMenuButton" data-bs-toggle="dropdown"
+						<button class="btn btn-success dropdown-toggle text-white fw-bold"
+							type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
 							aria-expanded="false">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
@@ -208,7 +217,7 @@ if (role == null || username == null) {
 			<div class="col-lg-4">
 				<div class="card home-card p-3">
 					<a href="bookDetails.jsp?bookId=<%=id%>"> <img
-						src="<%= request.getContextPath() %><%=imageLocation%>"
+						src="<%=request.getContextPath()%><%=imageLocation%>"
 						class="card-img-top" alt="...">
 						<div class="card-body">
 							<h5 class="card-title"><%=title%></h5>
