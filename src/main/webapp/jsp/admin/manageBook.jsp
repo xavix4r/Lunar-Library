@@ -7,9 +7,10 @@
 <%
 String username = (String) session.getAttribute("sessUsername");
 String role = (String) session.getAttribute("sessRole");
+int userId = (int) session.getAttribute("sessUserID");
 
 if (!"admin".equals(role) && !"owner".equals(role)) {
-	response.sendRedirect("login.jsp");
+	response.sendRedirect("../user/login.jsp");
 }
 %>
 

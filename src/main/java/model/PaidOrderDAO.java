@@ -46,6 +46,40 @@ public class PaidOrderDAO {
 	    return paidOrders;
 	}
 
+	public ArrayList<Integer> getAllOrderIdsByUserid (int userid) throws SQLException, ClassNotFoundException{
+		
+		 ArrayList<Integer> allOrderIds = new ArrayList<>();
+		    
+		    // Establish a database connection
+		    Connection conn = DBConnection.getConnection();
+		    
+		    String sql = "SELECT order_id FROM orders WHERE user_id = ?";
+		    PreparedStatement pstmt = conn.prepareStatement(sql);
+		    pstmt.setInt(1, userid);
+		    
+		    ResultSet rs = pstmt.executeQuery();
+		    
+		    while (rs.next()) {
+		        // Retrieve the data from each row
+		        int orderid = rs.getInt("order_id");
+		        
+		        
+		       
+		       
+		        allOrderIds.add(orderid);
+		    }
+		    
+		    // Close the result set, statement, and connection
+		    rs.close();
+		    pstmt.close();
+		    conn.close();
+		    
+		    // Return the list of paid orders
+		    return allOrderIds;
+		
+	}
+	
+	
 	
 
 }

@@ -46,7 +46,7 @@
 					class="d-flex flex-column justify-content-center align-items-center ms-3">
 
 					<h4>Paid: $40.00 SGD</h4>
-					<a href = "<%=request.getContextPath()%>/jsp/user/viewOrders.jsp">
+					<a href = "<%=request.getContextPath()%>/viewOrders">
 					<button class="btn btn-primary mt-3 w-100" type="submit">View
 						Order</button></a>
 				</div>

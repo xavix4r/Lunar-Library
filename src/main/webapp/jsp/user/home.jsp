@@ -72,6 +72,7 @@ if (role == null || username == null) {
 								out.print("<li class='nav-item'><a class='nav-link' href='../admin/addBook.jsp'>Add Book</a></li>");
 								out.print("<li class='nav-item'><a class='nav-link' href='../admin/manageBook.jsp'>Manage Books</a></li>");
 								out.print("<li class='nav-item'><a class='nav-link' href='../admin/removeMember.jsp'>Delete User</a></li>");
+								out.print("<li class='nav-item'><a class='nav-link' href='../admin/salesInquiry.jsp'>Sales Inquiry</a></li>");
 							}
 						}
 						%>
