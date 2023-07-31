@@ -265,10 +265,21 @@ try {
 						<%
 						if (role != null) {
 							if (role.equals("admin") || role.equals("owner")) {
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/addBook.jsp'>Add Book</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/manageBook.jsp'>Manage Books</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/removeMember.jsp'>Delete User</a></li>");
-							}
+						%>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add
+								Book</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
+								Books</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+								User</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales
+								Inquiry</a></li>
+						<%
+						}
 						}
 						%>
 
@@ -363,7 +374,7 @@ try {
 
 			<div
 				class="col-lg-6 d-flex justify-content-center border-3 border-end">
-				<img src="<%= request.getContextPath() %><%=image%>"
+				<img src="<%=request.getContextPath()%><%=image%>"
 					class="bookDetailsImage me-lg-5">
 			</div>
 
@@ -409,8 +420,7 @@ try {
 					<div class="d-flex flex-row mt-3">
 
 						<input type="number" name="quantityToBuy" min="1"
-							max="<%=quantity%>" value="1"
-							class="form-control quantityNumber">
+							max="<%=quantity%>" value="1" class="form-control quantityNumber">
 						<button id="addToCartBtn"
 							class="btn <%=(isInCart ? "btn-outline-primary" : "btn-primary")%> ms-3"
 							type="submit">
