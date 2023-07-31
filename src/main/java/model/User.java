@@ -31,35 +31,15 @@ public class User {
     }
     
     public User(int userId, String username, double totalAmountSpent) {
-    	this.userId = userId;
+        this.userId = userId;
         this.username = username;
         this.totalAmountSpent = totalAmountSpent;
     }
     
-<<<<<<< HEAD
-
-=======
->>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
-    public User(int userId, String username, String firstName, String lastName, String email,String role, String contactNumber, 
-    		Address address) {
-    this.userId = userId;
-    this.username = username;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.email = email;
-    this.role = role;
-    this.contactNumber = contactNumber;
-    this.address = address;
-}
-<<<<<<< HEAD
-
     public User(String firstName, String lastName) {
     	this.firstName = firstName;
     	this.lastName = lastName;
     }
-
-=======
->>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
 
     // Getters and setters for the attributes
 
@@ -135,13 +115,11 @@ public class User {
         this.address = address;
     }
 
-	public double getTotalAmountSpent() {
-		return totalAmountSpent;
-	}
+    public double getTotalAmountSpent() {
+        return totalAmountSpent;
+    }
 
-	public void setTotalAmountSpent(double totalAmountSpent) {
-		this.totalAmountSpent = totalAmountSpent;
-	}
-
-   
+    public void setTotalAmountSpent(double totalAmountSpent) {
+        this.totalAmountSpent = totalAmountSpent;
+    }
 }

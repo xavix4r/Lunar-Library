@@ -1,9 +1,12 @@
+viewInquiry.jsp 
+
 <%@ page import="java.util.List"%>
 <%@ page import="model.*"%>
 
 <%
 String username = (String) session.getAttribute("sessUsername");
 String role = (String) session.getAttribute("sessRole");
+
 if (!"admin".equals(role) && !"owner".equals(role)) {
 	response.sendRedirect("../user/login.jsp");
 }
@@ -59,12 +62,9 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						<%
 						if (role != null) {
 						%>
-<<<<<<< HEAD
-=======
 						<%
 						if (role.equals("admin") || role.equals("owner")) {
 						%>
->>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
 						<li class="nav-item"><a class="nav-link" href="addBook.jsp">Add
 								Book</a></li>
 						<li class="nav-item"><a class="nav-link"
@@ -81,12 +81,9 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 					<%
 					if (role != null) {
 					%>
-<<<<<<< HEAD
-=======
 					<%
 					if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
->>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
 					<a href="../user/cart.jsp" class="text-white fw-light">
 						<button class="btn me-4" type="submit">
 							<i class="fa-solid fa-cart-shopping fa-lg text-white"></i>
@@ -167,37 +164,6 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 			</tbody>
 		</table>
 	</div>
-<<<<<<< HEAD
-
-	<script>
-        function displayAlertAndRemoveParams(message) {
-            alert(message);
-            // Remove the parameter from the URL after displaying the alert
-            const urlWithoutParams = window.location.href.split('?')[0];
-            window.history.replaceState({}, document.title, urlWithoutParams);
-        }
-    </script>
-
-     <%-- Display success message if inquiry was successfully deleted --%>
-    <%
-    String deleteSuccess = request.getParameter("deleteSuccess");
-    if (deleteSuccess != null && deleteSuccess.equals("true")) {
-        %>
-        <script>
-            displayAlertAndRemoveParams("Inquiry deleted successfully.");
-        </script>
-    <% } %>
-
-    <%-- Display error message if there was an error deleting the inquiry --%>
-    <%
-    String deleteError = request.getParameter("deleteError");
-    if (deleteError != null && deleteError.equals("true")) {
-        %>
-        <script>
-            displayAlertAndRemoveParams("Failed to delete inquiry.");
-        </script>
-    <% } %>
-=======
 
 	<div class="container mt-5">
     <h1 class="text-center my-4">Customer List</h1>
@@ -296,7 +262,6 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 	<%
 	}
 	%>
->>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
