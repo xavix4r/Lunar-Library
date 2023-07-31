@@ -36,7 +36,10 @@ public class User {
         this.totalAmountSpent = totalAmountSpent;
     }
     
+<<<<<<< HEAD
 
+=======
+>>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
     public User(int userId, String username, String firstName, String lastName, String email,String role, String contactNumber, 
     		Address address) {
     this.userId = userId;
@@ -48,12 +51,15 @@ public class User {
     this.contactNumber = contactNumber;
     this.address = address;
 }
+<<<<<<< HEAD
 
     public User(String firstName, String lastName) {
     	this.firstName = firstName;
     	this.lastName = lastName;
     }
 
+=======
+>>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
 
     // Getters and setters for the attributes
 

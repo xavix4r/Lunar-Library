@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
 
 public class UserDAO {
 	
@@ -38,7 +39,10 @@ public class UserDAO {
 	    return userId;
 	}
 	
+<<<<<<< HEAD
 
+=======
+>>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
 	public User getUserById(int userId) throws SQLException {
         User user = null;
         try {
@@ -50,6 +54,7 @@ public class UserDAO {
                     "WHERE u.user_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userId);
+<<<<<<< HEAD
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -113,6 +118,8 @@ public class UserDAO {
 	
 	
 	
+=======
+>>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
 
 
            
@@ -254,5 +261,68 @@ public class UserDAO {
         }
         return address;
     }
+    
+    //return all user details
+    public List<User> getAllUsers(String orderBy) throws SQLException {
+        List<User> users = new ArrayList<>();
+        try {
+            Connection conn = DBConnection.getConnection();
+            String sql = "SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.role, c.contactNo, a.address_line1, a.address_line2, a.postal "
+                    + "FROM users u "
+                    + "LEFT JOIN users_contact c ON u.user_id = c.user_id "
+                    + "LEFT JOIN users_address a ON u.user_id = a.user_id ";
+
+            // Check the sorting order and modify the SQL query accordingly
+            if ("usernameAsc".equals(orderBy)) {
+                sql += "ORDER BY u.username ASC";
+            } else if ("usernameDesc".equals(orderBy)) {
+                sql += "ORDER BY u.username DESC";
+            } else if ("postalAsc".equals(orderBy)) {
+                sql += "ORDER BY a.postal ASC";
+            } else if ("postalDesc".equals(orderBy)) {
+                sql += "ORDER BY a.postal DESC";
+            } else if ("addressAsc".equals(orderBy)) {
+                sql += "ORDER BY a.address_line1 ASC";
+            } else if ("addressDesc".equals(orderBy)) {
+                sql += "ORDER BY a.address_line1 DESC";
+            } else {
+                // Default sorting by user ID
+                sql += "ORDER BY u.user_id ASC";
+            }
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int userId = rs.getInt("user_id");
+                String username = rs.getString("username");
+                String firstName = rs.getString("fname");
+                String lastName = rs.getString("lname");
+                String email = rs.getString("email");
+                String role = rs.getString("role");
+                String contactNumber = rs.getString("contactNo");
+                String addressLine1 = rs.getString("address_line1");
+                String addressLine2 = rs.getString("address_line2");
+                int postal = rs.getInt("postal");
+
+                Address address = new Address(userId, addressLine1, addressLine2, postal);
+
+                User user = new User(userId, username, firstName, lastName, null, email, role, contactNumber, address);
+                users.add(user);
+            }
+
+            rs.close();
+            pstmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return users;
+    }
 
 }
+
+
+

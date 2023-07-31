@@ -1,6 +1,5 @@
 <%@ page import="java.util.List"%>
-<%@ page import="model.CustomerInquiry"%>
-<%@ page import="model.CustomerInquiryDAO"%>
+<%@ page import="model.*"%>
 
 <%
 String username = (String) session.getAttribute("sessUsername");
@@ -59,8 +58,13 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 							href="../user/genres.jsp">Genres</a></li>
 						<%
 						if (role != null) {
-							if (role.equals("admin") || role.equals("owner")) {
 						%>
+<<<<<<< HEAD
+=======
+						<%
+						if (role.equals("admin") || role.equals("owner")) {
+						%>
+>>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
 						<li class="nav-item"><a class="nav-link" href="addBook.jsp">Add
 								Book</a></li>
 						<li class="nav-item"><a class="nav-link"
@@ -69,13 +73,20 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 							href="removeMember.jsp">Delete User</a></li>
 						<%
 						}
+						%>
+						<%
 						}
 						%>
 					</ul>
 					<%
 					if (role != null) {
-						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
+<<<<<<< HEAD
+=======
+					<%
+					if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
+					%>
+>>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
 					<a href="../user/cart.jsp" class="text-white fw-light">
 						<button class="btn me-4" type="submit">
 							<i class="fa-solid fa-cart-shopping fa-lg text-white"></i>
@@ -98,6 +109,8 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 					</a>
 					<%
 					}
+					%>
+					<%
 					}
 					%>
 				</div>
@@ -136,14 +149,12 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 					<td>
 						<%
 						if (inquiry.isRequireResponse()) {
-						%> <a
-						href="mailto:<%=inquiry.getEmail()%>" class="btn btn-primary">Reply</a>
-						<a
+						%> <a href="mailto:<%=inquiry.getEmail()%>"
+						class="btn btn-primary">Reply</a> <a
 						href="${pageContext.request.contextPath}/DeleteInquiryServlet?id=<%= inquiry.getInquiryId() %>"
-						class="btn btn-danger">Delete</a>
-						<%
-						} else {
-						%> <a
+						class="btn btn-danger">Delete</a> <%
+ } else {
+ %> <a
 						href="${pageContext.request.contextPath}/DeleteInquiryServlet?id=<%= inquiry.getInquiryId() %>"
 						class="btn btn-danger">Delete</a> <%
  }
@@ -156,6 +167,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 			</tbody>
 		</table>
 	</div>
+<<<<<<< HEAD
 
 	<script>
         function displayAlertAndRemoveParams(message) {
@@ -185,6 +197,106 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
             displayAlertAndRemoveParams("Failed to delete inquiry.");
         </script>
     <% } %>
+=======
+
+	<div class="container mt-5">
+    <h1 class="text-center my-4">Customer List</h1>
+    <div class="mb-3">
+        <label for="sortSelect" class="form-label">Sort by:</label>
+        <select class="form-select" id="sortSelect" onchange="onSortChange(this.value)">
+            <option value="userIdAsc">User ID (ASC)</option>
+            <option value="usernameAsc">Username (ASC)</option>
+            <option value="usernameDesc">Username (DESC)</option>
+            <option value="postalAsc">Postal Code (ASC)</option>
+            <option value="postalDesc">Postal Code (DESC)</option>
+            <option value="addressAsc">Address (ASC)</option>
+            <option value="addressDesc">Address (DESC)</option>
+        </select>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Contact Number</th>
+                <th>Address Line 1</th>
+                <th>Address Line 2</th>
+                <th>Postal Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% String sort = request.getParameter("sort");
+               UserDAO userDAO = new UserDAO();
+               List<User> users = userDAO.getAllUsers(sort);
+               for (User user : users) {
+                   if ("member".equals(user.getRole())) { %>
+            <tr>
+                <td><%= user.getUserId() %></td>
+                <td><%= user.getUsername() %></td>
+                <td><%= user.getFirstName() %></td>
+                <td><%= user.getLastName() %></td>
+                <td><%= user.getEmail() %></td>
+                <td><%= user.getContactNumber() != null ? user.getContactNumber() : "" %></td>
+                <td><%= user.getAddress().getAddressLine1() != null ? user.getAddress().getAddressLine1() : "" %></td>
+                <td><%= user.getAddress().getAddressLine2() != null ? user.getAddress().getAddressLine2() : "" %></td>
+                <td><%= user.getAddress().getPostal() != 0 ? user.getAddress().getPostal() : "" %></td>
+            </tr>
+            <%       }
+               } %>
+        </tbody>
+    </table>
+</div>
+
+	<script>
+		function onSortChange(sortValue) {
+			const currentUrl = new URL(window.location.href);
+			currentUrl.searchParams.set("sort", sortValue);
+			window.location.href = currentUrl.toString();
+		}
+
+		// Get the current sorting value from the URL and set the dropdown to it
+		const currentSort = new URLSearchParams(window.location.search)
+				.get("sort");
+		const sortSelect = document.getElementById("sortSelect");
+		if (currentSort) {
+			sortSelect.value = currentSort;
+		}
+
+		function displayAlertAndRemoveParams(message) {
+			alert(message);
+			// Remove the parameter from the URL after displaying the alert
+			const urlWithoutParams = window.location.href.split('?')[0];
+			window.history.replaceState({}, document.title, urlWithoutParams);
+		}
+	</script>
+
+	<%-- Display success message if inquiry was successfully deleted --%>
+	<%
+	String deleteSuccess = request.getParameter("deleteSuccess");
+	if (deleteSuccess != null && deleteSuccess.equals("true")) {
+	%>
+	<script>
+		displayAlertAndRemoveParams("Inquiry deleted successfully.");
+	</script>
+	<%
+	}
+	%>
+
+	<%-- Display error message if there was an error deleting the inquiry --%>
+	<%
+	String deleteError = request.getParameter("deleteError");
+	if (deleteError != null && deleteError.equals("true")) {
+	%>
+	<script>
+		displayAlertAndRemoveParams("Failed to delete inquiry.");
+	</script>
+	<%
+	}
+	%>
+>>>>>>> b0cb0c32d538b02528d3c79e4c02deff2387a330
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
