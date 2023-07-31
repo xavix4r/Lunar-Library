@@ -1,4 +1,7 @@
-<%@ page import="java.sql.*"%>
+<%@ page import="java.util.List"%>
+<%@ page import="model.CustomerInquiry"%>
+<%@ page import="model.CustomerInquiryDAO"%>
+
 <%
 String username = (String) session.getAttribute("sessUsername");
 String role = (String) session.getAttribute("sessRole");
@@ -8,11 +11,10 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 }
 %>
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,6 +32,9 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD:src/main/webapp/jsp/admin/viewInquiry.jsp
+<title>View Inquiries</title>
+=======
 <title>Add Book</title>
 
 
@@ -56,8 +61,8 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 	}
 </script>
 
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9:src/main/webapp/jsp/admin/removeMember.jsp
 </head>
-
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
 		<div class="container-fluid">
@@ -82,11 +87,18 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 							href="../user/home.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="../user/genres.jsp">Genres</a></li>
-
 						<%
 						if (role != null) {
 							if (role.equals("admin") || role.equals("owner")) {
 						%>
+<<<<<<< HEAD:src/main/webapp/jsp/admin/viewInquiry.jsp
+						<li class="nav-item"><a class="nav-link" href="addBook.jsp">Add
+								Book</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="manageBook.jsp">Manage Books</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="removeMember.jsp">Delete User</a></li>
+=======
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add
 								Book</a></li>
@@ -99,18 +111,27 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/SalesInquiry">Sales
 								Inquiry</a></li>
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9:src/main/webapp/jsp/admin/removeMember.jsp
 						<%
 						}
 						}
 						%>
-
 					</ul>
-
-
 					<%
 					if (role != null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
+<<<<<<< HEAD:src/main/webapp/jsp/admin/viewInquiry.jsp
+					<a href="../user/cart.jsp" class="text-white fw-light">
+						<button class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white"></i>
+						</button>
+					</a> <a href="../user/profilePage.jsp" class="text-white fw-light">
+						<button class="btn btn-success me-4" type="submit">
+							<i class="fa-solid fa-user me-2"></i><%=username%>
+						</button>
+					</a>
+=======
 
 					<a href="../user/wishlist.jsp" class="text-white fw-light"><button
 							class="btn me-2" type="submit">
@@ -134,54 +155,49 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						</ul>
 					</div>
 
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9:src/main/webapp/jsp/admin/removeMember.jsp
 					<form action="../user/logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
 					</form>
-
 					<%
 					} else if (role.equals("guest")) {
 					%>
-
 					<a href="../user/login.jsp" class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">Login</button>
 					</a> <a href="../user/signUp.jsp" class="text-white fw-light">
 						<button class="btn btn-dark" type="submit">Sign Up</button>
 					</a>
-
 					<%
 					}
 					}
 					%>
-
 				</div>
 			</div>
 		</div>
 	</nav>
 
-	<div class="container my-5">
-		<h1 class="text-center pt-4">Delete User</h1>
-
-		<table class="table mt-3">
+	<div class="container mt-5">
+		<h1 class="text-center my-4">View Inquiries</h1>
+		<table class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th scope="col">Name</th>
-					<th scope="col">Username</th>
-					<th scope="col">Email</th>
-					<th scope="col"></th>
+					<th>#</th>
+					<th>User ID</th>
+					<th>Inquiry Type</th>
+					<th>Inquiry Text</th>
+					<th>Require Response</th>
+					<th>Email</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
-
-				<!-- <tr class="align-middle">
-            
-            <td >John Doe</td>
-            <td >johndoe</td>
-            <td >johndoe@gmail.com</td>
-            <td class = "text-center"><button class="btn btn-danger" type="submit">Delete</button></td>
-           
-          </tr> -->
-
 				<%
+<<<<<<< HEAD:src/main/webapp/jsp/admin/viewInquiry.jsp
+				CustomerInquiryDAO inquiryDAO = new CustomerInquiryDAO();
+				List<CustomerInquiry> inquiries = inquiryDAO.getAllInquiries();
+				int rowNum = 1;
+				for (CustomerInquiry inquiry : inquiries) {
+=======
 				try {
 					Class.forName("com.mysql.jdbc.Driver");
 					String connURL = "jdbc:mysql://localhost/lunar_db?user=root&password=123456&serverTimezone=UTC";
@@ -198,44 +214,80 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						String fname = rs.getString("fname");
 						String lname = rs.getString("lname");
 						String email = rs.getString("email");
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9:src/main/webapp/jsp/admin/removeMember.jsp
 				%>
-				<tr class="align-middle">
-
-					<td><%=fname + lname%></td>
-					<td><%=user%></td>
-					<td><%=email%></td>
-
-					<td class="text-center">
-						<button class="btn btn-danger" type="button"
-							onclick="deleteMember('<%=id%>')">Delete</button>
+				<tr>
+					<td><%=rowNum++%></td>
+					<td><%=inquiry.getUserId()%></td>
+					<td><%=inquiry.getInquiryType()%></td>
+					<td><%=inquiry.getInquiryText()%></td>
+					<td><%=inquiry.isRequireResponse() ? "Yes" : "No"%></td>
+					<td><%=inquiry.getEmail()%></td>
+					<td>
+						<%
+						if (inquiry.isRequireResponse()) {
+						%> <a
+						href="mailto:<%=inquiry.getEmail()%>" class="btn btn-primary">Reply</a>
+						<a
+						href="${pageContext.request.contextPath}/DeleteInquiryServlet?id=<%= inquiry.getInquiryId() %>"
+						class="btn btn-danger">Delete</a>
+						<%
+						} else {
+						%> <a
+						href="${pageContext.request.contextPath}/DeleteInquiryServlet?id=<%= inquiry.getInquiryId() %>"
+						class="btn btn-danger">Delete</a> <%
+ }
+ %>
 					</td>
-
 				</tr>
 				<%
 				}
+<<<<<<< HEAD:src/main/webapp/jsp/admin/viewInquiry.jsp
+=======
 
 				stmt.close();
 				conn.close();
 				} catch (Exception e) {
 				out.println("Error: " + e);
 				}
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9:src/main/webapp/jsp/admin/removeMember.jsp
 				%>
-
-
 			</tbody>
-
 		</table>
-
-
-
-
-
-
-
 	</div>
+	
+	<script>
+        function displayAlertAndRemoveParams(message) {
+            alert(message);
+            // Remove the parameter from the URL after displaying the alert
+            const urlWithoutParams = window.location.href.split('?')[0];
+            window.history.replaceState({}, document.title, urlWithoutParams);
+        }
+    </script>
+    
+     <%-- Display success message if inquiry was successfully deleted --%>
+    <%
+    String deleteSuccess = request.getParameter("deleteSuccess");
+    if (deleteSuccess != null && deleteSuccess.equals("true")) {
+        %>
+        <script>
+            displayAlertAndRemoveParams("Inquiry deleted successfully.");
+        </script>
+    <% } %>
+
+    <%-- Display error message if there was an error deleting the inquiry --%>
+    <%
+    String deleteError = request.getParameter("deleteError");
+    if (deleteError != null && deleteError.equals("true")) {
+        %>
+        <script>
+            displayAlertAndRemoveParams("Failed to delete inquiry.");
+        </script>
+    <% } %>
+    
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+		integrity="sha384-9nLAwpMNqCZRr8n4usjz40C7nK4lYnC4KnZaySf3h/UNiJ6Y9hmjg4vflSQK8wGd"
 		crossorigin="anonymous"></script>
 </body>
 </html>
