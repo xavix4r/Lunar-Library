@@ -67,18 +67,14 @@ public class ExecutePaymentServlet extends HttpServlet {
 
 			if (orderid > 0) {
 				
-				int nrowAffectedOrderItems = orderDetailsDAO.insertOrderItems(orderid, allOrderDetails);
+				int nrowAffectedOrderItems = orderDetailsDAO.insertOrderItemsAndUpdateBooks(orderid, allOrderDetails);
 				
 				if(nrowAffectedOrderItems > 0) {
 					int nrowAffectedOrderAddress = orderDetailsDAO.insertOrderAddress(orderid, shippingAddress.getLine1(), shippingAddress.getLine2(), Integer.parseInt(shippingAddress.getPostalCode()));
 				}
 			
 			} else {
-				// Order insertion failed
-				// Handle the failure case
-				// ...
 				response.sendRedirect("failure.jsp");
-
 
 			}
 		} catch (SQLException e) {
