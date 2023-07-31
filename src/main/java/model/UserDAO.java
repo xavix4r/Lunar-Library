@@ -38,7 +38,7 @@ public class UserDAO {
 	    return userId;
 	}
 	
-<<<<<<< HEAD
+
 	public User getUserById(int userId) throws SQLException {
         User user = null;
         try {
@@ -50,7 +50,35 @@ public class UserDAO {
                     "WHERE u.user_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userId);
-=======
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String username = rs.getString("username");
+                String firstName = rs.getString("fname");
+                String lastName = rs.getString("lname");
+                String email = rs.getString("email");
+                String role = rs.getString("role");
+                String contactNumber = rs.getString("contactNo");
+                String addressLine1 = rs.getString("address_line1");
+                String addressLine2 = rs.getString("address_line2");
+                int postal = rs.getInt("postal");
+
+                Address address = new Address(userId, addressLine1, addressLine2, postal);
+
+                user = new User(userId, username, firstName, lastName, null, email, role, contactNumber, address);
+            }
+
+            rs.close();
+            pstmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return user;
+    }
+
 	public User getFirstAndLastNameById(int userid) throws SQLException, ClassNotFoundException{
 		User user = null;
 	 
@@ -85,35 +113,9 @@ public class UserDAO {
 	
 	
 	
->>>>>>> 720830251e08dd568cccc24546d54fa269b81da9
 
-            ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                String username = rs.getString("username");
-                String firstName = rs.getString("fname");
-                String lastName = rs.getString("lname");
-                String email = rs.getString("email");
-                String role = rs.getString("role");
-                String contactNumber = rs.getString("contactNo");
-                String addressLine1 = rs.getString("address_line1");
-                String addressLine2 = rs.getString("address_line2");
-                int postal = rs.getInt("postal");
-
-                Address address = new Address(userId, addressLine1, addressLine2, postal);
-
-                user = new User(userId, username, firstName, lastName, null, email, role, contactNumber, address);
-            }
-
-            rs.close();
-            pstmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
-        return user;
-    }
+           
 	
 	// Method to update user details in the database
 	public void updateUser(User user) throws SQLException {
