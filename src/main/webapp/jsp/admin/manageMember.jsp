@@ -1,4 +1,5 @@
 <%@ page import="java.sql.*"%>
+<%@ page import="model.*"%>
 <%
 String username = (String) session.getAttribute("sessUsername");
 String role = (String) session.getAttribute("sessRole");
@@ -30,31 +31,12 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Add Book</title>
+<title>Manage User</title>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-	function deleteMember(id) {
-		console.log(id)
-		$.ajax({
-			url : "processMemberRemoval.jsp",
-			type : "POST",
-			data : {
-				user_id : id 
-			},
-			success : function(response) {
-				console.log(response)
-				alert("Successfully removed member");
-				location.reload();
-			},
-			error : function(xhr, status, error) {
-				alert("Failed to remove member");
-			}
-		});
-	}
-</script>
+
 
 </head>
 
@@ -88,7 +70,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 							if (role.equals("admin") || role.equals("owner")) {
 								out.print("<li class='nav-item'><a class='nav-link' href='addBook.jsp'>Add Book</a></li>");
 								out.print("<li class='nav-item'><a class='nav-link' href='manageBook.jsp'>Manage Books</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link active' href='removeMember.jsp'>Delete User</a></li>");
+								out.print("<li class='nav-item'><a class='nav-link active' href='manageMember.jsp'>Manage User</a></li>");
 							}
 						}
 						%>
@@ -101,16 +83,15 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
 
-					<a href="../user/wishlist.jsp" class="text-white fw-light"
-                ><button class="btn me-2" type="submit">
-                <img src="../../imgs/wishlist.png" style="width: 28px; height: auto;">
-                  <i class="fa-solid fa-book-heart fa-lg text-dark"></i></button 
-              ></a>
-					
-					<a href="../user/cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
-              ></a><a href="../user/profilePage.jsp" class="text-white fw-light">
+					<a href="../user/wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="../user/cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a><a href="../user/profilePage.jsp" class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
@@ -141,81 +122,150 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 	</nav>
 
 	<div class="container my-5">
-		<h1 class="text-center pt-4">Delete User</h1>
+		<h1 class="text-center pt-4">Manage User</h1>
+		<form action="" method="post" class="my-3">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control"
+					placeholder="Search Username" name="searchUsername" required>
+				<button class="btn btn-primary" type="submit">Search</button>
+			</div>
+		</form>
 
-		<table class="table mt-3">
-			<thead>
-				<tr>
-					<th scope="col">Name</th>
-					<th scope="col">Username</th>
-					<th scope="col">Email</th>
-					<th scope="col"></th>
-				</tr>
-			</thead>
-			<tbody>
+		<!-- Display user details for updating or deleting -->
+		<%
+		String searchUsername = request.getParameter("searchUsername");
+		if (searchUsername != null) {
+			UserDAO userDAO = new UserDAO();
+			int userId = userDAO.getUserIDByUsername(searchUsername);
 
-				<!-- <tr class="align-middle">
-            
-            <td >John Doe</td>
-            <td >johndoe</td>
-            <td >johndoe@gmail.com</td>
-            <td class = "text-center"><button class="btn btn-danger" type="submit">Delete</button></td>
-           
-          </tr> -->
+			if (userId != -1) {
+				// User found, retrieve their details
+				User user = userDAO.getUserById(userId);
+				Address address = user.getAddress();
+		%>
+		<div class="updateUser">
+			<form action="<%=request.getContextPath()%>/UpdateUserServlet"
+				method="post">
+				<input type="hidden" name="userId" value="<%=user.getUserId()%>">
+				<div class="row">
+					<div class="col-md-6 mb-3">
+						<label for="firstName">First Name:</label> <input type="text"
+							class="form-control" name="firstName"
+							value="<%=user.getFirstName()%>" required>
+					</div>
+					<div class="col-md-6 mb-3">
+						<label for="lastName">Last Name:</label> <input type="text"
+							class="form-control" name="lastName"
+							value="<%=user.getLastName()%>" required>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 mb-3">
+						<label for="email">Email:</label> <input type="email"
+							class="form-control" name="email" value="<%=user.getEmail()%>"
+							required>
+					</div>
+					<div class="col-md-6 mb-3">
+						<label for="contactNumber">Contact Number:</label> <input
+							type="tel" class="form-control" name="contactNumber"
+							value="<%=user.getContactNumber() != null && !user.getContactNumber().equals("0") ? user.getContactNumber() : ""%>">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 mb-3">
+						<label for="addressLine1">Address Line 1:</label> <input
+							type="text" class="form-control" name="addressLine1"
+							value="<%= address != null && address.getAddressLine1() != null ? address.getAddressLine1() : "" %>">
 
-				<%
-				try {
-					Class.forName("com.mysql.jdbc.Driver");
-					String connURL = "jdbc:mysql://localhost/lunar_db?user=root&password=123456&serverTimezone=UTC";
-					Connection conn = DriverManager.getConnection(connURL);
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 mb-3">
+						<label for="addressLine2">Address Line 2:</label> <input
+							type="text" class="form-control" name="addressLine2"
+							value="<%= address != null && address.getAddressLine2() != null ? address.getAddressLine2() : "" %>">
+					</div>
 
-					String sqlStr = "SELECT user_id, username, fname, lname, email FROM users WHERE role = ?;";
-					PreparedStatement stmt = conn.prepareStatement(sqlStr);
-					stmt.setString(1, "member");
-					ResultSet rs = stmt.executeQuery();
-					
+					<div class="col-md-6 mb-3">
+						<label for="postal">Postal Code:</label> <input type="text"
+							class="form-control" name="postal"
+							value="<%=address != null ? (address.getPostal() != 0 ? address.getPostal() : "") : ""%>">
 
-					while (rs.next()) {
-						int id = rs.getInt("user_id");
-						String user = rs.getString("username");
-						String fname = rs.getString("fname");
-						String lname = rs.getString("lname");
-						String email = rs.getString("email");
-				%>
-				<tr class="align-middle">
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Update</button>
+			</form>
 
-					<td><%=fname + lname%></td>
-					<td><%=user%></td>
-					<td><%=email%></td>
-
-					<td class="text-center">
-						<button class="btn btn-danger" type="button"
-							onclick="deleteMember('<%=id%>')">Delete</button>
-					</td>
-
-				</tr>
-				<%
-				}
-		
-				stmt.close();
-				conn.close();
-				} catch (Exception e) {
-				out.println("Error: " + e);
-				}
-				%>
-
-
-			</tbody>
-
-		</table>
-
-
-
-
-
-
-
+			<form action="<%=request.getContextPath()%>/DeleteUserServlet"
+				method="post">
+				<input type="hidden" name="userId" value="<%=user.getUserId()%>">
+				<button type="submit" class="btn btn-danger mt-2">Delete
+					User</button>
+			</form>
+		</div>
+		<%
+		} else {
+		%>
+		<p class="text-danger">No such user exists.</p>
+		<%
+		}
+		%>
+		<%
+		}
+		%>
 	</div>
+
+	<script>
+        function displayAlertAndRemoveParams(message, redirectUrl) {
+            alert(message);
+            // Remove the parameter from the URL after displaying the alert
+            const urlWithoutParams = window.location.href.split('?')[0];
+            window.history.replaceState({}, document.title, urlWithoutParams);
+            // Redirect to the specified URL after the alert is closed
+            window.location.href = redirectUrl;
+        }
+    </script>
+
+    <%-- Display success message if user details were updated successfully --%>
+    <%
+    String updateSuccess = request.getParameter("updateSuccess");
+    if (updateSuccess != null && updateSuccess.equals("true")) {
+        %>
+        <script>
+            displayAlertAndRemoveParams("User details updated successfully.", "<%=request.getContextPath()%>/jsp/admin/manageMember.jsp");
+        </script>
+    <% } %>
+
+    <%-- Display error message if there was an error updating user details --%>
+    <%
+    String updateError = request.getParameter("updateError");
+    if (updateError != null && updateError.equals("true")) {
+        %>
+        <script>
+            displayAlertAndRemoveParams("Failed to update user details.", "<%=request.getContextPath()%>/jsp/admin/manageMember.jsp");
+        </script>
+    <% } %>
+
+    <%-- Display success message if user was deleted successfully --%>
+    <%
+    String deleteSuccess = request.getParameter("deleteSuccess");
+    if (deleteSuccess != null && deleteSuccess.equals("true")) {
+        %>
+        <script>
+            displayAlertAndRemoveParams("User deleted successfully.", "<%=request.getContextPath()%>/jsp/admin/manageMember.jsp");
+        </script>
+    <% } %>
+
+    <%-- Display error message if there was an error deleting user --%>
+    <%
+    String deleteError = request.getParameter("deleteError");
+    if (deleteError != null && deleteError.equals("true")) {
+        %>
+        <script>
+            displayAlertAndRemoveParams("Failed to delete user.", "<%=request.getContextPath()%>/jsp/admin/manageMember.jsp");
+        </script>
+    <% } %>
+
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
