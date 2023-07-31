@@ -60,13 +60,25 @@ public class AuthorizePaymentServlet extends HttpServlet {
 		    allOrderDetails.add(orderDetails);
 		}
 
-
+		
+		
+		
 
 		session.setAttribute("allOrderDetails", allOrderDetails);
 		
         try {
+        	int userId = (int) session.getAttribute("sessUserID");
+        	User user = new User();
+        	UserDAO userDAO = new UserDAO();
+        	
+        	user = userDAO.getFirstAndLastNameById(userId);
+        	
+        	String fname = user.getFirstName();
+        	String lname = user.getLastName();
+        	
+        	
             PaymentServices paymentServices = new PaymentServices();
-            String approvalLink = paymentServices.authorizePayment(allOrderDetails);
+            String approvalLink = paymentServices.authorizePayment(allOrderDetails, fname, lname);
  
             response.sendRedirect(approvalLink);
              
@@ -74,7 +86,9 @@ public class AuthorizePaymentServlet extends HttpServlet {
             request.setAttribute("errorMessage", ex.getMessage());
             ex.printStackTrace();
             request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
+        } catch (Exception e) {
+			System.out.print("Error: " + e);
+		}
 	}
 
 }

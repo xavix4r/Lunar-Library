@@ -35,6 +35,11 @@ public class User {
         this.username = username;
         this.totalAmountSpent = totalAmountSpent;
     }
+    
+    public User(String firstName, String lastName) {
+    	this.firstName = firstName;
+    	this.lastName = lastName;
+    }
 
     // Getters and setters for the attributes
 

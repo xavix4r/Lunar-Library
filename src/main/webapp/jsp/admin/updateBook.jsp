@@ -81,10 +81,21 @@ if (resultSet.next()) {
 						<%
 						if (role != null) {
 							if (role.equals("admin") || role.equals("owner")) {
-								out.print("<li class='nav-item'><a class='nav-link' href='addBook.jsp'>Add Book</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='manageBook.jsp'>Manage Books</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='removeMember.jsp'>Delete User</a></li>");
-							}
+						%>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add
+								Book</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
+								Books</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+								User</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales
+								Inquiry</a></li>
+						<%
+						}
 						}
 						%>
 
@@ -101,11 +112,18 @@ if (resultSet.next()) {
                   <i class="fa-solid fa-cart-shopping fa-lg text-white"></i></button 
               ></a>
 
-					<a href="../user/profilePage.jsp" class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
+					<div class="dropdown me-2">
+						<button class="btn btn-success dropdown-toggle text-white fw-bold"
+							type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+							aria-expanded="false">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
-					</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="jsp/user/profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
+						</ul>
+					</div>
 
 					<form action="../user/logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>

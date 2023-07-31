@@ -126,11 +126,16 @@ try {
 							if (role.equals("admin") || role.equals("owner")) {
 						%>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add Book</a></li>
+							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add
+								Book</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage Books</a></li>
+							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
+								Books</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete User</a></li>
+							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+								User</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales Inquiry</a></li>
 						<%
 						}
 						}
@@ -227,21 +232,6 @@ try {
 						type="number" class="form-control" id="postal"
 						value="${shippingAddress.postalCode}" disabled>
 						
-						<%-- <div class="form-check mt-4">
-                    <input class="form-check-input" type="radio" name="shipping" id="profileShipping">
-                    <label class="form-check-label fw-bold" for="profileShipping">
-                     Use profile shipping address
-                    </label>
-                  </div>
-
-                   <label for="address1" class="form-label mt-3">Address Line 1:</label>
-                  <input type="text" class="form-control" id="address1" value="<%= address1 %>" disabled>
-
-                  <label for="address2" class="form-label mt-3">Address Line 2:</label>
-                  <input type="text" class="form-control" id="address2" value="<%= address2 %>" disabled>
-
-                  <label for="postal" class="form-label mt-3">Postal Code</label>
-                  <input type="number" class="form-control" id="postal" value="<%= postal %>" disabled> --%>
 
 				</div>
 

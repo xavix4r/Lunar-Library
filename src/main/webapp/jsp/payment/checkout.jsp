@@ -118,10 +118,20 @@ $(document).ready(function() {
 						<%
 						if (role != null) {
 							if (role.equals("admin") || role.equals("owner")) {
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/addBook.jsp'>Add Book</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/manageBook.jsp'>Manage Books</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/removeMember.jsp'>Delete User</a></li>");
-							}
+						%>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add
+								Book</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
+								Books</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+								User</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales Inquiry</a></li>
+						<%
+						}
 						}
 						%>
 

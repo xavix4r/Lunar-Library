@@ -107,21 +107,6 @@ if (role == null || username == null) {
 						</button></a>
 
 
-					<%-- <div class="dropdown me-2">
-						<a href="#" class="text-white fw-light dropdown-toggle"
-							role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-							aria-expanded="false">
-							<button class="btn btn-success me-4" type="button">
-								<i class="fa-solid fa-user me-2"></i><%=username%>
-							</button>
-						</a>
-						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
-							<li><a class="dropdown-item"
-								href="<%=request.getContextPath()%>/viewOrders?userId=<%=userId%>">Orders</a></li>
-						</ul>
-					</div> --%>
-
 					<div class="dropdown me-2">
 						<button class="btn btn-success dropdown-toggle text-white fw-bold"
 							type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"

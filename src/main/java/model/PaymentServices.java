@@ -11,10 +11,10 @@ public class PaymentServices {
     private static final String CLIENT_SECRET = "EPPmAY3xwhN2eWSUGM0Vlcg3T401TFjabBvExZxVT6tbJfwq4-re2xH_h3xwsN0ecmBbsLtAkfjR1Nr8";
     private static final String MODE = "sandbox";
  
-    public String authorizePayment(ArrayList<OrderDetails> allOrderDetails)        
+    public String authorizePayment(ArrayList<OrderDetails> allOrderDetails, String fname, String lname)        
             throws PayPalRESTException {       
  
-        Payer payer = getPayerInformation();
+        Payer payer = getPayerInformation(fname, lname);
         RedirectUrls redirectUrls = getRedirectURLs();
         List<Transaction> listTransaction = getTransactionInformation(allOrderDetails);
          
@@ -32,14 +32,16 @@ public class PaymentServices {
  
     }
      
-    private Payer getPayerInformation() {
+    private Payer getPayerInformation(String fname, String lname) {
         Payer payer = new Payer();
         payer.setPaymentMethod("paypal");
          
         PayerInfo payerInfo = new PayerInfo();
-        payerInfo.setFirstName("John")
-                 .setLastName("Doe")
+        payerInfo.setFirstName(fname)
+                 .setLastName(lname)
                  .setEmail("sb-d3aez26518238@personal.example.com");
+        		
+        
          
         payer.setPayerInfo(payerInfo);
          
@@ -56,7 +58,7 @@ public class PaymentServices {
      
     private List<Transaction> getTransactionInformation(ArrayList<OrderDetails> allOrderDetails) {
     	 Details details = new Details();
-			/* details.setShipping("10.00"); */
+			
     	    
     	   
         double totalAmount = 0.00;
@@ -70,7 +72,7 @@ public class PaymentServices {
      
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
-		/* transaction.setDescription(allOrderDetails.getProductName()); */
+		
         
         ItemList itemList = new ItemList();
         List<Item> items = new ArrayList<>();
@@ -84,7 +86,7 @@ public class PaymentServices {
             item.setName(orderDetails.getProductName());
             item.setPrice(orderDetails.getTotalStr());
             item.setQuantity(orderDetails.getQuantity());
-			/* item.setTax(String.format("%.2f" ,orderDetails.getTax())); */
+			
             
             items.add(item);
         }

@@ -26,7 +26,7 @@ public class OrderDetails {
    }
  
    public double getTotal() {
-	   return total;
+	   return total * quantity;
    }
      
     public String getTotalStr() {
@@ -49,6 +49,6 @@ public int getQuantityInt() {
 	}
 	
 	public double getTax() {
-		return total * 0.08;
+		return (total * quantity) * 0.08;
 	}
 }
