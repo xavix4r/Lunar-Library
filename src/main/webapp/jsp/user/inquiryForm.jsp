@@ -1,18 +1,16 @@
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="model.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 
 <%
 String username = (String) session.getAttribute("sessUsername");
 String role = (String) session.getAttribute("sessRole");
-int userId = (int) session.getAttribute("sessUserID");
-if (role == null || username == null) {
-	response.sendRedirect("login.jsp");
+
+if ("guest".equals(role)) {
+	response.sendRedirect("../user/login.jsp");
 }
 %>
-
-<%@ page import="java.sql.*"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,15 +31,10 @@ if (role == null || username == null) {
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Home</title>
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
+<title>Customer Inquiry</title>
 </head>
-
 <body>
+
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="home.jsp"><h1 class="store-name">LUNAR
@@ -85,14 +78,10 @@ if (role == null || username == null) {
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/jsp/admin/bookInquiry.jsp">Book
 								Inquiry</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/admin/viewInquiry.jsp">Customer
-								Inquiries</a></li>
 						<%
 						}
 						}
 						%>
-
 
 
 					</ul>
@@ -125,9 +114,8 @@ if (role == null || username == null) {
 							<li><a class="dropdown-item"
 								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
 							<li><a class="dropdown-item"
-								href="<%=request.getContextPath()%>/jsp/user/inquiryForm.jsp">Inquiry
-									Form</a></li>
-
+								href="<%=request.getContextPath()%>/inquiryForm.jsp">Customer
+									Inquiry Form</a></li>
 						</ul>
 					</div>
 
@@ -153,93 +141,98 @@ if (role == null || username == null) {
 					%>
 
 
-
-
 				</div>
 			</div>
 		</div>
 	</nav>
 
-	<div
-		class="hero-image d-flex justify-content-center align-items-center p-5">
-		<div class="row container w-100 mt-2 ">
-			<div class="col-md-6 mt-2 d-flex justify-content-end">
-				<img class="img-fluid me-5 astronaut"
-					src="../../imgs/astronaut2.png" alt="astronaut" />
+	<div class="container my-5">
+		<h1 class="text-center mb-4">Customer Inquiry Form</h1>
+		<form action="<%=request.getContextPath()%>/CustomerInquiryServlet"
+			method="post">
+			<input type="hidden" name="user_id" value="${sessUserID}" />
+
+			<div class="mb-3">
+				<label for="inquiry_type" class="form-label">Inquiry Type:</label> <select
+					name="inquiry_type" id="inquiry_type" class="form-select">
+					<option value="Books">Inquiries regarding books,
+						recommendations, or requests.</option>
+					<option value="Orders">Inquiries regarding orders,
+						delivery, and payment.</option>
+					<option value="Other">Other general inquiries or reports.</option>
+				</select>
 			</div>
 
-			<div
-				class="col-md-6 mt-2 d-flex justify-content-start align-items-start flex-column form">
-				<h1 class="text-white hero-text">Embark on an interstellar
-					Journey through the pages</h1>
-				<div class="search mt-5 w-100">
-					<form action="searchResults.jsp">
-						<i class="fa fa-search"></i> <input type="text"
-							class="form-control" name="search" placeholder="Search...">
-
-						<select name="searchBy"
-							class="form-select text-center border-3 border-primary rounded-5"
-							id="search">
-							<option value="title" class="text-start" selected>By
-								Title</option>
-							<option value="author" class="text-start">By Author</option>
-						</select>
-					</form>
-				</div>
+			<div class="mb-3">
+				<label for="inquiry_text" class="form-label">Inquiry Text:</label>
+				<textarea name="inquiry_text" id="inquiry_text" rows="4" cols="50"
+					class="form-control"></textarea>
 			</div>
-		</div>
+
+			<div class="form-check mb-3">
+				<input type="checkbox" name="require_response" id="require_response"
+					class="form-check-input"> <label for="require_response"
+					class="form-check-label">Require a response?</label>
+			</div>
+
+			<div id="email_section" style="display: none;">
+				<label for="email" class="form-label">Email:</label> <input
+					type="email" name="email" id="email" class="form-control" />
+			</div>
+
+			<input type="submit" value="Submit Inquiry"
+				class="btn btn-primary mt-3" />
+		</form>
 	</div>
 
-	<div class="container mt-4">
-		<h1 class="text-center text-dark">Our Collection</h1>
-		<div class="row mt-5 g-5 text-center">
+	<script>
+		//Function to display alert and remove parameters from URL
+		function displayAlertAndRemoveParams(message) {
+			alert(message);
+			// Remove the parameter from the URL after displaying the alert
+			const urlWithoutParams = window.location.href.split('?')[0];
+			window.history.replaceState({}, document.title, urlWithoutParams);
+		}
 
-			<%
-			try {
-				Class.forName("com.mysql.jdbc.Driver");
-				String connURL = "jdbc:mysql://localhost/lunar_db?user=root&password=123456&serverTimezone=UTC";
-				Connection conn = DriverManager.getConnection(connURL);
+		// Show/hide email section based on "Require a response?" checkbox
+		const requireResponseCheckbox = document
+				.getElementById("require_response");
+		const emailSection = document.getElementById("email_section");
 
-				String sqlStr = "SELECT book_id, title, price, image_url FROM books;";
-				PreparedStatement stmt = conn.prepareStatement(sqlStr);
-				ResultSet rs = stmt.executeQuery();
-
-				while (rs.next()) {
-					int id = rs.getInt("book_id");
-					String title = rs.getString("title");
-					double price = rs.getDouble("price");
-					String imageLocation = rs.getString("image_url");
-			%>
-			<div class="col-lg-4">
-				<div class="card home-card p-3">
-					<a href="bookDetails.jsp?bookId=<%=id%>"> <img
-						src="<%=request.getContextPath()%><%=imageLocation%>"
-						class="card-img-top" alt="...">
-						<div class="card-body">
-							<h5 class="card-title"><%=title%></h5>
-							<h5 class="card-title">
-								$<%=price%></h5>
-						</div>
-					</a>
-				</div>
-			</div>
-			<%
+		requireResponseCheckbox.addEventListener("change", function() {
+			if (this.checked) {
+				emailSection.style.display = "block";
+			} else {
+				emailSection.style.display = "none";
 			}
+		});
+	</script>
+	
+	<%
+	String success = request.getParameter("success");
+	if (success != null && success.equals("true")) {
+	%>
+	<script>
+		displayAlertAndRemoveParams("Inquiry submitted successfully.");
+	</script>
+	<%
+	}
+	%>
 
-			conn.close();
-			} catch (Exception e) {
-			out.println("Error: " + e);
-			}
-			%>
-
-
-		</div>
-	</div>
-
+	<%-- Display error message if there was an error submitting the inquiry --%>
+	<%
+	String error = request.getParameter("error");
+	if (error != null && error.equals("true")) {
+	%>
+	<script>
+		displayAlertAndRemoveParams("Failed to submit inquiry.");
+	</script>
+	<%
+	}
+	%>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+		integrity="sha384-9nLAwpMNqCZRr8n4usjz40C7nK4lYnC4KnZaySf3h/UNiJ6Y9hmjg4vflSQK8wGd"
 		crossorigin="anonymous"></script>
 </body>
 </html>
-

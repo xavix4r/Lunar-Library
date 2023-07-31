@@ -35,6 +35,18 @@ public class User {
         this.username = username;
         this.totalAmountSpent = totalAmountSpent;
     }
+    
+    public User(int userId, String username, String firstName, String lastName, String email,String role, String contactNumber, 
+    		Address address) {
+    this.userId = userId;
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.role = role;
+    this.contactNumber = contactNumber;
+    this.address = address;
+}
 
     // Getters and setters for the attributes
 

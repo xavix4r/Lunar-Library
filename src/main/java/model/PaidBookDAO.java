@@ -262,7 +262,7 @@ public ArrayList<Integer> getAmountOrderedForCustomer (ArrayList<Integer> orderI
 	    return bookTitles;
 	}
 
-	
+}
 	
 
 	
@@ -311,4 +311,4 @@ public ArrayList<Integer> getAmountOrderedForCustomer (ArrayList<Integer> orderI
 	
 	
 
-}
+
