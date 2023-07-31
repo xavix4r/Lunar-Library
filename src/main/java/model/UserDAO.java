@@ -38,6 +38,7 @@ public class UserDAO {
 	    return userId;
 	}
 	
+<<<<<<< HEAD
 	public User getUserById(int userId) throws SQLException {
         User user = null;
         try {
@@ -49,6 +50,42 @@ public class UserDAO {
                     "WHERE u.user_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userId);
+=======
+	public User getFirstAndLastNameById(int userid) throws SQLException, ClassNotFoundException{
+		User user = null;
+	 
+	    try {
+	        // Establish a database connection
+	        Connection conn = DBConnection.getConnection();
+
+	        String sql = "SELECT fname, lname FROM users WHERE user_id = ?";
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, userid);
+
+	        ResultSet rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	           user = new User();
+	          user.setFirstName(rs.getString("fname"));
+	           user.setLastName(rs.getString("lname"));
+	        }
+
+	        rs.close();
+	        pstmt.close();
+	        conn.close();
+	    } catch (SQLException e) {
+	      
+	        e.printStackTrace();
+	        throw e;
+	    }
+
+	    return user;
+	}
+	
+	
+	
+	
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9
 
             ResultSet rs = pstmt.executeQuery();
 

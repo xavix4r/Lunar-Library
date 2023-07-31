@@ -132,6 +132,8 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
 								User</a></li>
+						<li class="nav-item"><a class="nav-link active"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales Inquiry</a></li>
 						<%
 						}
 						}

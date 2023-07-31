@@ -64,10 +64,20 @@ if (role == null || username == null) {
 						<%
 						if (role != null) {
 							if (role.equals("admin") || role.equals("owner")) {
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/addBook.jsp'>Add Book</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/manageBook.jsp'>Manage Books</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='../admin/removeMember.jsp'>Delete User</a></li>");
-							}
+						%>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add
+								Book</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
+								Books</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+								User</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales Inquiry</a></li>
+						<%
+						}
 						}
 						%>
 
@@ -90,17 +100,17 @@ if (role == null || username == null) {
 							class="btn me-4" type="submit">
 							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
 						</button></a>
+						
 					<div class="dropdown me-2">
-						<a href="#" class="text-white fw-light dropdown-toggle"
-							role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+						<button class="btn btn-success dropdown-toggle text-white fw-bold"
+							type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
 							aria-expanded="false">
-							<button class="btn btn-success me-4" type="button">
-								<i class="fa-solid fa-user me-2"></i><%=username%>
-							</button>
-						</a>
+							<i class="fa-solid fa-user me-2"></i><%=username%>
+						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
-							<li><a class="dropdown-item" href="viewOrders.jsp">Orders</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
 						</ul>
 					</div>
 

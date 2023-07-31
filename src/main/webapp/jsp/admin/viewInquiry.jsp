@@ -32,7 +32,36 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD:src/main/webapp/jsp/admin/viewInquiry.jsp
 <title>View Inquiries</title>
+=======
+<title>Add Book</title>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+	function deleteMember(id) {
+		console.log(id)
+		$.ajax({
+			url : "processMemberRemoval.jsp",
+			type : "POST",
+			data : {
+				user_id : id
+			},
+			success : function(response) {
+				console.log(response)
+				alert("Successfully removed member");
+				location.reload();
+			},
+			error : function(xhr, status, error) {
+				alert("Failed to remove member");
+			}
+		});
+	}
+</script>
+
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9:src/main/webapp/jsp/admin/removeMember.jsp
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
@@ -62,12 +91,27 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						if (role != null) {
 							if (role.equals("admin") || role.equals("owner")) {
 						%>
+<<<<<<< HEAD:src/main/webapp/jsp/admin/viewInquiry.jsp
 						<li class="nav-item"><a class="nav-link" href="addBook.jsp">Add
 								Book</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="manageBook.jsp">Manage Books</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="removeMember.jsp">Delete User</a></li>
+=======
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add
+								Book</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
+								Books</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+								User</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales
+								Inquiry</a></li>
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9:src/main/webapp/jsp/admin/removeMember.jsp
 						<%
 						}
 						}
@@ -77,6 +121,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 					if (role != null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
+<<<<<<< HEAD:src/main/webapp/jsp/admin/viewInquiry.jsp
 					<a href="../user/cart.jsp" class="text-white fw-light">
 						<button class="btn me-4" type="submit">
 							<i class="fa-solid fa-cart-shopping fa-lg text-white"></i>
@@ -86,6 +131,31 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
 					</a>
+=======
+
+					<a href="../user/wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="../user/cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a>
+					<div class="dropdown me-2">
+						<button class="btn btn-success dropdown-toggle text-white fw-bold"
+							type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							<i class="fa-solid fa-user me-2"></i><%=username%>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="jsp/user/profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
+						</ul>
+					</div>
+
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9:src/main/webapp/jsp/admin/removeMember.jsp
 					<form action="../user/logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
 					</form>
@@ -122,10 +192,29 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 			</thead>
 			<tbody>
 				<%
+<<<<<<< HEAD:src/main/webapp/jsp/admin/viewInquiry.jsp
 				CustomerInquiryDAO inquiryDAO = new CustomerInquiryDAO();
 				List<CustomerInquiry> inquiries = inquiryDAO.getAllInquiries();
 				int rowNum = 1;
 				for (CustomerInquiry inquiry : inquiries) {
+=======
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					String connURL = "jdbc:mysql://localhost/lunar_db?user=root&password=123456&serverTimezone=UTC";
+					Connection conn = DriverManager.getConnection(connURL);
+
+					String sqlStr = "SELECT user_id, username, fname, lname, email FROM users WHERE role = ?;";
+					PreparedStatement stmt = conn.prepareStatement(sqlStr);
+					stmt.setString(1, "member");
+					ResultSet rs = stmt.executeQuery();
+
+					while (rs.next()) {
+						int id = rs.getInt("user_id");
+						String user = rs.getString("username");
+						String fname = rs.getString("fname");
+						String lname = rs.getString("lname");
+						String email = rs.getString("email");
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9:src/main/webapp/jsp/admin/removeMember.jsp
 				%>
 				<tr>
 					<td><%=rowNum++%></td>
@@ -153,6 +242,15 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 				</tr>
 				<%
 				}
+<<<<<<< HEAD:src/main/webapp/jsp/admin/viewInquiry.jsp
+=======
+
+				stmt.close();
+				conn.close();
+				} catch (Exception e) {
+				out.println("Error: " + e);
+				}
+>>>>>>> 720830251e08dd568cccc24546d54fa269b81da9:src/main/webapp/jsp/admin/removeMember.jsp
 				%>
 			</tbody>
 		</table>

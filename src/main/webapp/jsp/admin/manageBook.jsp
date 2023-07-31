@@ -44,8 +44,8 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="../user/home.jsp"><h1 class="store-name">LUNAR
-					LIBRARY</h1></a>
+			<a class="navbar-brand" href="../user/home.jsp"><h1
+					class="store-name">LUNAR LIBRARY</h1></a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
 				aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -61,18 +61,29 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
-							aria-current="page" href="../user/home.jsp">Home</a></li>
-						<li class="nav-item"><a class="nav-link " href="../user/genres.jsp">Genres</a>
-						</li>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="../user/home.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link "
+							href="../user/genres.jsp">Genres</a></li>
 
 						<%
 						if (role != null) {
 							if (role.equals("admin") || role.equals("owner")) {
-								out.print("<li class='nav-item'><a class='nav-link' href='addBook.jsp'>Add Book</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link active' href='manageBook.jsp'>Manage Books</a></li>");
-								out.print("<li class='nav-item'><a class='nav-link' href='removeMember.jsp'>Delete User</a></li>");
-							}
+						%>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add
+								Book</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
+								Books</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+								User</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales
+								Inquiry</a></li>
+						<%
+						}
 						}
 						%>
 
@@ -84,20 +95,28 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
 
-					<a href="../user/wishlist.jsp" class="text-white fw-light"
-                ><button class="btn me-2" type="submit">
-                <img src="../../imgs/wishlist.png" style="width: 28px; height: auto;">
-                  <i class="fa-solid fa-book-heart fa-lg text-dark"></i></button 
-              ></a>
-					
-					<a href="../user/cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
-              ></a><a href="../user/profilePage.jsp" class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
+					<a href="../user/wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="../user/cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a>
+
+					<div class="dropdown me-2">
+						<button class="btn btn-success dropdown-toggle text-white fw-bold"
+							type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+							aria-expanded="false">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
-					</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="jsp/user/profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
+						</ul>
+					</div>
 
 					<form action="../user/logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
@@ -128,7 +147,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 
 		<table class="books-table">
 			<tr>
-				
+
 				<th>Title</th>
 				<th>Author</th>
 				<th>Price</th>
@@ -165,7 +184,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 					String description = rs.getString("description");
 			%>
 			<tr>
-				
+
 				<td><%=title%></td>
 				<td><%=author%></td>
 				<td><%=price%></td>

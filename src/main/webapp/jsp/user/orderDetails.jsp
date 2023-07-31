@@ -69,7 +69,7 @@ if (role == null || username == null) {
 							href="<%=request.getContextPath()%>/jsp/user/genres.jsp">Genres</a>
 						</li>
 
-						<%
+					<%
 						if (role != null) {
 							if (role.equals("admin") || role.equals("owner")) {
 						%>
@@ -82,6 +82,8 @@ if (role == null || username == null) {
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
 								User</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales Inquiry</a></li>
 						<%
 						}
 						}
@@ -104,17 +106,27 @@ if (role == null || username == null) {
 							<img src="<%=request.getContextPath()%>/imgs/wishlist.png"
 								style="width: 28px; height: auto;"> <i
 								class="fa-solid fa-book-heart fa-lg text-dark"></i>
-						</button></a> <a href="<%=request.getContextPath()%>/jsp/user/cart.jsp"
+						</button></a> 
+						
+						<a href="<%=request.getContextPath()%>/jsp/user/cart.jsp"
 						class="text-white fw-light"><button class="btn me-4"
 							type="submit">
 							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
-						</button></a> <a href="<%=request.getContextPath()%>/jsp/user/profilePage.jsp"
-						class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
+						</button></a> 
+						
+						
+						<div class="dropdown me-2">
+						<button class="btn btn-success dropdown-toggle text-white fw-bold"
+							type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+							aria-expanded="false">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
-					</a>
-
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
+						</ul>
+					</div>
 					<form action="<%=request.getContextPath()%>/jsp/user/logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
 					</form>
