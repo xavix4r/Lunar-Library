@@ -36,21 +36,35 @@ public class OrderDetailsDAO {
 	}
 
 	
-	public int insertOrderItems(int orderId, ArrayList<OrderDetails> allOrderDetails) throws SQLException, ClassNotFoundException {
+	public int insertOrderItemsAndUpdateBooks(int orderId, ArrayList<OrderDetails> allOrderDetails) throws SQLException, ClassNotFoundException {
 	    Connection conn = null;
 	    int numRowsAffected = 0;
 
 	    try {
 	        conn = DBConnection.getConnection();
-	        String sqlStr = "INSERT INTO order_items (order_id, book_id, quantityOrdered) VALUES (?, ?, ?)";
-	        PreparedStatement pstmt = conn.prepareStatement(sqlStr);
+	        String insertSqlStr = "INSERT INTO order_items (order_id, book_id, quantityOrdered) VALUES (?, ?, ?)";
+	        String updateSqlStr = "UPDATE books SET quantity = quantity - ? WHERE book_id = ?";
+	        
+	        // Prepare the insert statement for order_items table
+	        PreparedStatement insertPstmt = conn.prepareStatement(insertSqlStr);
+	        
+	        // Prepare the update statement for books table
+	        PreparedStatement updatePstmt = conn.prepareStatement(updateSqlStr);
 
 	        for (OrderDetails orderDetails : allOrderDetails) {
-	            pstmt.setInt(1, orderId);
-	            pstmt.setInt(2, orderDetails.getbookId());
-	            pstmt.setInt(3, orderDetails.getQuantityInt());
+	            int bookId = orderDetails.getbookId();
+	            int quantityOrdered = orderDetails.getQuantityInt();
 
-	            numRowsAffected += pstmt.executeUpdate();
+	            // Insert order item into order_items table
+	            insertPstmt.setInt(1, orderId);
+	            insertPstmt.setInt(2, bookId);
+	            insertPstmt.setInt(3, quantityOrdered);
+	            numRowsAffected += insertPstmt.executeUpdate();
+
+	            // Update the books table
+	            updatePstmt.setInt(1, quantityOrdered);
+	            updatePstmt.setInt(2, bookId);
+	            updatePstmt.executeUpdate();
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -62,6 +76,7 @@ public class OrderDetailsDAO {
 
 	    return numRowsAffected;
 	}
+
 	
 	public int insertOrderAddress(int orderId, String address1, String address2, int postal) throws SQLException, ClassNotFoundException {
 	    Connection conn = null;
