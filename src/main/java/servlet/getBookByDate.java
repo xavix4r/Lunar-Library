@@ -44,17 +44,23 @@ public class getBookByDate extends HttpServlet {
 			PaidBookDAO paidBookDAO = new PaidBookDAO();
 
 			ArrayList<Integer> paidBookIds = paidBookDAO.getAllBookIdsByDate(startDate, endDate);
+			
+			if(paidBookIds.size() > 0) {
+				
+				ArrayList<String> bookTitles = paidBookDAO.getBookTitlesByBookIds(paidBookIds);
 
-			// Get the list of book titles corresponding to the book IDs
-			ArrayList<String> bookTitles = paidBookDAO.getBookTitlesByBookIds(paidBookIds);
+				ArrayList<Integer> amountOrderedForEachBook = paidBookDAO.getAmountOrderedForPaidBooks(paidBookIds);
 
-			ArrayList<Integer> amountOrderedForEachBook = paidBookDAO.getAmountOrderedForPaidBooks(paidBookIds);
+				HttpSession session = request.getSession();
+				request.setAttribute("bookTitlesByDate", bookTitles);
+				request.setAttribute("amountOrderedForEach", amountOrderedForEachBook);
+			}
+			
+			else {
+				request.setAttribute("nobookspurchased", true);
+			}
 
-			HttpSession session = request.getSession();
-            session.setAttribute("bookTitlesByDate", bookTitles);
-            session.setAttribute("amountOrderedForEach", amountOrderedForEachBook);
-
-			// Dispatch to the JSP page to display the updated data
+			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/admin/salesInquiry.jsp");
 			dispatcher.forward(request, response);
 		} catch (SQLException e) {

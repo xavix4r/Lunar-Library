@@ -43,24 +43,42 @@ public class getBookByCustomer extends HttpServlet {
 			
 			int userid = userDAO.getUserIDByUsername(username);
 			
-			PaidOrderDAO paidOrderDAO = new PaidOrderDAO();
+			if(userid > 0) {
+				
+				PaidOrderDAO paidOrderDAO = new PaidOrderDAO();
+				
+				ArrayList<Integer> allOrderIds = paidOrderDAO.getAllOrderIdsByUserid(userid);
+				
+				if(allOrderIds.size() > 0) {
+					
+					PaidBookDAO paidBookDAO = new PaidBookDAO();
+
+					ArrayList<Integer> paidBookIds = paidBookDAO.getAllBookIdsByOrderId(allOrderIds);
+					
+					ArrayList<String> allBookTitles = paidBookDAO.getBookTitlesByBookIds(paidBookIds);
+
+					ArrayList<Integer> amountOrderedForEachBook = paidBookDAO.getAmountOrderedForCustomer(allOrderIds);
+
+					  HttpSession session = request.getSession();
+			            request.setAttribute("bookTitlesCustomer", allBookTitles);
+			            request.setAttribute("amountOrderedCustomer", amountOrderedForEachBook);
+				}
+
+				
+				else if(allOrderIds.size() <= 0) {
+					request.setAttribute("booknotfound", true);
+				}
+				
+				
+			}
 			
-			ArrayList<Integer> allOrderIds = paidOrderDAO.getAllOrderIdsByUserid(userid);
+			else if(userid <= 0) {
+				request.setAttribute("usernotfound", true);
+			}
+			
 			
 
-			PaidBookDAO paidBookDAO = new PaidBookDAO();
-
-			ArrayList<Integer> paidBookIds = paidBookDAO.getAllBookIdsByOrderId(allOrderIds);
 			
-			ArrayList<String> allBookTitles = paidBookDAO.getBookTitlesByBookIds(paidBookIds);
-
-			ArrayList<Integer> amountOrderedForEachBook = paidBookDAO.getAmountOrderedForCustomer(allOrderIds);
-
-			  HttpSession session = request.getSession();
-	            session.setAttribute("bookTitlesCustomer", allBookTitles);
-	            session.setAttribute("amountOrderedCustomer", amountOrderedForEachBook);
-
-			// Dispatch to the JSP page to display the updated data
 			RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/admin/salesInquiry.jsp");
 			dispatcher.forward(request, response);
 		} catch (SQLException e) {

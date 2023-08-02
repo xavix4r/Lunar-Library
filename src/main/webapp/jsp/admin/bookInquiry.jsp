@@ -57,10 +57,12 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link" aria-current="page"
+						<li class="nav-item"><a class="nav-link "
+							aria-current="page"
 							href="<%=request.getContextPath()%>/jsp/user/home.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/user/genres.jsp">Genres</a></li>
+							href="<%=request.getContextPath()%>/jsp/user/genres.jsp">Genres</a>
+						</li>
 
 						<%
 						if (role != null) {
@@ -73,55 +75,86 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
 								Books</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+							href="<%=request.getContextPath()%>/jsp/admin/manageMember.jsp">Manage
 								User</a></li>
 						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales
+								Inquiry</a></li>
+						<li class="nav-item"><a class="nav-link active"
 							href="<%=request.getContextPath()%>/jsp/admin/bookInquiry.jsp">Book
 								Inquiry</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/ViewInquiriesServlet">Customer
+								Inquiries</a></li>
 						<%
 						}
 						}
 						%>
 
+
+
 					</ul>
+
 
 					<%
 					if (role != null) {
+						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
+
 					<a href="<%=request.getContextPath()%>/jsp/user/wishlist.jsp"
-						class="text-white fw-light">
-						<button class="btn me-2" type="submit">
+						class="text-white fw-light"><button class="btn me-2"
+							type="submit">
 							<img src="<%=request.getContextPath()%>/imgs/wishlist.png"
 								style="width: 28px; height: auto;"> <i
 								class="fa-solid fa-book-heart fa-lg text-dark"></i>
-						</button>
-					</a> <a href="<%=request.getContextPath()%>/user/cart.jsp"
-						class="text-white fw-light">
-						<button class="btn me-4" type="submit">
+						</button></a> <a href="<%=request.getContextPath()%>/jsp/user/cart.jsp"
+						class="text-white fw-light"><button class="btn me-4"
+							type="submit">
 							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
-						</button>
-					</a> <a href="<%=request.getContextPath()%>/jsp/user/profilePage.jsp"
-						class="text-white fw-light">
-						<button class="btn btn-success me-4" type="submit">
+						</button></a>
+
+
+					<div class="dropdown me-2">
+						<button class="btn btn-success dropdown-toggle text-white fw-bold"
+							type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+							aria-expanded="false">
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
-					</a>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/jsp/user/profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/jsp/user/inquiryForm.jsp">Inquiry
+									Form</a></li>
+
+						</ul>
+					</div>
+
+
+
 					<form action="<%=request.getContextPath()%>/jsp/user/logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
 					</form>
+
 					<%
 					} else if (role.equals("guest")) {
 					%>
-					<a href="<%=request.getContextPath()%>/jsp/user/login.jsp"
-						class="text-white fw-light">
+
+					<a href="login.jsp" class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">Login</button>
-					</a> <a href="<%=request.getContextPath()%>/user/signUp.jsp"
-						class="text-white fw-light">
+					</a> <a href="signUp.jsp" class="text-white fw-light">
 						<button class="btn btn-dark" type="submit">Sign Up</button>
 					</a>
+
 					<%
 					}
+					}
 					%>
+
+
+
 
 				</div>
 			</div>

@@ -1,18 +1,16 @@
-<%@ page import="java.util.ArrayList" %>
+<%
+String username = (String) session.getAttribute("sessUsername");
+String role = (String) session.getAttribute("sessRole");
+int userId = (int) session.getAttribute("sessUserID");
+if (role == null || username == null) {
+	response.sendRedirect("login.jsp");
+}
+%>
+
 <%@ page import="java.sql.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-	
-<%
 
-String username = (String) session.getAttribute("sessUsername");
-String role = (String) session.getAttribute("sessRole");
-
-if (!"admin".equals(role) && !"owner".equals(role)) {
-    response.sendRedirect("../user/login.jsp");
-} 
-
-%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,24 +27,23 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 	rel="stylesheet"
 	integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
 	crossorigin="anonymous" />
-<link rel="stylesheet" type="text/css" href="../../css/styles.css" />
+<link rel="stylesheet" type="text/css" href="./css/styles.css" />
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Add Book</title>
+<title>Error</title>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 </head>
-
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
 		<div class="container-fluid">
-			<a class="navbar-brand"
-				href="<%=request.getContextPath()%>/jsp/user/home.jsp"><h1
-					class="store-name">LUNAR LIBRARY</h1></a>
+			<a class="navbar-brand" href="./jsp/user/home.jsp"><h1 class="store-name">LUNAR
+					LIBRARY</h1></a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
 				aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -62,18 +59,16 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link "
-							aria-current="page"
-							href="<%=request.getContextPath()%>/jsp/user/home.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/user/genres.jsp">Genres</a>
+							aria-current="page" href="./jsp/user/home.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="./jsp/user/genres.jsp">Genres</a>
 						</li>
 
 						<%
 						if (role != null) {
 							if (role.equals("admin") || role.equals("owner")) {
 						%>
-						<li class="nav-item"><a class="nav-link active"
+						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/jsp/admin/addBook.jsp">Add
 								Book</a></li>
 						<li class="nav-item"><a class="nav-link"
@@ -106,15 +101,13 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
 
-					<a href="<%=request.getContextPath()%>/jsp/user/wishlist.jsp"
-						class="text-white fw-light"><button class="btn me-2"
-							type="submit">
-							<img src=".<%=request.getContextPath()%>/imgs/wishlist.png"
+					<a href="./jsp/user/wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="./imgs/wishlist.png"
 								style="width: 28px; height: auto;"> <i
 								class="fa-solid fa-book-heart fa-lg text-dark"></i>
-						</button></a> <a href="<%=request.getContextPath()%>/jsp/user/cart.jsp"
-						class="text-white fw-light"><button class="btn me-4"
-							type="submit">
+						</button></a> <a href="./jsp/user/cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
 							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
 						</button></a>
 
@@ -126,8 +119,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<li><a class="dropdown-item"
-								href="<%=request.getContextPath()%>/jsp/user/profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item" href="./jsp/user/profilePage.jsp">Profile</a></li>
 							<li><a class="dropdown-item"
 								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
 							<li><a class="dropdown-item"
@@ -139,7 +131,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 
 
 
-					<form action="<%=request.getContextPath()%>/jsp/user/logout.jsp">
+					<form action="./jsp/user/logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
 					</form>
 
@@ -166,89 +158,13 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 		</div>
 	</nav>
 	
-	<div
-		class="container h-100 d-flex align-items-center justify-content-center">
-		<div class="addBook-form mt-5 p-5">
-			<h1 class="text-center">Add Book</h1>
-			<form action="${pageContext.request.contextPath}/AddBookServlet" class="row g-4" method="POST"
-enctype="multipart/form-data">
-				<div class="col-md-12">
-					<label for="title" class="form-label fw-light text-black">Title:</label>
-					<input type="text" class="form-control" id="title" name="title">
-				</div>
+	<h1>An Error Occured</h1>
+	
+	<a href = "./jsp/user/home.jsp"><button class = "btn btn-primary">Return To Home</button></a>
 
-				<div class="col-md-6">
-					<label for="author" class="form-label fw-light text-black">Author:</label>
-					<input type="text" class="form-control" id="author" name="author">
-				</div>
-
-				<div class="col-md-6">
-					<label for="publisher" class="form-label fw-light text-black">Publisher:</label>
-					<input type="text" class="form-control" id="publisher"
-						name="publisher">
-				</div>
-
-				<div class="col-md-6">
-					<label for="price" class="form-label fw-light text-black">Price:</label>
-					<input type="text" class="form-control" id="price" name="price">
-				</div>
-
-				<div class="col-md-6">
-					<label for="quantity" class="form-label fw-light text-black">Quantity:</label>
-					<input type="text" class="form-control" id="quantity"
-						name="quantity">
-				</div>
-
-				<div class="col-md-6">
-					<label for="publication_date"
-						class="form-label fw-light text-black">Publication Date:</label> <input
-						type="date" class="form-control" id="publication_date"
-						name="publication_date">
-				</div>
-
-				<div class="col-md-6">
-					<label for="isbn" class="form-label fw-light text-black">ISBN:</label>
-					<input type="text" class="form-control" id="isbn" name="isbn">
-				</div>
-
-				<div class="col-md-6">
-					<label for="genre" class="form-label fw-light text-black">Genre:</label>
-					<select class="form-select" id="genre" name="genre">
-						<option value="" selected disabled>Select Genre</option>
-						<option value="Fantasy">Fantasy</option>
-						<option value="Mystery">Mystery</option>
-						<option value="Science Fiction">Science Fiction</option>
-					</select>
-				</div>
-
-				<div class="col-md-6">
-					<label for="rating" class="form-label fw-light text-black">Rating:</label>
-					<input type="text" class="form-control" id="rating" name="rating">
-				</div>
-
-				<div class="col-md-12">
-					<label for="description" class="form-label fw-light text-black">Description:</label>
-					<textarea class="form-control" id="description" name="description"></textarea>
-				</div>
-
-				<div class="col-md-12">
-					<label for="image_upload" class="form-label fw-light text-black">Image
-						Upload:</label> <input type="file" class="form-control" id="image_upload"
-						name="image_upload">
-				</div>
-
-				<div class="col-md-12">
-					<input class="btn btn-primary btn-lg border-0 formBtns fw-light"
-						type="submit" value="Add Book">
-				</div>
-			</form>
-		</div>
-	</div>
-
-	<script
+<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
 		crossorigin="anonymous"></script>
 </body>
-
 </html>

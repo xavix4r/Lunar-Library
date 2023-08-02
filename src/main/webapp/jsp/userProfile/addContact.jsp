@@ -77,10 +77,17 @@ if (role == null || username == null) {
 							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
 								Books</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+							href="<%=request.getContextPath()%>/jsp/admin/manageMember.jsp">Manage
 								User</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/SalesInquiry">Sales Inquiry</a></li>
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales
+								Inquiry</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/bookInquiry.jsp">Book
+								Inquiry</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/ViewInquiriesServlet">Customer
+								Inquiries</a></li>
 						<%
 						}
 						}

@@ -56,8 +56,9 @@ if (resultSet.next()) {
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="../user/home.jsp"><h1 class="store-name">LUNAR
-					LIBRARY</h1></a>
+			<a class="navbar-brand"
+				href="<%=request.getContextPath()%>/jsp/user/home.jsp"><h1
+					class="store-name">LUNAR LIBRARY</h1></a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
 				aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -74,8 +75,10 @@ if (resultSet.next()) {
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
 						<li class="nav-item"><a class="nav-link"
-							aria-current="page" href="../user/home.jsp">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="../user/genres.jsp">Genres</a>
+							aria-current="page"
+							href="<%=request.getContextPath()%>/jsp/user/home.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/user/genres.jsp">Genres</a>
 						</li>
 
 						<%
@@ -89,15 +92,23 @@ if (resultSet.next()) {
 							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
 								Books</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+							href="<%=request.getContextPath()%>/jsp/admin/manageMember.jsp">Manage
 								User</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/SalesInquiry">Sales
 								Inquiry</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/bookInquiry.jsp">Book
+								Inquiry</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/ViewInquiriesServlet">Customer
+								Inquiries</a></li>
 						<%
 						}
 						}
 						%>
+
+
 
 					</ul>
 
@@ -106,11 +117,19 @@ if (resultSet.next()) {
 					if (role != null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
-					
-					<a href="../user/cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white"></i></button 
-              ></a>
+
+					<a href="<%=request.getContextPath()%>/jsp/user/wishlist.jsp"
+						class="text-white fw-light"><button class="btn me-2"
+							type="submit">
+							<img src="<%=request.getContextPath()%>/imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="<%=request.getContextPath()%>/jsp/user/cart.jsp"
+						class="text-white fw-light"><button class="btn me-4"
+							type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a>
+
 
 					<div class="dropdown me-2">
 						<button class="btn btn-success dropdown-toggle text-white fw-bold"
@@ -119,13 +138,20 @@ if (resultSet.next()) {
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<li><a class="dropdown-item" href="jsp/user/profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/jsp/user/profilePage.jsp">Profile</a></li>
 							<li><a class="dropdown-item"
 								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/jsp/user/inquiryForm.jsp">Inquiry
+									Form</a></li>
+
 						</ul>
 					</div>
 
-					<form action="../user/logout.jsp">
+
+
+					<form action="<%=request.getContextPath()%>/jsp/user/logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
 					</form>
 
@@ -133,9 +159,9 @@ if (resultSet.next()) {
 					} else if (role.equals("guest")) {
 					%>
 
-					<a href="../user/login.jsp" class="text-white fw-light">
+					<a href="login.jsp" class="text-white fw-light">
 						<button class="btn btn-success me-4" type="submit">Login</button>
-					</a> <a href="../user/signUp.jsp" class="text-white fw-light">
+					</a> <a href="signUp.jsp" class="text-white fw-light">
 						<button class="btn btn-dark" type="submit">Sign Up</button>
 					</a>
 
@@ -143,6 +169,9 @@ if (resultSet.next()) {
 					}
 					}
 					%>
+
+
+
 
 				</div>
 			</div>
