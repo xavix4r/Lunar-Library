@@ -145,7 +145,7 @@ try {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
+						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" href="home.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link" href="genres.jsp">Genres</a>
 						</li>
@@ -161,10 +161,17 @@ try {
 							href="<%=request.getContextPath()%>/jsp/admin/manageBook.jsp">Manage
 								Books</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/admin/removeMember.jsp">Delete
+							href="<%=request.getContextPath()%>/jsp/admin/manageMember.jsp">Manage
 								User</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/SalesInquiry">Sales Inquiry</a></li>
+							href="<%=request.getContextPath()%>/SalesInquiry">Sales
+								Inquiry</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/admin/bookInquiry.jsp">Book
+								Inquiry</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/ViewInquiriesServlet">Customer
+								Inquiries</a></li>
 						<%
 						}
 						}
@@ -179,17 +186,18 @@ try {
 					if (role != null) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
-					
-					<a href="wishlist.jsp" class="text-white fw-light"
-                ><button class="btn me-2" type="submit">
-                <img src="../../imgs/wishlist.png" style="width: 28px; height: auto;">
-                  <i class="fa-solid fa-book-heart fa-lg text-dark"></i></button 
-              ></a>
-					
-					<a href="cart.jsp" class="text-white fw-light"
-                ><button class="btn me-4" type="submit">
-                  <i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i></button 
-              ></a>
+
+					<a href="wishlist.jsp" class="text-white fw-light"><button
+							class="btn me-2" type="submit">
+							<img src="../../imgs/wishlist.png"
+								style="width: 28px; height: auto;"> <i
+								class="fa-solid fa-book-heart fa-lg text-dark"></i>
+						</button></a> <a href="cart.jsp" class="text-white fw-light"><button
+							class="btn me-4" type="submit">
+							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
+						</button></a>
+
+
 					<div class="dropdown me-2">
 						<button class="btn btn-success dropdown-toggle text-white fw-bold"
 							type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
@@ -200,8 +208,14 @@ try {
 							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
 							<li><a class="dropdown-item"
 								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/jsp/user/inquiryForm.jsp">Inquiry
+									Form</a></li>
+
 						</ul>
 					</div>
+
+
 
 					<form action="logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>

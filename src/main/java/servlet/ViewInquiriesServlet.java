@@ -34,7 +34,7 @@ public class ViewInquiriesServlet extends HttpServlet {
         try {
             List<CustomerInquiry> inquiries = inquiryDAO.getAllInquiries();
             request.setAttribute("inquiries", inquiries);
-            request.getRequestDispatcher(request.getContextPath() + "/jsp/admin/viewInquiry.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/admin/viewInquiry.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle the error and redirect to an error page if needed

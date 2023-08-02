@@ -86,7 +86,7 @@ if (role == null || username == null) {
 							href="<%=request.getContextPath()%>/jsp/admin/bookInquiry.jsp">Book
 								Inquiry</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/jsp/admin/viewInquiry.jsp">Customer
+							href="<%=request.getContextPath()%>/ViewInquiriesServlet">Customer
 								Inquiries</a></li>
 						<%
 						}
