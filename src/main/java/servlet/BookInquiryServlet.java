@@ -12,50 +12,56 @@ import javax.servlet.http.HttpSession;
 import model.BookRanking;
 import model.BookRankingDAO;
 
-@WebServlet("/BookInquiry")
+@WebServlet("/BookInquiryServlet")
 public class BookInquiryServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public BookInquiryServlet() {
-        super();
-    }
+	public BookInquiryServlet() {
+		super();
+	}
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            // Create a BookRankingDAO instance
-            BookRankingDAO bookRankingDAO = new BookRankingDAO();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
+			String searchTitle = request.getParameter("searchTitle");
+			BookRankingDAO bookRankingDAO = new BookRankingDAO(); // Create an instance of BookRankingDAO
 
-            // Retrieve the best selling books
-            ArrayList<BookRanking> bestSellingBooks = bookRankingDAO.getBestSellingBooks();
+			if (searchTitle != null && !searchTitle.isEmpty()) {
+				// Perform book search based on the searchTitle
+				ArrayList<BookRanking> searchResults = bookRankingDAO.searchBooksByTitle(searchTitle);
 
-            // Retrieve the least selling books
-            ArrayList<BookRanking> leastSellingBooks = bookRankingDAO.getLeastSellingBooks();
+				request.setAttribute("searchResults", searchResults);
 
-            // Retrieve the low stock books
-            ArrayList<BookRanking> lowStockBooks = bookRankingDAO.getLowStockBooks();
+				// Forward the request to bookInquiry.jsp
+				request.getRequestDispatcher("jsp/admin/bookInquiry.jsp").forward(request, response);
+			} else {
+				// Load the initial page with best-selling, least-selling, and low-stock books
+				ArrayList<BookRanking> bestSellingBooks = bookRankingDAO.getBestSellingBooks();
+				ArrayList<BookRanking> leastSellingBooks = bookRankingDAO.getLeastSellingBooks();
+				ArrayList<BookRanking> lowStockBooks = bookRankingDAO.getLowStockBooks();
 
-            HttpSession session = request.getSession();
-            session.setAttribute("bestSellingBooks", bestSellingBooks);
-            session.setAttribute("leastSellingBooks", leastSellingBooks);
-            session.setAttribute("lowStockBooks", lowStockBooks); // Store low stock books in session
+				HttpSession session = request.getSession();
+				session.setAttribute("bestSellingBooks", bestSellingBooks);
+				session.setAttribute("leastSellingBooks", leastSellingBooks);
+				session.setAttribute("lowStockBooks", lowStockBooks);
 
-            // Forward the request to bookInquiry.jsp
-            request.getRequestDispatcher("jsp/admin/bookInquiry.jsp").forward(request, response);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle the SQL exception
-            response.sendRedirect("error.jsp");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            // Handle the class not found exception
-            response.sendRedirect("error.jsp");
-        }
-    }
+				// Forward the request to bookInquiry.jsp
+				request.getRequestDispatcher("jsp/admin/bookInquiry.jsp").forward(request, response);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// Handle the SQL exception
+			response.sendRedirect("error.jsp");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			// Handle the class not found exception
+			response.sendRedirect("error.jsp");
+		}
+	}
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 
 }

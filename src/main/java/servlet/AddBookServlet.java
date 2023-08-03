@@ -47,7 +47,7 @@ public class AddBookServlet extends HttpServlet {
             String fileName = filePart.getSubmittedFileName();
 
             // Set the image URL to "../imgs/" + uniqueFileName
-            image_url = "../../imgs/" + fileName;
+            image_url = "/imgs/" + fileName;
 
             
             String uploadPath = uploadDirectory + File.separator + fileName;

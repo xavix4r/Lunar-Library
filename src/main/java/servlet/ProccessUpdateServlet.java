@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import javax.servlet.http.Part;
  * Servlet implementation class ProccessUpdateServlet
  */
 @WebServlet("/ProccessUpdateServlet")
+@MultipartConfig(location = "/org", fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
 public class ProccessUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -68,7 +70,7 @@ public class ProccessUpdateServlet extends HttpServlet {
 	                String fileName = filePart.getSubmittedFileName();
 
 	                
-	                image_url = "../../imgs/" + fileName;
+	                image_url = "/imgs/" + fileName;
 
 	                String uploadPath = uploadDirectory + File.separator + fileName;
 

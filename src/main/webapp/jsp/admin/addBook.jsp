@@ -109,7 +109,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 					<a href="<%=request.getContextPath()%>/jsp/user/wishlist.jsp"
 						class="text-white fw-light"><button class="btn me-2"
 							type="submit">
-							<img src=".<%=request.getContextPath()%>/imgs/wishlist.png"
+							<img src="../../imgs/wishlist.png"
 								style="width: 28px; height: auto;"> <i
 								class="fa-solid fa-book-heart fa-lg text-dark"></i>
 						</button></a> <a href="<%=request.getContextPath()%>/jsp/user/cart.jsp"

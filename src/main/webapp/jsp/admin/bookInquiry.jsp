@@ -57,8 +57,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link "
-							aria-current="page"
+						<li class="nav-item"><a class="nav-link " aria-current="page"
 							href="<%=request.getContextPath()%>/jsp/user/home.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/jsp/user/genres.jsp">Genres</a>
@@ -162,6 +161,55 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 	</nav>
 
 	<div class="container my-5">
+		<h1 class="text-center mb-4">Book Inquiry</h1>
+		<form action="<%=request.getContextPath()%>/BookInquiryServlet"
+			method="post" class="my-3">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control"
+					placeholder="Search Book Title" name="searchTitle" required>
+				<button class="btn btn-primary" type="submit">Search</button>
+			</div>
+		</form>
+
+		<div
+			class="table-responsive px-md-4 px-2 pt-3 bg-white shadow-lg rounded-3">
+			<table class="table table-borderless">
+				<thead>
+					<tr class="border-bottom">
+						<th scope="col">Title</th>
+						<th scope="col">Copies Sold</th>
+						<th scope="col">Stocks Available</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%
+					ArrayList<BookRanking> searchResults = (ArrayList<BookRanking>) request.getAttribute("searchResults");
+					String searchTitle = request.getParameter("searchTitle");
+
+					if (searchResults != null && !searchResults.isEmpty()) {
+						for (BookRanking bookRanking : searchResults) {
+					%>
+					<tr class="align-middle border-bottom">
+						<td><%=bookRanking.getTitle()%></td>
+						<td><%=bookRanking.getCopiesSold()%></td>
+						<td><%=bookRanking.getQuantity()%></td>
+					</tr>
+					<%
+					}
+					} else if (searchTitle != null && !searchTitle.isEmpty()) {
+					%>
+					<tr>
+						<td colspan="3" class="text-center">No matching books found</td>
+					</tr>
+					<%
+					}
+					%>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="container my-5">
 		<div class="row">
 			<div class="col-md-6 mt-5">
 				<h6>Best Selling Books</h6>
@@ -234,44 +282,46 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 					</table>
 				</div>
 			</div>
-			
-			
-		<div class="col-md-12 mt-5">
-    <h6>Books with Low Stock Level</h6>
-    <div class="table-responsive px-md-4 px-2 pt-3 bg-white shadow-lg rounded-3">
-        <table class="table table-borderless">
-            <thead>
-                <tr class="border-bottom">
-                    <th scope="col">Title</th>
-                    <th scope="col">Stocks Left</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% 
-                ArrayList<BookRanking> lowStockBooks = new BookRankingDAO().getLowStockBooks();
-                if (lowStockBooks != null && !lowStockBooks.isEmpty()) {
-                    for (BookRanking bookRanking : lowStockBooks) {
-                %>
-                <tr class="align-middle border-bottom">
-                    <td><%= bookRanking.getTitle() %></td>
-                    <td><%= bookRanking.getQuantity() %></td>
-                </tr>
-                <%
-                    }
-                } else {
-                %>
-                <tr>
-                    <td colspan="2" class="text-center">No books with low stock level</td>
-                </tr>
-                <%
-                }
-                %>
-            </tbody>
-        </table>
-    </div>
-</div>
-</div>
-</div>
+
+
+			<div class="col-md-12 mt-5">
+				<h6>Books with Low Stock Level</h6>
+				<div
+					class="table-responsive px-md-4 px-2 pt-3 bg-white shadow-lg rounded-3">
+					<table class="table table-borderless">
+						<thead>
+							<tr class="border-bottom">
+								<th scope="col">Title</th>
+								<th scope="col">Stocks Available</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							ArrayList<BookRanking> lowStockBooks = new BookRankingDAO().getLowStockBooks();
+							if (lowStockBooks != null && !lowStockBooks.isEmpty()) {
+								for (BookRanking bookRanking : lowStockBooks) {
+							%>
+							<tr class="align-middle border-bottom">
+								<td><%=bookRanking.getTitle()%></td>
+								<td><%=bookRanking.getQuantity()%></td>
+							</tr>
+							<%
+							}
+							} else {
+							%>
+							<tr>
+								<td colspan="2" class="text-center">No books with low stock
+									level</td>
+							</tr>
+							<%
+							}
+							%>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

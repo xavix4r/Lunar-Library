@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*"%>
 
 <%
@@ -41,20 +42,27 @@ if (resultSet.next()) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/e1c5337441.js" crossorigin="anonymous"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
-  <link rel="stylesheet" type="text/css" href="../../css/styles.css" />
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Update Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap"
+	rel="stylesheet" />
+<script src="https://kit.fontawesome.com/e1c5337441.js"
+	crossorigin="anonymous"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+	crossorigin="anonymous" />
+<link rel="stylesheet" type="text/css" href="../../css/styles.css" />
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Update Book</title>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
+	<nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
 		<div class="container-fluid">
 			<a class="navbar-brand"
 				href="<%=request.getContextPath()%>/jsp/user/home.jsp"><h1
@@ -74,8 +82,7 @@ if (resultSet.next()) {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
-							aria-current="page"
+						<li class="nav-item"><a class="nav-link" aria-current="page"
 							href="<%=request.getContextPath()%>/jsp/user/home.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/jsp/user/genres.jsp">Genres</a>
@@ -178,79 +185,91 @@ if (resultSet.next()) {
 		</div>
 	</nav>
 
-<div class="updateBook">
-    <h1 class="text-center py-3">Update Book</h1>
-    <form action="${pageContext.request.contextPath}/ProcessUpdateServlet?existingImageURL=<%= image_url %>" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="bookId" value="<%=bookId%>">
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="title" class="form-label">Title:</label>
-          <input type="text" class="form-control" id="title" name="title" value="<%=title%>">
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="author" class="form-label">Author:</label>
-          <input type="text" class="form-control" id="author" name="author" value="<%=author%>">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="publisher" class="form-label">Publisher:</label>
-          <input type="text" class="form-control" id="publisher" name="publisher" value="<%=publisher%>">
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="price" class="form-label">Price:</label>
-          <input type="text" class="form-control" id="price" name="price" value="<%=price%>">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="quantity" class="form-label">Quantity:</label>
-          <input type="text" class="form-control" id="quantity" name="quantity" value="<%=quantity%>">
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="publicationDate" class="form-label">Publication Date:</label>
-          <input type="text" class="form-control" id="publicationDate" name="publicationDate" value="<%=publicationDate%>">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4 mb-3">
-          <label for="isbn" class="form-label">ISBN:</label>
-          <input type="text" class="form-control" id="isbn" name="isbn" value="<%=isbn%>">
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="genre" class="form-label">Genre:</label>
-          <input type="text" class="form-control" id="genre" name="genre" value="<%=genre%>">
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="rating" class="form-label">Rating:</label>
-          <input type="text" class="form-control" id="rating" name="rating" value="<%=rating%>">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12 mb-3">
-          <label for="description" class="form-label">Description:</label>
-          <textarea class="form-control" id="description" name="description"><%=description%></textarea>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12 mb-3">
-          <label for="bookImage" class="form-label">New Book Image:</label>
-          <input type="file" class="form-control" id="bookImage" name="bookImage">
-        </div>
-      </div>
-      <input type="submit" class="btn btn-primary" value="Update Book">
-    </form>
-  </div>
+	<div class="updateBook">
+		<h1 class="text-center py-3">Update Book</h1>
+		<form
+			action="<%=request.getContextPath()%>/ProccessUpdateServlet?existingImageURL=<%=image_url%>"
+			method="POST" enctype="multipart/form-data">
+			<input type="hidden" name="bookId" value="<%=bookId%>">
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label for="title" class="form-label">Title:</label> <input
+						type="text" class="form-control" id="title" name="title"
+						value="<%=title%>">
+				</div>
+				<div class="col-md-6 mb-3">
+					<label for="author" class="form-label">Author:</label> <input
+						type="text" class="form-control" id="author" name="author"
+						value="<%=author%>">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label for="publisher" class="form-label">Publisher:</label> <input
+						type="text" class="form-control" id="publisher" name="publisher"
+						value="<%=publisher%>">
+				</div>
+				<div class="col-md-6 mb-3">
+					<label for="price" class="form-label">Price:</label> <input
+						type="text" class="form-control" id="price" name="price"
+						value="<%=price%>">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label for="quantity" class="form-label">Quantity:</label> <input
+						type="text" class="form-control" id="quantity" name="quantity"
+						value="<%=quantity%>">
+				</div>
+				<div class="col-md-6 mb-3">
+					<label for="publicationDate" class="form-label">Publication
+						Date:</label> <input type="text" class="form-control" id="publicationDate"
+						name="publicationDate" value="<%=publicationDate%>">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 mb-3">
+					<label for="isbn" class="form-label">ISBN:</label> <input
+						type="text" class="form-control" id="isbn" name="isbn"
+						value="<%=isbn%>">
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="genre" class="form-label">Genre:</label> <input
+						type="text" class="form-control" id="genre" name="genre"
+						value="<%=genre%>">
+				</div>
+				<div class="col-md-4 mb-3">
+					<label for="rating" class="form-label">Rating:</label> <input
+						type="text" class="form-control" id="rating" name="rating"
+						value="<%=rating%>">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 mb-3">
+					<label for="description" class="form-label">Description:</label>
+					<textarea class="form-control" id="description" name="description"><%=description%></textarea>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 mb-3">
+					<label for="bookImage" class="form-label">New Book Image:</label> <input
+						type="file" class="form-control" id="bookImage" name="bookImage">
+				</div>
+			</div>
+			<input type="submit" class="btn btn-primary" value="Update Book">
+		</form>
+	</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-9nLAwpMNqCZRr8n4usjz40C7nK4lYnC4KnZaySf3h/UNiJ6Y9hmjg4vflSQK8wGd"
-    crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-9nLAwpMNqCZRr8n4usjz40C7nK4lYnC4KnZaySf3h/UNiJ6Y9hmjg4vflSQK8wGd"
+		crossorigin="anonymous"></script>
 </body>
 </html>
 <%
 } else {
-    // No matching book found
-    response.sendRedirect("manageBook.jsp");
+// No matching book found
+response.sendRedirect("manageBook.jsp");
 }
 
 // Close the database connection

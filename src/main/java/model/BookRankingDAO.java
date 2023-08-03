@@ -87,4 +87,33 @@ public class BookRankingDAO {
     }
 
 
+    public ArrayList<BookRanking> searchBooksByTitle(String title) throws SQLException, ClassNotFoundException {
+        ArrayList<BookRanking> searchResults = new ArrayList<>();
+        Connection conn = DBConnection.getConnection();
+
+        String sql = "SELECT books.title, SUM(order_items.quantityOrdered) AS copiesSold, books.quantity " +
+                     "FROM books " +
+                     "LEFT JOIN order_items ON books.book_id = order_items.book_id " +
+                     "WHERE books.title LIKE ? " +
+                     "GROUP BY books.book_id;";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, "%" + title + "%");
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            String bookTitle = rs.getString("title");
+            int copiesSold = rs.getInt("copiesSold");
+            int quantity = rs.getInt("quantity");
+            BookRanking bookRanking = new BookRanking(bookTitle, copiesSold, quantity);
+            searchResults.add(bookRanking);
+        }
+
+        rs.close();
+        pstmt.close();
+        conn.close();
+
+        return searchResults;
+    }
+
 }

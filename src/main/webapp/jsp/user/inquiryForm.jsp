@@ -37,8 +37,9 @@ if ("guest".equals(role)) {
 
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top p-3">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="home.jsp"><h1 class="store-name">LUNAR
-					LIBRARY</h1></a>
+			<a class="navbar-brand"
+				href="<%=request.getContextPath()%>/jsp/user/home.jsp"><h1
+					class="store-name">LUNAR LIBRARY</h1></a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
 				aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -54,9 +55,10 @@ if ("guest".equals(role)) {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link active"
-							aria-current="page" href="home.jsp">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="genres.jsp">Genres</a>
+						<li class="nav-item"><a class="nav-link " aria-current="page"
+							href="<%=request.getContextPath()%>/jsp/user/home.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/jsp/user/genres.jsp">Genres</a>
 						</li>
 
 						<%
@@ -78,10 +80,14 @@ if ("guest".equals(role)) {
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/jsp/admin/bookInquiry.jsp">Book
 								Inquiry</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/ViewInquiriesServlet">Customer
+								Inquiries</a></li>
 						<%
 						}
 						}
 						%>
+
 
 
 					</ul>
@@ -92,13 +98,15 @@ if ("guest".equals(role)) {
 						if (role.equals("admin") || role.equals("owner") || role.equals("member")) {
 					%>
 
-					<a href="wishlist.jsp" class="text-white fw-light"><button
-							class="btn me-2" type="submit">
-							<img src="../../imgs/wishlist.png"
+					<a href="<%=request.getContextPath()%>/jsp/user/wishlist.jsp"
+						class="text-white fw-light"><button class="btn me-2"
+							type="submit">
+							<img src="<%=request.getContextPath()%>/imgs/wishlist.png"
 								style="width: 28px; height: auto;"> <i
 								class="fa-solid fa-book-heart fa-lg text-dark"></i>
-						</button></a> <a href="cart.jsp" class="text-white fw-light"><button
-							class="btn me-4" type="submit">
+						</button></a> <a href="<%=request.getContextPath()%>/jsp/user/cart.jsp"
+						class="text-white fw-light"><button class="btn me-4"
+							type="submit">
 							<i class="fa-solid fa-cart-shopping fa-lg text-white mt-3"></i>
 						</button></a>
 
@@ -110,18 +118,20 @@ if ("guest".equals(role)) {
 							<i class="fa-solid fa-user me-2"></i><%=username%>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<li><a class="dropdown-item" href="profilePage.jsp">Profile</a></li>
+							<li><a class="dropdown-item"
+								href="<%=request.getContextPath()%>/jsp/user/profilePage.jsp">Profile</a></li>
 							<li><a class="dropdown-item"
 								href="<%=request.getContextPath()%>/viewOrders">Orders</a></li>
 							<li><a class="dropdown-item"
-								href="<%=request.getContextPath()%>/inquiryForm.jsp">Customer
-									Inquiry Form</a></li>
+								href="<%=request.getContextPath()%>/jsp/user/inquiryForm.jsp">Inquiry
+									Form</a></li>
+
 						</ul>
 					</div>
 
 
 
-					<form action="logout.jsp">
+					<form action="<%=request.getContextPath()%>/jsp/user/logout.jsp">
 						<button class="btn btn-danger" type="submit">Logout</button>
 					</form>
 
@@ -139,6 +149,8 @@ if ("guest".equals(role)) {
 					}
 					}
 					%>
+
+
 
 
 				</div>
@@ -232,7 +244,7 @@ if ("guest".equals(role)) {
 	%>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-9nLAwpMNqCZRr8n4usjz40C7nK4lYnC4KnZaySf3h/UNiJ6Y9hmjg4vflSQK8wGd"
+		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
 		crossorigin="anonymous"></script>
 </body>
 </html>

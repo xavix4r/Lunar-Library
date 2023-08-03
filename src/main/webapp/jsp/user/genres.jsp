@@ -56,9 +56,9 @@ if (role == null || username == null) {
 				<div class="offcanvas-body">
 					<ul
 						class="navbar-nav justify-content-start align-items-center flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link active"
+						<li class="nav-item"><a class="nav-link "
 							aria-current="page" href="home.jsp">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="genres.jsp">Genres</a>
+						<li class="nav-item"><a class="nav-link active" href="genres.jsp">Genres</a>
 						</li>
 
 						<%

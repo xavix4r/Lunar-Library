@@ -3,7 +3,7 @@ package model;
 public class BookRanking {
     private String title;
     private int copiesSold;
-    private int quantity; // New field for quantity
+    private int quantity; 
 
     public BookRanking(String title, int copiesSold) {
         this.title = title;
