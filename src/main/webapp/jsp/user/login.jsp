@@ -100,11 +100,7 @@ if (validLogin != null && validLogin.equals("invalidLogin")) {
 
 		</div>
 
-
-
 	</div>
-
-
 
 
 	<script

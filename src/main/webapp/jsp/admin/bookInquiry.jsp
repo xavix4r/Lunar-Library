@@ -163,7 +163,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 
 	<div class="container my-5">
 		<div class="row">
-			<div class="col-md-12 mt-5">
+			<div class="col-md-6 mt-5">
 				<h6>Best Selling Books</h6>
 				<div
 					class="table-responsive px-md-4 px-2 pt-3 bg-white shadow-lg rounded-3">
@@ -199,7 +199,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 				</div>
 			</div>
 
-			<div class="col-md-12 mt-5">
+			<div class="col-md-6 mt-5">
 				<h6>Least Sold Books</h6>
 				<div
 					class="table-responsive px-md-4 px-2 pt-3 bg-white shadow-lg rounded-3">
@@ -269,6 +269,8 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
             </tbody>
         </table>
     </div>
+</div>
+</div>
 </div>
 
 	<script
