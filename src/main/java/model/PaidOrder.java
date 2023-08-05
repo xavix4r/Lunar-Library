@@ -7,12 +7,27 @@ public class PaidOrder {
     private int orderId;
     private Double total;
     private Date orderDate;
+    private String username;
 
     public PaidOrder(int userId, int orderId, Double total, Date orderDate) {
         this.userId = userId;
         this.orderId = orderId;
         this.total = total;
         this.orderDate = orderDate;
+    }
+    
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public PaidOrder(Double total, Date orderDate, String username) {
+    	this.total = total;
+    	this.orderDate = orderDate;
+    	this.username = username;
     }
 
     public int getUserId() {

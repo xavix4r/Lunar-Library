@@ -34,9 +34,10 @@ public class PaidBook extends Book{
 	}
 	
 	public String getTotalPaid() {
-	    DecimalFormat decimalFormat = new DecimalFormat("#.00");
-	    return decimalFormat.format( getPrice() * (double)quantityOrdered);
+	    double totalWithTax = getPrice() * getQuantityOrdered() * 1.08;
+	    return String.format("%.2f", totalWithTax);
 	}
+
 	
 
 }

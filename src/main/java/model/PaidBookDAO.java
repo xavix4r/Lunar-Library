@@ -261,52 +261,77 @@ public ArrayList<Integer> getAmountOrderedForCustomer (ArrayList<Integer> orderI
 	    // Return the list of book titles corresponding to the book IDs
 	    return bookTitles;
 	}
+	
+	public double getTotalEarningsWithinDate(String startDate, String endDate) throws SQLException, ClassNotFoundException {
+	  double grandTotal = 0.00;
+	    
+	    // Establish a database connection
+	    Connection conn = DBConnection.getConnection();
+	    
+	    String sql = "SELECT SUM(total_price) as grandTotal FROM orders WHERE order_date BETWEEN ? AND ?";
+	    PreparedStatement pstmt = conn.prepareStatement(sql);
+
+	    pstmt.setString(1, startDate + " 00:00:00"); 
+	    pstmt.setString(2, endDate + " 23:59:59");
+	    
+	    ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+           
+            grandTotal = rs.getDouble("grandTotal");
+        }
+
+        
+        rs.close();
+
+	   
+	    pstmt.close();
+	    conn.close();
+
+	    
+	    return grandTotal;
+	}
+	
+public double getTotalEarningForCustomer (ArrayList<Integer> orderIds) throws SQLException, ClassNotFoundException{
+		
+		String placeholders = String.join(",", Collections.nCopies(orderIds.size(), "?"));
+
+		
+		double grandTotal = 0.0;
+		    
+		    // Establish a database connection
+		    Connection conn = DBConnection.getConnection();
+		    
+		    String sql = "SELECT SUM(total_price) AS grandTotal FROM orders WHERE order_id IN (" + placeholders + ")";
+		    PreparedStatement pstmt = conn.prepareStatement(sql);
+		   
+		    for (int i = 0; i < orderIds.size(); i++) {
+		        pstmt.setInt(i + 1, orderIds.get(i));
+		    }
+		    
+		    ResultSet rs = pstmt.executeQuery();
+		    
+		    if (rs.next()) {
+		        // Retrieve the data from each row
+		         grandTotal = rs.getDouble("grandTotal");
+		     
+		    }
+		    
+		    // Close the result set, statement, and connection
+		    rs.close();
+		    pstmt.close();
+		    conn.close();
+		    
+		   
+		    return grandTotal;
+		
+	}
 
 }
 	
 
 	
-	/*
-	 * public ArrayList<PaidBook> getBooksSoldByDate (String startDate, String
-	 * endDate) throws SQLException, ClassNotFoundException{
-	 * 
-	 * ArrayList<PaidBook> booksSoldByDateDetails = new ArrayList<>();
-	 * 
-	 * // Establish a database connection Connection conn =
-	 * DBConnection.getConnection();
-	 * 
-	 * String sql =
-	 * "SELECT order_items.book_id, order_items.order_id, order_items.quantityOrdered, books.* FROM orders, order_items, books WHERE orders.order_date BETWEEN ? AND ? AND orders.order_id = order_items.order_id AND order_items.book_id = books.book_id"
-	 * ; PreparedStatement pstmt = conn.prepareStatement(sql); pstmt.setString(1,
-	 * startDate + " 00:00:00"); pstmt.setString(2, endDate + " 23:59:59");
-	 * 
-	 * ResultSet rs = pstmt.executeQuery();
-	 * 
-	 * while (rs.next()) { // Extract data from the ResultSet and create an
-	 * OrderDetails object int bookId = rs.getInt("book_id"); String title =
-	 * rs.getString("title"); String author = rs.getString("author"); Double price =
-	 * rs.getDouble("price"); int quantity = rs.getInt("quantity"); String publisher
-	 * = rs.getString("publisher"); Date publication_date =
-	 * rs.getDate("publication_date"); String isbn = rs.getString("isbn"); String
-	 * genre = rs.getString("genre"); Double rating = rs.getDouble("rating"); String
-	 * description = rs.getString("description"); String imgurl =
-	 * rs.getString("image_url"); int quantityOrdered =
-	 * rs.getInt("quantityOrdered"); int orderid = rs.getInt("order_id");
-	 * 
-	 * // Create the OrderDetails object and add it to the ArrayList PaidBook
-	 * paidBook = new PaidBook(bookId, title, author, price, quantity, publisher,
-	 * publication_date, isbn, genre, rating, description, imgurl, orderid ,
-	 * quantityOrdered);
-	 * 
-	 * booksSoldByDateDetails.add(paidBook); }
-	 * 
-	 * // Close the ResultSet, PreparedStatement, and Connection rs.close();
-	 * pstmt.close(); conn.close();
-	 * 
-	 * // Return the list of paid orders return booksSoldByDateDetails;
-	 * 
-	 * }
-	 */
+	
 	
 	
 	

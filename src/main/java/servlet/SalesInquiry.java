@@ -34,16 +34,39 @@ public class SalesInquiry extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		String sortBy;
+		String sortDirection;
+
+		if (request.getParameter("sortOption") != null) {
+		    sortBy = request.getParameter("sortOption");
+		} else {
+		    sortBy = "order_date"; // Default value
+		}
+
+		if (request.getParameter("sortDirection") != null) {
+		    sortDirection = request.getParameter("sortDirection");
+		} else {
+		    sortDirection = "asc"; // Default value
+		}
+
+		
+		
 		try {
             // Create a PaidOrderDAO instance
             PaidOrderDAO paidOrderDAO = new PaidOrderDAO();
 
             // Retrieve all paid orders for the user
             ArrayList<User> customerRanking = paidOrderDAO.getCustomerValueRanking();
+            
+            ArrayList<PaidOrder> allPaidOrders = paidOrderDAO.getAllPaidOrdersAdmin(sortBy, sortDirection);
+            
+            
 
             HttpSession session = request.getSession();
             session.setAttribute("customerRanking", customerRanking);
-
+            request.setAttribute("allPaidOrdersAdmin", allPaidOrders);
+            request.setAttribute("grandTotalDate", 0.00);
+            request.setAttribute("grandTotalCustomer", 0.00);
             // Forward the request to viewOrders.jsp
             request.getRequestDispatcher("jsp/admin/salesInquiry.jsp").forward(request, response);
             

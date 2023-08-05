@@ -39,14 +39,32 @@ public class getBookByDate extends HttpServlet {
 		String startDate = request.getParameter("startDate");
 		String endDate = request.getParameter("endDate");
 
+		String sortBy;
+		String sortDirection;
+
+		if (request.getParameter("sortOption") != null) {
+			sortBy = request.getParameter("sortOption");
+		} else {
+			sortBy = "order_date"; // Default value
+		}
+
+		if (request.getParameter("sortDirection") != null) {
+			sortDirection = request.getParameter("sortDirection");
+		} else {
+			sortDirection = "asc"; // Default value
+		}
+
 		try {
 
 			PaidBookDAO paidBookDAO = new PaidBookDAO();
+			PaidOrderDAO paidOrderDAO = new PaidOrderDAO();
 
 			ArrayList<Integer> paidBookIds = paidBookDAO.getAllBookIdsByDate(startDate, endDate);
-			
-			if(paidBookIds.size() > 0) {
-				
+
+			ArrayList<PaidOrder> allPaidOrders = paidOrderDAO.getAllPaidOrdersAdmin(sortBy, sortDirection);
+
+			if (paidBookIds.size() > 0) {
+				double grandTotal = paidBookDAO.getTotalEarningsWithinDate(startDate, endDate);
 				ArrayList<String> bookTitles = paidBookDAO.getBookTitlesByBookIds(paidBookIds);
 
 				ArrayList<Integer> amountOrderedForEachBook = paidBookDAO.getAmountOrderedForPaidBooks(paidBookIds);
@@ -54,13 +72,16 @@ public class getBookByDate extends HttpServlet {
 				HttpSession session = request.getSession();
 				request.setAttribute("bookTitlesByDate", bookTitles);
 				request.setAttribute("amountOrderedForEach", amountOrderedForEachBook);
+				request.setAttribute("grandTotalDate", grandTotal);
+
 			}
-			
+
 			else {
 				request.setAttribute("nobookspurchased", true);
 			}
 
-			
+			request.setAttribute("grandTotalCustomer", 0.00);
+			request.setAttribute("allPaidOrdersAdmin", allPaidOrders);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/admin/salesInquiry.jsp");
 			dispatcher.forward(request, response);
 		} catch (SQLException e) {

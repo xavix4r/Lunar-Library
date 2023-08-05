@@ -173,13 +173,13 @@ if (role == null || username == null) {
 					<tr class="border-bottom">
 						<th scope="col">Order ID</th>
 						<th scope="col">Date Ordered</th>
-						<th scope="col">Total Paid</th>
+						<th scope="col">Total Paid incl. GST</th>
 						<th scope="col"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<%
-					ArrayList<PaidOrder> paidOrders = (ArrayList<PaidOrder>) request.getAttribute("paidOrders");
+					ArrayList<PaidOrder> paidOrders = (ArrayList<PaidOrder>) session.getAttribute("paidOrders");
 					if (paidOrders != null) {
 						for (PaidOrder order : paidOrders) {
 					%>

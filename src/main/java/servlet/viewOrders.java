@@ -43,9 +43,10 @@ public class viewOrders extends HttpServlet {
 
 	            // Retrieve all paid orders for the user
 	            ArrayList<PaidOrder> paidOrders = paidOrderDAO.getAllPaidOrders(userId);
-
+	            
+	            
 	            // Set the paidOrders as an attribute in the request
-	            request.setAttribute("paidOrders", paidOrders);
+	            session.setAttribute("paidOrders", paidOrders);
 
 	            // Forward the request to viewOrders.jsp
 	            request.getRequestDispatcher("jsp/user/viewOrders.jsp").forward(request, response);

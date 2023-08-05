@@ -158,7 +158,7 @@ if (role == null || username == null) {
 
 	<div class="container my-5">
 		<h5 class=" text-center pt-4">
-			<a href="orders.html" class="link-underline-danger">Back to all
+			<a href="<%=request.getContextPath()%>/viewOrders" class="link-underline-danger">Back to all
 				orders</a>
 		</h5>
 
@@ -170,25 +170,11 @@ if (role == null || username == null) {
 						<th scope="col">Item</th>
 						<th scope="col">Price</th>
 						<th scope="col">Quantity</th>
-						<th scope="col">Total</th>
+						<th scope="col">Total incl. GST</th>
 					</tr>
 				</thead>
 				<tbody>
-					<!-- <tr class="align-middle border-bottom">
-            <th scope="row">
-              <div class="d-flex align-items-center mt-3">
-                <img src="p101.jpg" class="img-fluid tableImage rounded-2" />
-                <div class="ms-4">
-                  <h4>The Fellowship of the Ring</h4>
-                  <h5 class="text-muted">Fantasy</h5>
-                </div>
-              </div>
-            </th>
-            <td >$19.90</td>
-            <td><input type="number" name="quantity" min="1" max="100" value="1" class="form-control quantityNumber" disabled></td>
-            <td class="fw-bold">$39.80  
-          </tr> -->
-
+					
 					<%
 					ArrayList<PaidBook> paidBooks = (ArrayList<PaidBook>) request.getAttribute("paidBookDetails");
 					if (paidBooks != null) {
@@ -207,7 +193,7 @@ if (role == null || username == null) {
 						<td>$<%= book.getPriceStr() %></td>
 						<td><input type="number" name="quantity" min="1" max="100"
 							value="<%= book.getQuantityOrdered() %>" class="form-control quantityNumber" disabled></td>
-						<td class="fw-bold">$<%= book.getTotalPaid() %>
+						<td class="fw-bold">$<%= book.getTotalPaid()%>
 					</tr>
 					<%
 					}
@@ -231,7 +217,7 @@ if (role == null || username == null) {
 
 
 		<div class=" d-flex justify-content-center mt-4">
-			<a href="#">Keep Shopping</a>
+			<a href="home.jsp">Keep Shopping</a>
 		</div>
 
 

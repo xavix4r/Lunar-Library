@@ -88,8 +88,18 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 							$('#endDate').val(endDate);
 						});
 
+				// Check if the date range picker inputs are empty, and set default values
+				if ($('#startDate').val() === '') {
+					$('#startDate').val(
+							moment().subtract(7, 'days').format('YYYY-MM-DD'));
+				}
+
+				if ($('#endDate').val() === '') {
+					$('#endDate').val(moment().format('YYYY-MM-DD'));
+				}
 			});
 </script>
+
 
 </head>
 
@@ -170,7 +180,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						</button></a>
 
 
-						<div class="dropdown me-2">
+					<div class="dropdown me-2">
 						<button class="btn btn-success dropdown-toggle text-white fw-bold"
 							type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
 							aria-expanded="false">
@@ -245,7 +255,6 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 							<%
 							ArrayList<String> titles = (ArrayList<String>) request.getAttribute("bookTitlesByDate");
 							ArrayList<Integer> amountSold = (ArrayList<Integer>) request.getAttribute("amountOrderedForEach");
-
 							Boolean nobookspurchased = false;
 							nobookspurchased = (Boolean) request.getAttribute("nobookspurchased");
 
@@ -282,6 +291,14 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						</tbody>
 
 					</table>
+					<%
+					double grandTotalDate = (double) request.getAttribute("grandTotalDate");
+					%>
+					<h3>
+						Total Earnings: $
+						<%=grandTotalDate%>
+						SGD
+					</h3>
 				</div>
 
 			</div>
@@ -353,6 +370,79 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 						</tbody>
 
 					</table>
+
+					<%
+					double grandTotalCustomer = (double) request.getAttribute("grandTotalCustomer");
+					%>
+
+					<h5>
+						Total Spent By this customer: $<%=grandTotalCustomer%>
+						SGD
+					</h5>
+				</div>
+
+			</div>
+
+			<div class="col-md-12 mt-5">
+				<h3>View All Orders</h3>
+
+				<form action="<%=request.getContextPath()%>/SalesInquiry" method="GET">
+					<div class="row my-4">
+						<div class="col-md-4">
+							<label for="sortOption">Sort by:</label> <select
+								class="form-select" id="sortOption" name="sortOption">
+								<option value="order_date">Order Date</option>
+								<option value="total_price">Total Spent</option>
+							</select>
+						</div>
+
+						<div class="col-md-4">
+							<label for="sortDirection">Sort direction:</label> <select
+								class="form-select" id="sortDirection" name="sortDirection">
+								<option value="asc">Ascending</option>
+								<option value="desc">Descending</option>
+							</select>
+						</div>
+
+						<div class="col-md-4 d-flex justify-content-start align-items-end">
+							<button class="btn btn-primary w-25" type="submit">Sort</button>
+						</div>
+					</div>
+				</form>
+
+				<div
+					class="table-responsive px-md-4 px-2 pt-3 bg-white shadow-lg rounded-3">
+					<table class="table table-borderless">
+						<thead>
+							<tr class="border-bottom">
+								<th scope="col">Order Date</th>
+
+								<th scope="col">Username</th>
+
+								<th scope="col">Total Spent</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							ArrayList<PaidOrder> allPaidOrders = (ArrayList<PaidOrder>) request.getAttribute("allPaidOrdersAdmin");
+
+							if (allPaidOrders != null && allPaidOrders.size() > 0) {
+								for (PaidOrder order : allPaidOrders) {
+							%>
+							<tr class="align-middle border-bottom">
+								<td><%= order.getOrderDate() %>
+	
+								<td><%= order.getUsername() %></td>
+								<td>$<%= order.getTotal() %></td>
+							</tr>
+							<%
+							}
+							}
+							%>
+						</tbody>
+
+					</table>
 				</div>
 
 			</div>
@@ -395,6 +485,7 @@ if (!"admin".equals(role) && !"owner".equals(role)) {
 				</div>
 
 			</div>
+
 
 
 

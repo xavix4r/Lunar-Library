@@ -35,17 +35,33 @@ public class getBookByCustomer extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String username = request.getParameter("username");
-		
+		String sortBy;
+		String sortDirection;
+
+		if (request.getParameter("sortOption") != null) {
+		    sortBy = request.getParameter("sortOption");
+		} else {
+		    sortBy = "order_date"; // Default value
+		}
+
+		if (request.getParameter("sortDirection") != null) {
+		    sortDirection = request.getParameter("sortDirection");
+		} else {
+		    sortDirection = "asc"; // Default value
+		}
 
 		try {
 			
 			UserDAO userDAO = new UserDAO();
+			PaidOrderDAO paidOrderDAO = new PaidOrderDAO();
 			
 			int userid = userDAO.getUserIDByUsername(username);
 			
+			ArrayList<PaidOrder> allPaidOrders = paidOrderDAO.getAllPaidOrdersAdmin(sortBy, sortDirection);
+			
 			if(userid > 0) {
 				
-				PaidOrderDAO paidOrderDAO = new PaidOrderDAO();
+				
 				
 				ArrayList<Integer> allOrderIds = paidOrderDAO.getAllOrderIdsByUserid(userid);
 				
@@ -58,10 +74,14 @@ public class getBookByCustomer extends HttpServlet {
 					ArrayList<String> allBookTitles = paidBookDAO.getBookTitlesByBookIds(paidBookIds);
 
 					ArrayList<Integer> amountOrderedForEachBook = paidBookDAO.getAmountOrderedForCustomer(allOrderIds);
+					
+					double grandTotalCustomer = paidBookDAO.getTotalEarningForCustomer(allOrderIds);
 
 					  HttpSession session = request.getSession();
 			            request.setAttribute("bookTitlesCustomer", allBookTitles);
 			            request.setAttribute("amountOrderedCustomer", amountOrderedForEachBook);
+			            request.setAttribute("grandTotalCustomer", grandTotalCustomer);
+			           
 				}
 
 				
@@ -78,7 +98,8 @@ public class getBookByCustomer extends HttpServlet {
 			
 			
 
-			
+			 request.setAttribute("grandTotalDate", 0.00);
+				request.setAttribute("allPaidOrdersAdmin", allPaidOrders);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/admin/salesInquiry.jsp");
 			dispatcher.forward(request, response);
 		} catch (SQLException e) {

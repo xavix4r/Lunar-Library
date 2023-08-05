@@ -86,7 +86,7 @@ public class PaidOrderDAO {
 		    // Establish a database connection
 		    Connection conn = DBConnection.getConnection();
 		    
-		    String sql = "SELECT orders.user_id, users.username ,SUM(orders.total_price) as grandTotal FROM orders, users WHERE orders.user_id = users.user_id GROUP BY user_id ORDER BY grandTotal DESC;";
+		    String sql = "SELECT orders.user_id, users.username ,SUM(orders.total_price) as grandTotal FROM orders, users WHERE orders.user_id = users.user_id GROUP BY user_id ORDER BY grandTotal DESC LIMIT 10;";
 		    PreparedStatement pstmt = conn.prepareStatement(sql);
 		    ResultSet rs = pstmt.executeQuery();
 		    
@@ -113,7 +113,38 @@ public class PaidOrderDAO {
 		
 	}
 	
-	
+	public ArrayList<PaidOrder> getAllPaidOrdersAdmin(String sortBy, String sortDirection) throws SQLException, ClassNotFoundException {
+	    ArrayList<PaidOrder> paidOrders = new ArrayList<>();
+
+	    // Establish a database connection
+	    Connection conn = DBConnection.getConnection();
+
+	    // Prepare the SQL statement
+	    String sql = "SELECT orders.order_date, users.username, orders.total_price FROM orders, users WHERE orders.user_id = users.user_id ORDER BY " + sortBy + " " + sortDirection;
+	    PreparedStatement pstmt = conn.prepareStatement(sql);
+
+	    ResultSet rs = pstmt.executeQuery();
+
+	    while (rs.next()) {
+	        // Retrieve the data from each row
+	        String username = rs.getString("username");
+	        double total = rs.getDouble("total_price");
+	        Date orderDate = rs.getTimestamp("order_date");
+
+	        // Create a PaidOrder object and add it to the list
+	        PaidOrder paidOrder = new PaidOrder(total, orderDate, username);
+	        paidOrders.add(paidOrder);
+	    }
+
+	    // Close the result set, statement, and connection
+	    rs.close();
+	    pstmt.close();
+	    conn.close();
+
+	    // Return the list of paid orders
+	    return paidOrders;
+	}
+
 	
 	
 	
