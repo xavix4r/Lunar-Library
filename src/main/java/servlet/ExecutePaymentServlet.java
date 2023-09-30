@@ -74,7 +74,7 @@ public class ExecutePaymentServlet extends HttpServlet {
 				}
 			
 			} else {
-				response.sendRedirect("failure.jsp");
+				response.sendRedirect("jsp/error.jsp");
 
 			}
 		} catch (SQLException e) {
@@ -88,7 +88,7 @@ public class ExecutePaymentServlet extends HttpServlet {
 		} catch (PayPalRESTException ex) {
 			request.setAttribute("errorMessage", ex.getMessage());
 			ex.printStackTrace();
-			request.getRequestDispatcher("error.jsp").forward(request, response);
+			request.getRequestDispatcher("jsp/error.jsp").forward(request, response);
 		}
 
 		try {
@@ -106,7 +106,7 @@ public class ExecutePaymentServlet extends HttpServlet {
 		} catch (PayPalRESTException ex) {
 			request.setAttribute("errorMessage", ex.getMessage());
 			ex.printStackTrace();
-			request.getRequestDispatcher("error.jsp").forward(request, response);
+			request.getRequestDispatcher("jsp/error.jsp").forward(request, response);
 		}
 	}
 

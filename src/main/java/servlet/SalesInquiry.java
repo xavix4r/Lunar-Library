@@ -73,11 +73,11 @@ public class SalesInquiry extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle the SQL exception
-            response.sendRedirect("error.jsp");
+            response.sendRedirect("jsp/error.jsp");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             // Handle the class not found exception
-            response.sendRedirect("error.jsp");
+            response.sendRedirect("jsp/error.jsp");
         }
 	}
 
